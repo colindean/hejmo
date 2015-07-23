@@ -8,6 +8,13 @@ command_exists() {
 install_homebrew() {
   local homebrew_installer_url="https://raw.githubusercontent.com/Homebrew/install/master/install"
   
+  command_exists "curl"
+  curl_exists=$?
+  if [[ $curl_exists -ne 0 ]]; then
+    echo >&2 "curl isn't available. What's up?"
+    exit 2
+  fi
+  
   command_exists "ruby"
   ruby_exists=$?
   if [[ $ruby_exists -ne 0 ]]; then
