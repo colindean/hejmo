@@ -28,9 +28,23 @@ install_homebrew() {
 install_packages() {
   local listfile="$1"
   local cmd_template="$2"
+  oldifs="${IFS}"
+  IFS=$'\n'
+
+  failed=()
   for package in `cat ${listfile}`; do
     local clean_package=$(echo ${package} | sed -e 's/\//\\\//g')
     local cmd=$(echo "${cmd_template}" | sed -e "s/\%PACKAGE\%/${clean_package}/g")
-    $cmd
+    eval $cmd
+    if [[ $? -ne 0 ]]; then
+      failed+=("$package")
+    fi
   done
+  IFS="${oldifs}"
+  if [[ ${#failed[@]} -gt 0 ]]; then
+    echo "These packages failed to install:"
+    printf "\t%s\n" "${failed[@]}"
+    echo "You can to rerun this script until this message disappears."
+    echo "Inspect the transcript to find more exact errors."
+  fi
 }
