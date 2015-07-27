@@ -9,7 +9,7 @@ if [[ $brew_exists -ne 0 ]]; then
   install_homebrew 
 fi
   
-install_packages "homebrew.list" "echo brew install %PACKAGE%"
+install_packages "homebrew.list" "brew install %PACKAGE%"
 
 # to generate list:
 #     brew leaves

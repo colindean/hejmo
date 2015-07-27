@@ -1,7 +1,6 @@
 aircrack-ng
 android-sdk
 ant
-archey
 aria2
 aspell
 bash
@@ -10,9 +9,8 @@ bazaar
 berkeley-db
 berkeley-db4
 cabal-install
-caskroom/cask/brew-cask
 closure-compiler
-colindean/completions/kitchen-completion
+homebrew/completions/kitchen-completion
 colordiff
 cryptopp
 curl
@@ -29,8 +27,6 @@ git
 git-flow
 giter8
 github-release
-glib-networking
-gmp
 gnu-getopt
 gnupg2
 gpsbabel
@@ -46,7 +42,6 @@ homebrew/dupes/apple-gcc42
 homebrew/dupes/m4
 homebrew/dupes/openssh
 homebrew/dupes/zlib
-homebrew/fuse/ext2fuse
 homebrew/versions/autoconf213
 homebrew/versions/gcc46
 hub
@@ -59,16 +54,6 @@ json-c
 launch
 ledger
 leiningen
-libarchive
-libevent
-libicns
-libidn
-libksba
-liboil
-librsvg
-libsndfile
-libxslt
-libyaml
 little-cms
 lua
 lynx
@@ -76,14 +61,13 @@ martido/brew-graph/brew-graph
 maven
 md5sha1sum
 mercurial
-miniupnpc
 mobile-shell
 mongodb
 mplayer
 mutt
 mysql-connector-c
 ncrack
-neovim/neovim/neovim
+--HEAD neovim/neovim/neovim
 netcat
 nmap
 node
@@ -99,7 +83,6 @@ pngcrush
 ponyc
 poppler
 postgresql
-protobuf-c
 pyqt
 python
 python3
@@ -112,7 +95,6 @@ sbt
 scala
 sl
 speex
-spidermonkey
 sshtrix
 subversion
 svg2png
@@ -120,7 +102,6 @@ swig
 telemachus/anytap/brew-any-tap
 tig
 tree
-tuntap
 typesafe-activator
 typespeed
 vala

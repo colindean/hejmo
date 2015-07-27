@@ -16,7 +16,7 @@ if [[ $brewcask_exists -ne 0 ]]; then
   brew install caskroom/cask/brew-cask
 fi
 
-install_packages "caskroom.list" 'echo brew cask install %PACKAGE%'
+install_packages "caskroom.list" 'brew cask install %PACKAGE%'
 
 # to generate list:
 #     brew cask list

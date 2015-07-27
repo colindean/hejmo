@@ -17,7 +17,6 @@ dia
 disk-inventory-x
 diskmaker-x
 dropbox
-eclipse-java
 ffmpegx
 firefox
 font-microsoft-office
@@ -58,8 +57,10 @@ slack
 soundflower
 steam
 transmission
+tuntap
 unetbootin
 vagrant
 virtualbox
 vmware-fusion
 webp-quicklook
+xquartz
