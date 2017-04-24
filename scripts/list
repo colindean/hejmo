@@ -1,0 +1,4 @@
+#!/bin/sh
+ALL_ARGS=$@
+
+echo $ALL_ARGS | tr -s ' ' '\n'

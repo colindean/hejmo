@@ -1,0 +1,6 @@
+#!/bin/sh
+if [[ -z "$1" ]]; then
+  pbpaste
+else
+  cat $1 | pbcopy
+fi
