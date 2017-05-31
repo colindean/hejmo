@@ -1,0 +1,59 @@
+[user]
+	name = Colin Dean
+  #set email!!
+[alias]
+  # better logging
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lsum = log --color --pretty=format:'%s %Cgreen(%cr) %Creset' --abbrev-commit #--not --grep 'maven-release-plugin'
+  lsince = log --oneline --not --grep '^Merge pull request' --grep '^Merge branch'
+  # branches and tagging
+  current-branch = symbolic-ref --short -q HEAD
+	cleanup = !git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d
+	semtag = !git tag -a $(semver tag) -m \"tagging $(semver tag)\"
+  fancy-diff = !git diff --color $@ | diff-so-fancy
+  # pushing
+  pupr = !git push -u origin HEAD && hub pull-request -o
+  fpush = !git push --force-with-lease
+  # https://github.com/gggritso/dotfiles/blob/master/gitconfig.symlink
+  unstage = reset -q HEAD --
+  discard = checkout --
+  nevermind = !git reset --hard HEAD && git clean -d -f # clean the repo to pristine
+  uncommit = reset --mixed HEAD~
+  save = commit -m
+  resave = commit --amend
+  invert = revert
+  last = log -1 HEAD --format=format:"%Cred%H" # get the full hash of the HEAD commit
+  summary = status -u -s
+  graph = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %ar) %Cred%d' --date-order
+  history = log -10 --format=format:'%Cgreen%h %Creset• %s (%cN, %ar)'
+  branchout = checkout -b
+  tags = tag
+  branches = branch -a
+  stashes = stash list
+  remotes = remote -v
+  prestage = diff -w --word-diff=color # show unstaged changes
+  precommit = diff --cached -w --word-diff=color --word-diff-regex='[^[:space:]<>]+' # show staged changes
+  move = mv
+  remove = rm
+  unmerged = branch --no-merged
+  unstash = stash pop
+  what = show -w
+  untrack = rm -r --cached
+  rewrite = rebase -i
+  amend = commit --amend
+  back = checkout "-"
+  contributors = shortlog -s -n # list contributors by number of commits
+  filetrail = log --follow -p -w # show commits made to a file over time
+  mergetrail = log --ancestry-path --merges
+  unmerged = diff --name-only --diff-filter=U
+[push]
+	default = simple
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
