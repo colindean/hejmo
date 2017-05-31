@@ -1,0 +1,126 @@
+" This sucks, make it better.
+
+set encoding=utf-8
+set fileencoding=utf-8
+set backspace=indent,eol,start
+
+syntax on
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set laststatus=2 " always show status bar
+
+set nocompatible
+
+filetype on
+filetype indent on
+filetype plugin on
+
+set ic
+set hls
+set showmatch
+
+set expandtab
+set autoindent
+
+if $TERM_PROGRAM == 'Apple_Terminal'
+	colorscheme desert
+else
+	if $TERM_PROGRAM == 'MacVim.app'
+  	colorscheme zenburn
+	else
+		set t_Co=256
+		colorscheme zenburn
+	endif
+endif
+
+set number
+set ruler
+
+set showmode
+set showcmd
+set visualbell
+set ttyfast
+
+set incsearch
+set showmatch
+set hlsearch
+
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
+nnoremap ; :
+
+" XML formatter
+function! DoFormatXML() range
+  " Save the file type
+  let l:origft = &ft
+
+  " Clean the file type
+  set ft=
+
+  " Add fake initial tag (so we can process multiple top-level elements)
+  exe ":let l:beforeFirstLine=" . a:firstline . "-1"
+  if l:beforeFirstLine < 0
+    let l:beforeFirstLine=0
+  endif
+  exe a:lastline . "put ='</PrettyXML>'"
+  exe l:beforeFirstLine . "put ='<PrettyXML>'"
+  exe ":let l:newLastLine=" . a:lastline . "+2"
+  if l:newLastLine > line('$')
+    let l:newLastLine=line('$')
+  endif
+
+  " Remove XML header
+  exe ":" . a:firstline . "," . a:lastline . "s/<\?xml\\_.*\?>\\_s*//e"
+
+  " Recalculate last line of the edited code
+  let l:newLastLine=search('</PrettyXML>')
+
+  " Execute external formatter
+  exe ":silent " . a:firstline . "," . l:newLastLine . "!xmllint --noblanks --format --recover -"
+
+  " Recalculate first and last lines of the edited code
+  let l:newFirstLine=search('<PrettyXML>')
+  let l:newLastLine=search('</PrettyXML>')
+
+  " Get inner range
+  let l:innerFirstLine=l:newFirstLine+1
+  let l:innerLastLine=l:newLastLine-1
+
+  " Remove extra unnecessary indentation
+  exe ":silent " . l:innerFirstLine . "," . l:innerLastLine "s/^  //e"
+
+  " Remove fake tag
+  exe l:newLastLine . "d"
+  exe l:newFirstLine . "d"
+
+  " Put the cursor at the first line of the edited code
+  exe ":" . l:newFirstLine
+
+  " Restore the file type
+  exe "set ft=" . l:origft
+endfunction
+command! -range=% FormatXML <line1>,<line2>call DoFormatXML()
+
+nmap <silent> <leader>x :%FormatXML<CR>
+vmap <silent> <leader>x :FormatXML<CR>
+
+map <C-\> :NERDTreeToggle<CR>
+
+"folding settings
+set foldmethod=indent   "fold based on indent
+set foldnestmax=10      "deepest fold is 10 levels
+set nofoldenable        "dont fold by default
+set foldlevel=1         "this is just what i use
+
+execute pathogen#infect()
+au BufRead,BufNewFile *.scss set filetype=scss
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufRead *.gradle set filetype=groovy
+autocmd BufWritePre * StripWhitespace
