@@ -27,6 +27,9 @@ mash = {"cmd", "alt", "ctrl"}
 INITIAL_GRID_HEIGHT = 2
 INITIAL_GRID_WIDTH = 4
 
+-- disable animations, ugh
+window.animationDuration = 0
+
 function centerpoint()
   local current = grid.getGrid()
   return { x = 1, y = 0, w = current.w / 2, h = current.h }
