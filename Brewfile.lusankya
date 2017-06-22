@@ -9,7 +9,15 @@ tap 'homebrew/core'
 tap 'homebrew/emacs'
 tap 'homebrew/versions'
 tap 'olafurpg/scalafmt'
-tap 'telemachus/anytap'
+
+# needed for basically everything
+cask 'java'
+# quick screen recording
+cask 'licecap'
+# good screen recording
+cask 'snapz-pro-x'
+
+# packages
 brew 'ack'
 brew 'aha'
 brew 'ant'
@@ -156,11 +164,7 @@ brew 'watch'
 brew 'wemux'
 brew 'wget'
 brew 'xmlstarlet'
-brew 'zookeeper'
-brew 'colindean/watson/data-crawler'
-brew 'colindean/watson/kale'
 brew 'homebrew/emacs/let-alist'
 brew 'homebrew/emacs/pdf-tools'
 brew 'homebrew/emacs/tablist'
 brew 'olafurpg/scalafmt/scalafmt'
-brew 'telemachus/anytap/brew-any-tap'
