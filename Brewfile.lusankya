@@ -16,6 +16,8 @@ cask 'java'
 cask 'licecap'
 # good screen recording
 cask 'snapz-pro-x'
+# IDE for Scala and Java development
+cask 'intellij-idea-ce'
 
 # packages
 brew 'ack'
