@@ -169,4 +169,4 @@ brew 'xmlstarlet'
 brew 'homebrew/emacs/let-alist'
 brew 'homebrew/emacs/pdf-tools'
 brew 'homebrew/emacs/tablist'
-brew 'olafurpg/scalafmt/scalafmt'
+brew 'olafurpg/scalafmt/scalafmt', args: ["HEAD"]
