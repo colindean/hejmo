@@ -14,12 +14,12 @@
 # TL;DR Tell your 401k administrator to get with the program and do deferral
 #       maximization.
 
-MAX_DEFERRABLE = ENV['MAX_DEFERRABLE'] || 18000.00
+MAX_DEFERRABLE = ENV['MAX_DEFERRABLE'] || 18_000.00
 
 if ARGV.size <= 1
-  me = File.basename($0, File.extname($0))
-	STDERR.puts "Usage: #{me} <number of periods remaining> <pretax pay per period> [amount already contributed]"
-  STDERR.puts "Example, for the beginning of the year for someone who makes $60,000/yr with 24 pay periods:"
+  me = File.basename($PROGRAM_NAME, File.extname($PROGRAM_NAME))
+  STDERR.puts "Usage: #{me} <number of periods remaining> <pretax pay per period> [amount already contributed]"
+  STDERR.puts 'Example, for the beginning of the year for someone who makes $60,000/yr with 24 pay periods:'
   STDERR.puts "\t#{me} 24 2500"
   STDERR.puts "Set MAX_DEFERRABLE envvar if it's not #{MAX_DEFERRABLE}."
   exit 1
@@ -28,11 +28,11 @@ end
 PERIODS_REMAINING = ARGV[0].to_f
 PAY_PER_PERIOD = ARGV[1].to_f
 
-if ARGV.size == 3
-	ALREADY_CONTRIBUTED = ARGV[2].to_f
-else
-  ALREADY_CONTRIBUTED = 0.0
-end
+ALREADY_CONTRIBUTED = if ARGV.size == 3
+                        ARGV[2].to_f
+                      else
+                        0.0
+                      end
 
 remaining = MAX_DEFERRABLE - ALREADY_CONTRIBUTED
 per_period = remaining / PERIODS_REMAINING
