@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+## WTF is this?
+#
+# Some 401k administrators lack an option to set contributions to level that
+# achieves the maximum deferrable contribution. For 2017, that amount is $18,000.
+# This little script will help you calculate what you percentage you need to use
+# when that's the only thing you can set.
+#
+# Why the multiple percentage ranges? Some 401k administrators don't let you set
+# a high precision percentage. These lines will tell you how much you're losing
+# because of that imprecision.
+#
+# TL;DR Tell your 401k administrator to get with the program and do deferral
+#       maximization.
+
+MAX_DEFERRABLE = ENV['MAX_DEFERRABLE'] || 18000.00
+
+if ARGV.size <= 1
+  me = File.basename($0, File.extname($0))
+	STDERR.puts "Usage: #{me} <number of periods remaining> <pretax pay per period> [amount already contributed]"
+  STDERR.puts "Example, for the beginning of the year for someone who makes $60,000/yr with 24 pay periods:"
+  STDERR.puts "\t#{me} 24 2500"
+  STDERR.puts "Set MAX_DEFERRABLE envvar if it's not #{MAX_DEFERRABLE}."
+  exit 1
+end
+
+PERIODS_REMAINING = ARGV[0].to_f
+PAY_PER_PERIOD = ARGV[1].to_f
+
+if ARGV.size == 3
+	ALREADY_CONTRIBUTED = ARGV[2].to_f
+else
+  ALREADY_CONTRIBUTED = 0.0
+end
+
+remaining = MAX_DEFERRABLE - ALREADY_CONTRIBUTED
+per_period = remaining / PERIODS_REMAINING
+
+puts <<~EH
+#{MAX_DEFERRABLE} max deferrable.
+#{ALREADY_CONTRIBUTED} already contributed.
+#{remaining} remaining to be contributed.
+#{PERIODS_REMAINING} periods remaining.
+#{per_period} contribution per period to reach #{remaining}.
+#{PAY_PER_PERIOD} pay each period.
+EH
+
+contribution = per_period / PAY_PER_PERIOD
+(0...5).each do |places|
+  percent = (contribution * 100.0).floor(places)
+  year_total = ((percent / 100.0) * PAY_PER_PERIOD * PERIODS_REMAINING).round(2)
+  missed_out = (remaining - year_total).round(2)
+  puts "#{percent}% is recommended contribution at #{places} decimal places, totaling #{year_total} for the year, missing out on #{missed_out} because of safe decimal truncation."
+end
