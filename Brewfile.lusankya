@@ -18,6 +18,8 @@ cask 'licecap'
 cask 'snapz-pro-x'
 # IDE for Scala and Java development
 cask 'intellij-idea-ce'
+# allows changing default mail client without opening Mail.app
+cask 'rcdefaultapp'
 
 # packages
 brew 'ack'
