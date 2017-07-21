@@ -7,14 +7,14 @@ command_exists() {
 
 install_homebrew() {
   local homebrew_installer_url="https://raw.githubusercontent.com/Homebrew/install/master/install"
-  
+
   command_exists "curl"
   curl_exists=$?
   if [[ $curl_exists -ne 0 ]]; then
     echo >&2 "curl isn't available. What's up?"
     exit 2
   fi
-  
+
   command_exists "ruby"
   ruby_exists=$?
   if [[ $ruby_exists -ne 0 ]]; then
@@ -47,4 +47,23 @@ install_packages() {
     echo "You can to rerun this script until this message disappears."
     echo "Inspect the transcript to find more exact errors."
   fi
+}
+
+# from_dir must be an absolute path!
+link_all_files_in_dir() {
+  from_dir="$1"
+  to_dir="$2"
+  rm="$3"
+  prepend="$4"
+
+  for f in $(ls "${from_dir}"); do
+    TARGET="${from_dir}/${f}"
+    LINK="${to_dir}/${prepend}${f}"
+    if [[ ! -z $rm ]]; then
+      echo "Removing ${LINK}"
+      rm -f "${LINK}"
+    fi
+    echo "Linking ${LINK} to ${TARGET}"
+    ln -s "${TARGET}" "${LINK}"
+  done
 }

@@ -12,7 +12,9 @@ MYPATH+=('/usr/local/texlive/2013/bin/x86_64-darwin')
 ## java
 MYPATH+=("$JAVA_HOME/bin")
 ## rust
+MYPATH+=("$HOME/.cargo/bin:$PATH")
 MYPATH+=('/usr/local/opt/rust/bin')
+
 ## haskell
 MYPATH+=("$HOME/.cabal/bin")
 

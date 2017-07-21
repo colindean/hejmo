@@ -46,3 +46,5 @@ fi
 [[ -f "$HOME/.travis/travis.sh" ]] && . "$HOME/.travis/travis.sh"
 #THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
 [[ -s "$HOME/.gvm/bin/gvm-init.sh" ]] && source "$HOME/.gvm/bin/gvm-init.sh"
+
+export PATH="$HOME/.cargo/bin:$PATH"
