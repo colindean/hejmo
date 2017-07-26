@@ -53,7 +53,7 @@ ARCHIVE_DIR = `dirname "#{ARCHIVE_GLOB}"`.strip
 
 def trash entry
   puts "🗑 ⬅ #{entry}"
-  `trash -a "#{entry.filename}"` unless DRY_RUN
+  `trash "#{entry.filename}"` unless DRY_RUN
 end
 
 def archive entry
