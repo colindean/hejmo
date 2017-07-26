@@ -34,6 +34,8 @@ source "${HEJMO_BASH_PROFILE_DIR}/99_prompt.sh"
 source "${HEJMO_BASH_PROFILE_DIR}/99_git.sh"
 # gradle functions and aliases
 source "${HEJMO_BASH_PROFILE_DIR}/99_gradle.sh"
+# history management
+source "${HEJMO_BASH_PROFILE_DIR}/99_history.sh"
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion

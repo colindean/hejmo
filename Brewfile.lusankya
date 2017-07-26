@@ -24,6 +24,9 @@ cask 'rcdefaultapp'
 # macos trash from cli
 brew 'trash'
 
+#journaling
+brew 'jrnl'
+
 # packages
 brew 'ack'
 brew 'aha'
