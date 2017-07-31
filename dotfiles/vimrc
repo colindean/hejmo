@@ -1,5 +1,24 @@
 " This sucks, make it better.
 
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin("~/.vim_bundles")
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+if filereadable(expand("~/.vim/bundles.vim"))
+  source ~/.vim/bundles.vim
+endif
+if filereadable(expand("~/.local/vim/bundles.vim"))
+  source ~/.local/vim/bundles.vim
+endif
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 set encoding=utf-8
 set fileencoding=utf-8
 set backspace=indent,eol,start
@@ -119,8 +138,10 @@ set foldnestmax=10      "deepest fold is 10 levels
 set nofoldenable        "dont fold by default
 set foldlevel=1         "this is just what i use
 
-execute pathogen#infect()
 au BufRead,BufNewFile *.scss set filetype=scss
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 autocmd BufWritePre * StripWhitespace
+
+" run rustfmt on save, if available 
+let g:rustfmt_autosave = 1
