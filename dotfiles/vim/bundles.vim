@@ -4,6 +4,10 @@ Plugin 'tpope/vim-sensible'
 " zenburn colorscheme
 Plugin 'jnurmine/Zenburn'
 
+" airline for nice stats
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
 " git integration for the gutter
 Plugin 'airblade/vim-gitgutter'
 " git integration everywhere
