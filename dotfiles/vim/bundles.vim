@@ -15,6 +15,14 @@ Plugin 'tpope/vim-fugitive'
 
 " file navigation
 Plugin 'scrooloose/nerdtree'
+" fuzzy finder
+Plugin 'ctrlpvim/ctrlp.vim'
+" .editorconfig support
+Plugin 'editorconfig/editorconfig-vim'
+" better commenting
+Plugin 'scrooloose/nerdcommenter'
+" whitespace highlighting
+Plugin 'ntpeters/vim-better-whitespace'
 
 " surround control - type cs'" to turn single quotes to double!
 Plugin 'tpope/vim-surround'
@@ -22,7 +30,7 @@ Plugin 'tpope/vim-surround'
 " syntax checking
 Plugin 'vim-syntastic/syntastic'
 
-" language support
+"""""""" language support
 " haml
 Plugin 'tpope/vim-haml'
 " markdown
@@ -31,3 +39,7 @@ Plugin 'tpope/vim-markdown'
 Plugin 'vim-ruby/vim-ruby'
 " rust
 Plugin 'rust-lang/rust.vim'
+" hocon for scala
+Plugin 'GEverding/vim-hocon'
+" scala
+Plugin 'derekwyatt/vim-scala'
