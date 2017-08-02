@@ -178,3 +178,5 @@ brew 'homebrew/emacs/let-alist'
 brew 'homebrew/emacs/pdf-tools'
 brew 'homebrew/emacs/tablist'
 brew 'olafurpg/scalafmt/scalafmt', args: ["HEAD"]
+
+# vim: ft=ruby
