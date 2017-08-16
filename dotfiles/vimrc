@@ -149,3 +149,8 @@ autocmd BufWritePre * StripWhitespace
 
 " run rustfmt on save, if available
 let g:rustfmt_autosave = 1
+
+" set goyo distraction-free writing defaults
+let g:goyo_width = 100
+let g:goyo_height = "85%"
+let g:goyo_linenr = 0

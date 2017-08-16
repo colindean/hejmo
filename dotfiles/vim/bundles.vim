@@ -3,6 +3,8 @@ Plugin 'tpope/vim-sensible'
 
 " zenburn colorscheme
 Plugin 'jnurmine/Zenburn'
+" distraction-free writing with :Goyo
+Plugin 'junegunn/goyo.vim'
 
 " airline for nice stats
 Plugin 'vim-airline/vim-airline'
