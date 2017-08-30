@@ -14,7 +14,7 @@ function prompt
   local YELLOW="\[\033[1;33m\]"
   local RED="\[\033[1;31m\]"
   #local RUBY="${LIGHT_BLUE}\$(if [ ! -z \"\`upsearch Gemfile\`\" ]; then echo -n \"(\${RUBY_VERSION})\"; fi)"
-  local GIT_B="${RED}\$(if [ ! -z \"\`__git_ps1\`\" ]; then echo -n ±; __git_ps1; echo -n ' '; fi)"
+  local GIT_B="${RED}\$(_GITPS1=\"\`__git_ps1\`\"; if [ ! -z \"\${_GITPS1}\" ]; then echo -n \"±\${_GITPS1}\"; echo -n ' '; fi)"
   export PS1="${WHITE}[${YELLOW}\t ${GREEN}\u@\H ${CYAN}\w ${RUBY}${WHITE}]\n${GIT_B}${GRAY}\$ "
 }
 prompt
