@@ -30,6 +30,9 @@ brew 'jrnl'
 # postscript stuff, used for man2pdf
 brew 'ghostscript'
 
+# used for menu bar stuff like time tracking
+cask 'bitbar'
+
 # packages
 brew 'ack'
 brew 'aha'
