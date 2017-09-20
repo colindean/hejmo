@@ -32,6 +32,9 @@ Plugin 'tpope/vim-surround'
 " syntax checking
 Plugin 'vim-syntastic/syntastic'
 
+" startup screen with most recently used files
+Plugin 'mhinz/vim-startify'
+
 """""""" language support
 " haml
 Plugin 'tpope/vim-haml'
