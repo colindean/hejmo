@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+#man -t ledger | ps2pdf - /tmp/man-ledger.pdf && open /tmp/man-ledger.pdf
+MAN_ARGS="$@"
+IDENTIFIER="$(echo $MAN_ARGS | sed -e 's/ //g')"
+
+PS_FILENAME="man-${IDENTIFIER}.ps"
+PDF_FILENAME="man-${IDENTIFIER}.pdf"
+PDF_TARGET="${TMPDIR}${PDF_FILENAME}"
+
+echo "${PDF_TARGET}"
+
+if [[ -f "${PDF_TARGET}" ]]; then
+  open "${PDF_TARGET}"
+  exit 0
+fi
+
+MAN_PATH="$(command -v man)"
+if [[ -z "${MAN_PATH}" ]]; then
+  >&2 echo "No man found, are manpages actually installed?"
+  exit 1
+fi
+
+PS2PDF_PATH="$(command -v ps2pdf)"
+if [[ -z "${PS2PDF_PATH}" ]]; then
+  >&2 echo "No ps2pdf found, ensure that it is installed."
+  exit 2
+fi
+
+# -t outputs postscript using groff, see `man man` for details.
+MAN_CMD="${MAN_PATH} -t $MAN_ARGS > ${PS_FILENAME}"
+PS2PDF_CMD="${PS2PDF_PATH} '${PS_FILENAME}' '${PDF_TARGET}'"
+
+$MAN_CMD && $PS2PDF_CMD
+
+if [[ -f "${PDF_TARGET}" ]]; then
+  open "${PDF_TARGET}"
+  exit 0
+else
+  >&2 echo "${PDF_TARGET} does not exist, something went wrong."
+  exit 3
+fi

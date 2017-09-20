@@ -24,8 +24,11 @@ cask 'rcdefaultapp'
 # macos trash from cli
 brew 'trash'
 
-#journaling
+# journaling
 brew 'jrnl'
+
+# postscript stuff, used for man2pdf
+brew 'ghostscript'
 
 # packages
 brew 'ack'
@@ -79,7 +82,6 @@ brew 'gd'
 brew 'gdk-pixbuf'
 brew 'gdub'
 brew 'little-cms2'
-brew 'ghostscript'
 brew 'gist'
 brew 'giter8'
 brew 'glew'
