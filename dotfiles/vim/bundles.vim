@@ -45,3 +45,5 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'GEverding/vim-hocon'
 " scala
 Plugin 'derekwyatt/vim-scala'
+" ledger
+Plugin 'ledger/vim-ledger'
