@@ -33,6 +33,15 @@ brew 'ghostscript'
 # used for menu bar stuff like time tracking
 cask 'bitbar'
 
+# mac app store apps
+brew 'mas'
+begin
+  mas 'Trello', id: 1278508951
+rescue
+  echo "mas is unavailable, skipping Mac App Store apps"
+end
+
+
 # packages
 brew 'ack'
 brew 'aha'
