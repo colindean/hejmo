@@ -19,7 +19,11 @@ if [[ ! -f "${T}" ]]; then
 fi
 
 OUTPUT="$("${T}" hours)"
-HOURS="$(echo "${OUTPUT}" | tail -n 1 | sed -e 's/ //g')"
+if [[ "$(echo \"${OUTPUT}\" | wc -l | awk '{print $1}')" == "1" ]]; then
+  HOURS="$(echo "${OUTPUT}" | awk '{print $1}')"
+else
+  HOURS="$(echo "${OUTPUT}" | tail -n 1 | sed -e 's/ //g')"
+fi
 
 PREFIX="t:"
 
