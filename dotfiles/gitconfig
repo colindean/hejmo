@@ -46,6 +46,35 @@
   filetrail = log --follow -p -w # show commits made to a file over time
   mergetrail = log --ancestry-path --merges
   unmerged = diff --name-only --diff-filter=U
+  # misspellings
+	ad = add
+	ass = add
+	dff = diff
+	doff = diff
+	emrge = merge
+	idff = diff
+	mergfe = merge
+	mregetool = mergetool
+	oull = pull
+	pish = push
+	pl = pull
+	ps = push
+	psuh = push
+	pu = up
+	puhs = push
+	puosh = push
+	pus = push
+	pushy = push
+	reabse = rebase
+	satsh = stash
+	sst = status -sb
+	t = status -sb
+	tint = init
+	tpull = pull
+	tpush = push
+	ts = status -sb
+	tst = status -sb
+	tup = up
 [push]
 	default = simple
 [filter "lfs"]
