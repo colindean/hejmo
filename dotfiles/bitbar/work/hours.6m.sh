@@ -19,10 +19,11 @@ if [[ ! -f "${T}" ]]; then
 fi
 
 OUTPUT="$("${T}" hours)"
-if [[ "$(echo \"${OUTPUT}\" | wc -l | awk '{print $1}')" == "1" ]]; then
-  HOURS="$(echo "${OUTPUT}" | awk '{print $1}')"
+OUTPUT_LINE_COUNT="$(echo -e "${OUTPUT}" | wc -l | awk '{print $1}')"
+if [[ "${OUTPUT_LINE_COUNT}" -eq 1 ]]; then
+  HOURS="$(echo -e "${OUTPUT}" | awk '{print $1}')"
 else
-  HOURS="$(echo "${OUTPUT}" | tail -n 1 | sed -e 's/ //g')"
+  HOURS="$(echo -e "${OUTPUT}" | tail -n 1 | sed -e 's/ //g')"
 fi
 
 PREFIX="t:"
@@ -43,4 +44,4 @@ fi
 
 echo "---"
 
-echo "${OUTPUT}" | sed -e 's/\-/=/g'
+echo -e "${OUTPUT}" | sed -e 's/\-/=/g'
