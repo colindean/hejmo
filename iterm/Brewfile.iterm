@@ -1,0 +1,4 @@
+cask 'iterm2'
+
+cask 'caskroom/fonts/font-fira-code'
+cask 'caskroom/fonts/font-fira-mono-for-powerline'
