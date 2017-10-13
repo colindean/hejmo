@@ -42,6 +42,10 @@ if [[ ! -z "${CURRENT_TASK}" ]]; then
   echo "${CURRENT_TASK}"
 fi
 
+if [[ "$(date +%A)" == "Friday" ]]; then
+  echo "w: $("${T}" bal -p 'this week' | tail -n 1 | sed -e 's/ //g')"
+fi
+
 echo "---"
 
 echo -e "${OUTPUT}" | sed -e 's/\-/=/g'
