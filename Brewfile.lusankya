@@ -41,6 +41,8 @@ rescue
   echo "mas is unavailable, skipping Mac App Store apps"
 end
 
+# a better find, use like "fd PATTERN"
+brew 'fd'
 
 # packages
 brew 'ack'
