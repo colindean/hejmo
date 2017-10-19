@@ -30,23 +30,17 @@ Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'tpope/vim-surround'
 
 " syntax checking
-Plugin 'vim-syntastic/syntastic'
+"Plugin 'vim-syntastic/syntastic'
+" linting
+Plugin 'w0rp/ale'
 
 " startup screen with most recently used files
 Plugin 'mhinz/vim-startify'
 
 """""""" language support
-" haml
-Plugin 'tpope/vim-haml'
-" markdown
-Plugin 'tpope/vim-markdown'
-" ruby
-Plugin 'vim-ruby/vim-ruby'
-" rust
-Plugin 'rust-lang/rust.vim'
+" polyglot handles most of them now
+Plugin 'sheerun/vim-polyglot'
 " hocon for scala
 Plugin 'GEverding/vim-hocon'
-" scala
-Plugin 'derekwyatt/vim-scala'
 " ledger
 Plugin 'ledger/vim-ledger'
