@@ -74,6 +74,12 @@ local grid_shortcuts = {
   U = function() grid.resizeWindowShorter() alert.show("⏬⏫") end,
   N = function() grid.set(window.focusedWindow(), centerpoint(), window.focusedWindow():screen():next()) alert.show("➡️") end,
   P = function() grid.set(window.focusedWindow(), centerpoint(), window.focusedWindow():screen():previous()) alert.show("⬅️") end,
+  T = function()
+        local cp = centerpoint()
+        cp["h"] = 1
+        grid.set(window.focusedWindow(), cp, window.focusedWindow():screen())
+        alert.show("🎥")
+      end,
 }
 print("If Hammerspoon console windows can be manipulated, but others cannot, "..
       "ensure that Hammerspoon is allowed in Accessibility preferences.")

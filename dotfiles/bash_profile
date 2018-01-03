@@ -50,3 +50,4 @@ fi
 [[ -s "$HOME/.gvm/bin/gvm-init.sh" ]] && source "$HOME/.gvm/bin/gvm-init.sh"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export TIMELOG="/Users/colin/Box Sync/colin.dean@arcadiasolutions.com/time_tracking/time.ledger"
