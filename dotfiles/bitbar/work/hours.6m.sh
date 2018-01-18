@@ -9,6 +9,7 @@
 
 #Unfortunately, t requires basically everything.
 
+export TERM=mac
 . "$HOME/.bash_profile"
 T="$HOME/.bin/t"
 
