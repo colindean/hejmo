@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # TODO: metaprogram this so that it's all generated at execution/sourcing
+export HEJMO_USE_ANSI=""
 
 ansi_escape(){
-  echo -e "[$@"
+  if [[ $HEJMO_USE_ANSI -eq 1 ]]; then
+    echo -en "[$@"
+  fi
 }
 ansi_erase_display(){
   ansi_escape "2J"
@@ -88,6 +91,15 @@ ansi_demo(){
   echo -en "$(ansi_reset)$(ansi_color_fg_magenta)$(ansi_color_bg_black) LOOKING $(ansi_mode_bold)GOOD"
   echo -e "$(ansi_reset)"
 }
+
+if [[ -z "${HEJMO_USE_ANSI}" ]]; then
+  tput colors > /dev/null
+  if [[ $? -gt 0 ]]; then
+    export HEJMO_USE_ANSI=0
+  else
+    export HEJMO_USE_ANSI=1
+  fi
+fi
 
 if [[ "$BASH_SOURCE" == "$0" ]]; then
     ansi_demo
