@@ -10,6 +10,7 @@ export HEJMO="$( cd "${HEJMO_DOTFILE_DIR}/../" && pwd -P)"
 HEJMO_BASH_PROFILE_DIR="${HEJMO}/bash_profile"
 
 source "${HEJMO_BASH_PROFILE_DIR}/00_path.sh"
+source "${HEJMO_BASH_PROFILE_DIR}/00_ansi_color_helpers.sh"
 
 export EDITOR=vim
 alias vi='vim';
