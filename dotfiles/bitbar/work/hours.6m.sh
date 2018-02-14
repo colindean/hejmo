@@ -50,4 +50,4 @@ fi
 
 echo "---"
 
-echo -e "${OUTPUT}" | sed -e 's/\-/=/g'
+echo -e "${OUTPUT}" | sed -e 's/\-/=/g' | sed 's/$/| font=Courier/g'
