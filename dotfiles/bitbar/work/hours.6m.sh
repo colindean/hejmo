@@ -10,7 +10,8 @@
 #Unfortunately, t requires basically everything.
 
 export TERM=mac
-. "$HOME/.bash_profile"
+PATH=/usr/local/bin:$PATH
+[[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"
 T="$HOME/.bin/t"
 
 
