@@ -37,6 +37,8 @@ source "${HEJMO_BASH_PROFILE_DIR}/99_git.sh"
 source "${HEJMO_BASH_PROFILE_DIR}/99_gradle.sh"
 # history management
 source "${HEJMO_BASH_PROFILE_DIR}/99_history.sh"
+# manpage colors
+source "${HEJMO_BASH_PROFILE_DIR}/99_man_colors.sh"
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
