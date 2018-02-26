@@ -106,6 +106,7 @@ actions:
      timelog - show timelog file
      log - record an exact time <"start"> <"end"> <project>
      p,projects - list projects used so far
+     sheet - show a daily register of the previous week, optionally pass a start date
 EOF
 }
 
