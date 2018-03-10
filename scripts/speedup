@@ -11,4 +11,4 @@ fi
 
 AUDIO_COEFF="$(echo "scale=10;1 / ${VIDEO_COEFF}" | bc )"
 
-echo ffmpeg -i "${INPUT}" -vf "setpts=${VIDEO_COEFF}*PTS" -filter:a "atempo=${AUDIO_COEFF}" "${OUTPUT}"
+ffmpeg -i "${INPUT}" -vf "setpts=${VIDEO_COEFF}*PTS" -filter:a "atempo=${AUDIO_COEFF}" "${OUTPUT}"
