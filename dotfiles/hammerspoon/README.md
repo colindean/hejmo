@@ -2,6 +2,16 @@
 
 [Hammerspoon](http://www.hammerspoon.org/) is a fantastic window management system for OS X.
 
+## Briefly, how I use it
+
+Hammerspoon enables you to write keybinding action configs in Lua. These actions are triggered using a mashing of meta keys plus a real key to activate. I use Hammerspoon primarily for window management on a 4x2 grid 
+
+I use `⌘^⌥` as my mash plus mostly vim keybindings to move windows around the display: `H` to move left, `L` to move right, `J` down, `K` up. I use multiple monitors often, so I've designated `N` for the next physical monitor, `P` for previous. `M` maximizes, `C` centers. `I` and `O` adjust width of a window, `Y` and `U` adjust height. `T` centers and shrinks to row 1, great for moving a window as close to the camera as it can get. `1`,`2`,`3` move a window to the left and make it take up that many columns on the 4x2 grid. `9`, `0`, `-` do the same but to the right. `;` snaps a window to the grid. `G` shows window position.
+
+I may have added more. Look [approximately here](https://github.com/colindean/hejmo/blob/master/dotfiles/hammerspoon/window_mgmt.lua#L52) to see what exists these days.
+
+## Installation
+
 Get Hammerspoon from its website or do the following, which is much easier if you
 have Homebrew installed (and you probably do if you're looking at this):
 
