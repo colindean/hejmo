@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'yaml'
+
+file = ARGV.pop
+data = if file == '-'
+         STDIN.read
+       else
+         File.read(file)
+       end
+
+puts YAML.parse(data).to_ruby.to_json
