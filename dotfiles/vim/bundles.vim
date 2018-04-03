@@ -44,3 +44,4 @@ Plugin 'sheerun/vim-polyglot'
 Plugin 'GEverding/vim-hocon'
 " ledger
 Plugin 'ledger/vim-ledger'
+Plugin 'rcaputo/vim-ledger_x'
