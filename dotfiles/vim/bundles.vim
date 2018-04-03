@@ -45,3 +45,5 @@ Plugin 'GEverding/vim-hocon'
 " ledger
 Plugin 'ledger/vim-ledger'
 Plugin 'rcaputo/vim-ledger_x'
+" folding for yaml
+Plugin 'pedrohdz/vim-yaml-folds'
