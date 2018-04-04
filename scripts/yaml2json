@@ -2,6 +2,10 @@
 require 'json'
 require 'yaml'
 
+def yaml_as_ruby(data)
+  YAML.parse(data).to_ruby
+end
+
 file = ARGV.pop
 data = if file == '-'
          STDIN.read
@@ -9,4 +13,8 @@ data = if file == '-'
          File.read(file)
        end
 
-puts YAML.parse(data).to_ruby.to_json
+unless ENV['PRETTY']
+  puts yaml_as_ruby(data).to_json
+else
+  puts JSON.pretty_generate(yaml_as_ruby(data))
+end
