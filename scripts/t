@@ -102,6 +102,7 @@ actions:
      last - show last closed project
      grep - grep timelog for argument
      cat - show timelog
+     today - show today's entries in the timelog
      less - show timelog in pager
      timelog - show timelog file
      log - record an exact time <"start"> <"end"> <project>
@@ -139,6 +140,7 @@ case "${action}" in
   last) _t_last "$@";;
   grep) _t_do grep "$@";;
   cat)  _t_do cat "$@";;
+  today) _t_do grep "$($date "+%Y-%m-%d")";;
   less)  _t_do less;;
   timelog) _t_timelog "$@";;
   log) _t_log "$@";;
