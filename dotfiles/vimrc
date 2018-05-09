@@ -4,10 +4,12 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin("~/.vim_bundles")
+"set rtp+=~/.vim/bundle/Vundle.vim
+"call vundle#begin("~/.vim_bundles")
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+"Plugin 'VundleVim/Vundle.vim'
+
+call plug#begin('~/.local/vim/bundles')
 
 if filereadable(expand("~/.vim/bundles.vim"))
   source ~/.vim/bundles.vim
@@ -16,7 +18,8 @@ if filereadable(expand("~/.local/vim/bundles.vim"))
   source ~/.local/vim/bundles.vim
 endif
 
-call vundle#end()            " required
+call plug#end()
+"call vundle#end()            " required
 filetype plugin indent on    " required
 
 set encoding=utf-8

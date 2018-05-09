@@ -1,49 +1,49 @@
 " set sensible defaults
-Plugin 'tpope/vim-sensible'
+Plug 'tpope/vim-sensible'
 
 " zenburn colorscheme
-Plugin 'jnurmine/Zenburn'
+Plug 'jnurmine/Zenburn'
 " distraction-free writing with :Goyo
-Plugin 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim'
 
 " airline for nice stats
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " git integration for the gutter
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 " git integration everywhere
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " file navigation
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " fuzzy finder
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " .editorconfig support
-Plugin 'editorconfig/editorconfig-vim'
+Plug 'editorconfig/editorconfig-vim'
 " better commenting
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 " whitespace highlighting
-Plugin 'ntpeters/vim-better-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
 
 " surround control - type cs'" to turn single quotes to double!
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 " syntax checking
-"Plugin 'vim-syntastic/syntastic'
+"Plug 'vim-syntastic/syntastic'
 " linting
-Plugin 'w0rp/ale'
+Plug 'w0rp/ale'
 
 " startup screen with most recently used files
-Plugin 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
 
 """""""" language support
 " polyglot handles most of them now
-Plugin 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 " hocon for scala
-Plugin 'GEverding/vim-hocon'
+Plug 'GEverding/vim-hocon'
 " ledger
-Plugin 'ledger/vim-ledger'
-Plugin 'rcaputo/vim-ledger_x'
+Plug 'ledger/vim-ledger'
+Plug 'rcaputo/vim-ledger_x'
 " folding for yaml
-Plugin 'pedrohdz/vim-yaml-folds'
+Plug 'pedrohdz/vim-yaml-folds'
