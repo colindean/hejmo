@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AlternateMouseScroll</key>
+	<true/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
 	<key>AppleScrollAnimationEnabled</key>
@@ -271,7 +273,7 @@
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>299 487 796 473 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>5 54 1658 968 0 0 1680 1027 </string>
+	<string>5 54 1666 968 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>998 553 650 452 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -939,6 +941,8 @@
 	<false/>
 	<key>PMPrintingExpandedStateForPrint2</key>
 	<false/>
+	<key>PasteTabToStringTabStopSize</key>
+	<integer>4</integer>
 	<key>PerformDNSLookups</key>
 	<false/>
 	<key>PointerActions</key>
@@ -987,7 +991,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-03-30T17:57:56Z</date>
+	<date>2018-04-19T19:20:52Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>WordCharacters</key>
