@@ -4,7 +4,7 @@ Plug 'tpope/vim-sensible'
 " zenburn colorscheme
 Plug 'jnurmine/Zenburn'
 " distraction-free writing with :Goyo
-Plug 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 
 " airline for nice stats
 Plug 'vim-airline/vim-airline'
