@@ -5,7 +5,7 @@
 UPSEARCH_FOUND=0
 UPSEARCH_NOT_FOUND=127
 
-upsearch_cd_old () {
+upsearch_cd_old() {
   # if we're at root and the file's not here, return not found
   # if the file is in the present working directory, echo the directory and return found
   # otherwise go up a directory and execute recursively
@@ -13,7 +13,7 @@ upsearch_cd_old () {
   test / == "$PWD" && test ! -e "$1" && return $UPSEARCH_NOT_FOUND || test -e "$1" && echo $PWD && return $UPSEARCH_FOUND || cd .. && upsearch_cd "$1"
 }
 
-upsearch_old () {
+upsearch_old() {
   (upsearch_cd "$1")
 }
 
@@ -22,9 +22,9 @@ upsearch_cd() {
   if [[ $? -eq $UPSEARCH_FOUND ]]; then
     cd "$where"
   elif [[ $? -eq $UPSEARCH_NOT_FOUND ]]; then
-    >&2 echo "$1 not found in path"
+    echo >&2 "$1 not found in path"
   else
-    >&2 echo "upsearch returned something weird: $?"
+    echo >&2 "upsearch returned something weird: $?"
   fi
 }
 
