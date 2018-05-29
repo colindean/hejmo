@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby 
+
+# Lists all ramdisks currently existing
+
+HDIUTIL_SECTION_SEPARATOR = "=" * 48
+
+q = `hdiutil info`
+sections = q.split HDIUTIL_SECTION_SEPARATOR
+volumes = sections[1...sections.size]
+ramdisks = volumes.select { |v| v.include? "ram://" }
+mapping = ramdisks.map { |d| d.split("\n").last.split("\t\t") }.to_h
+
+require 'pp'
+pp mapping
+
+puts "Eject any with 'hdiutil eject /dev/disk#'"
