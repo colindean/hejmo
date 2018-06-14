@@ -1,0 +1,10 @@
+#!/bin/bash
+
+IFS=" " read -ra WORDS <<< $@
+
+function join_with { local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/$d}"; }
+
+CLAP=" 👏 "
+
+join_with "${CLAP}" ${WORDS[@]}
+
