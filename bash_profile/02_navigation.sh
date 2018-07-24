@@ -11,3 +11,8 @@ up(){
   export OLDPWD="${OLDPWD_CACHE}"
 }
 
+hejmo(){
+  cd "${HEJMO}"
+  [[ -n "$(command -v tabname)" ]] && tabname
+}
+
