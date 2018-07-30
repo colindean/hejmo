@@ -46,6 +46,9 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
 
+#autocomplete for g as well
+complete -o default -o nospace -F _git g
+
 if [[ -z $NO_RVM ]]; then
   [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 fi
@@ -53,6 +56,7 @@ fi
 [[ -f "$HOME/.travis/travis.sh" ]] && . "$HOME/.travis/travis.sh"
 #THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
 [[ -s "$HOME/.gvm/bin/gvm-init.sh" ]] && source "$HOME/.gvm/bin/gvm-init.sh"
-
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+source "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
 [[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"

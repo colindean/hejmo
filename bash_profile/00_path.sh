@@ -18,5 +18,8 @@ MYPATH+=('/usr/local/opt/rust/bin')
 ## haskell
 MYPATH+=("$HOME/.cabal/bin")
 
+## heroku
+MYPATH+=("/usr/local/heroku/bin")
+
 JOINED_PATH=$(join : "${MYPATH[@]}")
 export PATH=$JOINED_PATH:$PATH
