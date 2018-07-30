@@ -1,11 +1,26 @@
 [user]
 	name = Colin Dean
   #set email!!
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+[core]
+	whitespace = trailing-space,space-before-tab
+	excludesfile = /Users/colin/.gitignore_global
+	autocrlf = input
+[diff]
+	renames = copies
+[rerere]
+	enabled = true
 [alias]
   # better logging
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   lsum = log --color --pretty=format:'%s %Cgreen(%cr) %Creset' --abbrev-commit #--not --grep 'maven-release-plugin'
   lsince = log --oneline --not --grep '^Merge pull request' --grep '^Merge branch'
+  log1 = log --pretty=oneline --abbrev-commit
+	grep = grep --line-number --color
   # branches and tagging
   current-branch = symbolic-ref --short -q HEAD
 	cleanup = !git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d
