@@ -19,6 +19,8 @@ alias vi='vim';
 source "${HEJMO_BASH_PROFILE_DIR}/01_strings.sh"
 # directory navigation
 source "${HEJMO_BASH_PROFILE_DIR}/02_navigation.sh"
+# upsearch
+source "${HEJMO_BASH_PROFILE_DIR}/02_upsearch.sh"
 # configures ls and some useful aliases
 source "${HEJMO_BASH_PROFILE_DIR}/50_ls.sh"
 # ssh functions and aliases

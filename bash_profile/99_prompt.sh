@@ -2,7 +2,6 @@
 
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
-source "${HEJMO}/upsearch.sh"
 function prompt
 {
   local WHITE="\[\033[1;37m\]"
