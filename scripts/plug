@@ -24,7 +24,7 @@ case $1 in
     "${VIM}" +PlugUpgrade "${EXTRA_VIM_OPTIONS}"
     ;;
   status )
-    "${VIM}" +PlugStatus "${EXTRA_VIM_OPTIONS}"
+    "${VIM}" +PlugStatus #"${EXTRA_VIM_OPTIONS}"
     ;;
   clean )
     "${VIM}" +PlugClean "${EXTRA_VIM_OPTIONS}"
