@@ -1,6 +1,8 @@
 [user]
 	name = Colin Dean
-  #set email!!
+  #set email in .gitconfig.local
+[include]
+  path = .gitconfig.local
 [color]
   diff = auto
   status = auto
