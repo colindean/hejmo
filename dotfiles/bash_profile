@@ -41,6 +41,8 @@ source "${HEJMO_BASH_PROFILE_DIR}/99_gradle.sh"
 source "${HEJMO_BASH_PROFILE_DIR}/99_history.sh"
 # manpage colors
 source "${HEJMO_BASH_PROFILE_DIR}/99_man_colors.sh"
+# chromecasting
+source $"{HEJMO_BASH_PROFILE_DIR}/99_chromecast.sh"
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
