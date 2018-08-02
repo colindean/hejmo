@@ -10,7 +10,7 @@
   interactive = auto
 [core]
 	whitespace = trailing-space,space-before-tab
-	excludesfile = /Users/colin/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	autocrlf = input
 [diff]
 	renames = copies
