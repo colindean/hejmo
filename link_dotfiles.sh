@@ -12,5 +12,5 @@ for f in $(ls ${DOTFILES_DIR}); do
     rm -f "$LINK"
   fi
   echo "Linking $LINK to $TARGET"
-  ln -s "$TARGET" "$LINK" 
+  ln -sFh "$TARGET" "$LINK"
 done
