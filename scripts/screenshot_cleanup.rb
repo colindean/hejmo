@@ -7,9 +7,13 @@ unless find_executable('trash')
   puts "Unable to find trash executable. Install it:\n\tbrew install trash"
   exit 1
 end
+if File.exists? "mkmf.log"
+  puts "Removing temporary mkmf file…"
+  File.delete "mkmf.log"
+end
 
 class FileWithTime
-    REGEX = /(\d{4}-\d{2}-\d{2}) at (\d{1,2}\.\d{2}\.\d{2} [AP]M)/
+    REGEX = /(\d{4}-\d{2}-\d{2}) at (\d{1,2}\.\d{2}\.\d{2})( [AP]M)?/
 
     attr_reader :filename
 
@@ -83,3 +87,4 @@ Dir[SCREENSHOT_GLOB].each do |e|
     puts "📂 ⬇ #{entry}"
   end
 end
+
