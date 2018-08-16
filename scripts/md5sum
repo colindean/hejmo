@@ -1,2 +1,2 @@
 #!/bin/bash
-md5 -q $@
+md5 -q "$@"

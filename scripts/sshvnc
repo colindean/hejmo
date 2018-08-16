@@ -8,7 +8,7 @@ if [[ -z ${internal_hostname} ]]; then
   exit 1
 fi
 
-ssh -n admin@blackridge.dyn.cad.cx -L 5901:${internal_hostname}:5900 &
+ssh -n admin@blackridge.dyn.cad.cx -L "5901:${internal_hostname}:5900" &
 
 sshpid=$!
 echo "Waiting for connection..."
@@ -16,6 +16,6 @@ echo "Waiting for connection..."
 sleep 5
 
 
-"${VNC}" ${internal_hostname}
+"${VNC}" "${internal_hostname}"
 
 kill $sshpid

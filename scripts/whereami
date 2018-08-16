@@ -2,7 +2,7 @@
 
 ssid_cmd="ssid"
 ssid_cmd="$(command -v ssid)"
-if [[ $? -ne 0 || -z "${ssid_cmd}" ]]; then
+if [[ -z "${ssid_cmd}" ]]; then
   >2& echo "ssid retrieval command not found. Without an SSID, I cannot tell where I am."
   exit 1
 fi
@@ -12,5 +12,6 @@ ssid="$(ssid)"
 case "${ssid}" in
   "Code & Supply") echo "[37;1mC[31;1m&[37;1mS[0m";;
   "blackridge.cad.cx") echo "🏠";;
+  "") echo "Not connected to WiFi, so ¯\\_(ツ)_/¯";;
   *) echo "${ssid}";;
 esac

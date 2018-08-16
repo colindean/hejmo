@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 #man -t ledger | ps2pdf - /tmp/man-ledger.pdf && open /tmp/man-ledger.pdf
-MAN_ARGS="$@"
-IDENTIFIER="$(echo $MAN_ARGS | sed -e 's/ //g')"
+MAN_ARGS=("$@")
+IDENTIFIER="$(echo "${MAN_ARGS[@]}" | sed -e 's/ //g')"
 
 PDF_FILENAME="man-${IDENTIFIER}.pdf"
 PDF_TARGET="${TMPDIR}${PDF_FILENAME}"
@@ -34,7 +34,7 @@ fi
 
 # -t outputs postscript using groff, see `man man` for details.
 # ps2pdf - - means convert stdin to pdf and output on stdout
-"${MAN_PATH}" -t ${MAN_ARGS} | "${PS2PDF_PATH}" - - > ${PDF_TARGET}
+"${MAN_PATH}" -t "${MAN_ARGS[@]}" | "${PS2PDF_PATH}" - - > "${PDF_TARGET}"
 
 if [[ -f "${PDF_TARGET}" ]]; then
   open "${PDF_TARGET}"

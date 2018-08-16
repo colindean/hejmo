@@ -13,8 +13,8 @@ data = if file == '-'
          File.read(file)
        end
 
-unless ENV['PRETTY']
-  puts yaml_as_ruby(data).to_json
-else
+if ENV['PRETTY']
   puts JSON.pretty_generate(yaml_as_ruby(data))
+else
+  puts yaml_as_ruby(data).to_json
 end

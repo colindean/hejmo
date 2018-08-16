@@ -1,1 +1,5 @@
-cat ~/.ssh/id_rsa.pub | pbcopy
+#!/usr/bin/env bash
+PK="~/.ssh/id_rsa.pub"
+
+pbcopy < "${PK}"
+

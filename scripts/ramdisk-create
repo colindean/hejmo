@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -z $1 ]; then
+if [ -z "${1}" ]; then
 	echo "You must specify a size in megabytes."
   exit 1
 fi
@@ -7,13 +7,13 @@ size=$1
 # multiply by 2048 because the size we need to pass is based on
 # 512 byte sectors. Divide the size in _bytes_ by 512. We're passing
 # the size in megabytes, so math means 2048.
-realsize=`echo "${size} * 2048" | bc`
+realsize=$(echo "${size} * 2048" | bc)
 
 name="${2:-ramdisk}"
 
-echo "Creating a ${size} MB (${realsize}) ramdisk at /Volumes/${name}..." 
+echo "Creating a ${size} MB (${realsize}) ramdisk at /Volumes/${name}..."
 
-volume=$(hdiutil attach -nomount ram://${realsize} | tr -d '[:space:]')
+volume=$(hdiutil attach -nomount "ram://${realsize}" | tr -d '[:space:]')
 echo "Ramdisk attached at ${volume}"
 
 # the above seems to take a moment to actually take effect.

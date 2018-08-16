@@ -1,22 +1,24 @@
 #!/bin/sh
-if [ -z $1 ] || [ -z $2 ]; then
+if [ -z "${1}" ] || [ -z "${2}" ]; then
   echo "Usage: $0 iconset-name original-icon-at-1024px"
   exit 1
 fi
-NAME=$1
-ORIG=$2
+NAME="${1}"
+ORIG="${2}"
 
+ICONSET="${NAME}.iconset"
 
-mkdir $NAME.iconset
-sips -z 16 16     $ORIG --out $NAME.iconset/icon_16x16.png
-sips -z 32 32     $ORIG --out $NAME.iconset/icon_16x16@2x.png
-sips -z 32 32     $ORIG --out $NAME.iconset/icon_32x32.png
-sips -z 64 64     $ORIG --out $NAME.iconset/icon_32x32@2x.png
-sips -z 128 128   $ORIG --out $NAME.iconset/icon_128x128.png
-sips -z 256 256   $ORIG --out $NAME.iconset/icon_128x128@2x.png
-sips -z 256 256   $ORIG --out $NAME.iconset/icon_256x256.png
-sips -z 512 512   $ORIG --out $NAME.iconset/icon_256x256@2x.png
-sips -z 512 512   $ORIG --out $NAME.iconset/icon_512x512.png
-cp $ORIG $NAME.iconset/icon_512x512@2x.png
-iconutil -c icns $NAME.iconset
-rm -R $NAME.iconset
+mkdir "${NAME}.iconset"
+sips -z 16 16     "${ORIG}" --out "${ICONSET}"/icon_16x16.png
+sips -z 32 32     "${ORIG}" --out "${ICONSET}"/icon_16x16@2x.png
+sips -z 32 32     "${ORIG}" --out "${ICONSET}"/icon_32x32.png
+sips -z 64 64     "${ORIG}" --out "${ICONSET}"/icon_32x32@2x.png
+sips -z 128 128   "${ORIG}" --out "${ICONSET}"/icon_128x128.png
+sips -z 256 256   "${ORIG}" --out "${ICONSET}"/icon_128x128@2x.png
+sips -z 256 256   "${ORIG}" --out "${ICONSET}"/icon_256x256.png
+sips -z 512 512   "${ORIG}" --out "${ICONSET}"/icon_256x256@2x.png
+sips -z 512 512   "${ORIG}" --out "${ICONSET}"/icon_512x512.png
+cp "${ORIG}" "${ICONSET}"/icon_512x512@2x.png
+iconutil -c icns "${ICONSET}"
+rm -R "${ICONSET}"
+

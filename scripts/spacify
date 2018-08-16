@@ -1,7 +1,12 @@
 #!/usr/bin/env ruby
 
 unless ARGV[0]
-  STDERR.puts "Usage:\n\t#{__FILE__} WORD-TO-SPACIFY\nOutput:\n\tW O R D - T O - S P A C I F Y"
+  STDERR.puts <<~USAGEDOC
+    Usage:
+        #{__FILE__} WORD-TO-SPACIFY
+    Output:
+        W O R D - T O - S P A C I F Y
+  USAGEDOC
   exit 1
 end
 

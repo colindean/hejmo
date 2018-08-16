@@ -1,6 +1,6 @@
 #!/bin/sh
-OPTIONS=`vagrant ssh-config | awk -v ORS=' ' '{print "-o " $1 "=" $2}'`
-if [ ${VDEBUG} ]; then
+OPTIONS=$(vagrant ssh-config | awk -v ORS=' ' '{print "-o " $1 "=" $2}')
+if [ "${VDEBUG}" ]; then
   echo "${OPTIONS}" "$@"
 fi
-scp ${OPTIONS} "$@" || echo "Transfer failed. Did you use 'default:' as the target?"
+scp "${OPTIONS}" "$@" || echo "Transfer failed. Did you use 'default:' as the target?"

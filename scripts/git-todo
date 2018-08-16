@@ -9,7 +9,7 @@ fi
 
 main() {
   while IFS= read -r todo; do
-    printf "%s\n" "$(file_path):$(line_number) $(line_author) $(message)"
+    printf '%s\n' "$(file_path):$(line_number) $(line_author) $(message)"
   done < <(todo_list)
 }
 
