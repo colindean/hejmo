@@ -6,14 +6,19 @@ def yaml_as_ruby(data)
   YAML.parse(data).to_ruby
 end
 
+pretty = false
 file = ARGV.pop
+if ['-p', '--pretty'].include? file
+  pretty = true
+  file = ARGV.pop
+end
 data = if file == '-'
          STDIN.read
        else
          File.read(file)
        end
 
-if ENV['PRETTY']
+if ENV['PRETTY'] || pretty
   puts JSON.pretty_generate(yaml_as_ruby(data))
 else
   puts yaml_as_ruby(data).to_json
