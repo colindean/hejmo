@@ -10,7 +10,7 @@ fi
 
 usage() {
   echo "plug wrapper usage:"
-  echo "$0 install|update|upgrade|status|clean"
+  echo "$0 install|update|upgrade|status|clean|update-plug"
 }
 
 case $1 in
@@ -28,6 +28,10 @@ case $1 in
     ;;
   clean )
     "${VIM}" +PlugClean "${EXTRA_VIM_OPTIONS}"
+    ;;
+  update-plug )
+    curl --progress-bar -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     ;;
   -h | --help)
      usage
