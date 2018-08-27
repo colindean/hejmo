@@ -47,3 +47,5 @@ Plug 'ledger/vim-ledger'
 Plug 'rcaputo/vim-ledger_x'
 " folding for yaml
 Plug 'pedrohdz/vim-yaml-folds'
+" :Rubocop -a
+Plug 'ngmy/vim-rubocop'
