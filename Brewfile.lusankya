@@ -33,6 +33,9 @@ brew 'ghostscript'
 # used for menu bar stuff like time tracking
 cask 'bitbar'
 
+# alternative cat that does syntax highlighting
+brew 'bat'
+
 # mac app store apps
 brew 'mas'
 begin

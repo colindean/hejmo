@@ -204,6 +204,9 @@ brew "martido/brew-graph/brew-graph"
 # Coursier launcher.
 brew "paulp/extras/coursier", args: ["HEAD"]
 
+# alternative cat that does syntax highlighting
+brew 'bat'
+
 ############# CASKS
 
 cask "alfred"

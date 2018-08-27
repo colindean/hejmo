@@ -1,0 +1,4 @@
+# vim: setf ruby
+
+# alternative cat that does syntax highlighting
+brew 'bat'
