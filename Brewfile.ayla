@@ -1,0 +1,322 @@
+# vim: setf ruby
+
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/cask-fonts"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "paulp/extras"
+
+# for Java 8
+tap "homebrew/cask-versions"
+cask "java8"
+
+# JVM, latest version
+cask "java"
+
+# X for macOS, latest version
+cask "xquartz"
+# ANSI HTML adapter
+brew "aha"
+# Download with resuming and segmented downloading
+brew "aria2"
+
+### DEVELOPMENT
+
+# Automatic configure script builder
+brew "autoconf"
+# Tool for generating GNU Standards-compliant Makefiles
+brew "automake"
+
+# Bourne-Again SHell, a UNIX command interpreter
+brew "bash"
+# Programmable completion for Bash 3.2
+brew "bash-completion"
+# Color-highlighted diff(1) output
+brew "colordiff"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
+# Get a file from an HTTP, HTTPS or FTP server
+brew "curl"
+# Display user-friendly message boxes from shell scripts
+brew "dialog"
+# Convert text between DOS, UNIX, and Mac formats
+brew "dos2unix"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg", args: ["with-fontconfig", "with-freetype", "with-libvidstab", "with-libvorbis", "with-openh264", "with-openssl", "with-opus", "with-rtmpdump", "with-speex", "with-theora", "with-tools", "with-two-lame", "with-webp", "with-x265"]
+# Gradlew/gradle wrapper
+brew "gdub"
+# Command-line utility for uploading Gists
+brew "gist"
+# Distributed revision control system
+brew "git"
+# Extensions to follow Vincent Driessen's branching model
+brew "git-flow"
+# Generate files and directories from templates in a git repo
+brew "giter8"
+# Create and edit releases on Github (and upload artifacts)
+brew "github-release"
+# GNU Pretty Good Privacy (PGP) package
+brew "gnupg", link: false
+# Command-driven, interactive function plotting
+brew "gnuplot"
+# SDK providing the signal processing runtime and processing blocks
+brew "gnuradio", link: false
+# Global Positioning System (GPS) daemon
+brew "gpsd"
+# Osmocom GNU Radio Blocks
+brew "gr-osmosdr"
+# Build system based on the Groovy language
+brew "gradle"
+# Generic library support script
+brew "libtool"
+# Graph visualization software from AT&T and Bell Labs
+brew "graphviz"
+# GNU grep, egrep and fgrep
+brew "grep"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c"
+# Command-line client for the cloud PaaS
+brew "heroku"
+# Add GitHub support to git on the command-line
+brew "hub"
+# Configurable static site generator
+brew "hugo"
+# Tools and libraries to manipulate images in many formats
+brew "imagemagick"
+# Tool to measure maximum TCP and UDP bandwidth
+brew "iperf"
+# JSON output from a shell
+brew "jo", args: ["HEAD"]
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Command-line interface to Keybase.io
+brew "keybase"
+# Command-line, double-entry accounting tool
+brew "ledger"
+# Text-based web browser
+brew "lynx"
+# Mac App Store command-line interface
+brew "mas"
+# Java-based project management
+brew "maven"
+# Bash completion for Maven
+brew "maven-completion"
+# Hash utilities
+brew "md5sha1sum"
+# Command-line based markdown presentation tool
+brew "mdp"
+# High performance static file server
+brew "miniserve"
+# Remote terminal application
+brew "mosh"
+# UNIX movie player
+brew "mplayer"
+# Mongrel of mail user agents (part elm, pine, mush, mh, etc.)
+brew "mutt"
+# Utility for managing network connections
+brew "netcat"
+# Port scanning utility for large networks
+brew "nmap"
+# Source code line counter
+brew "ohcount"
+# Implementation of the optimized link state routing protocol
+brew "olsrd"
+# OpenBSD freely-licensed SSH connectivity tools
+brew "openssh"
+# 7-Zip (high compression file archiver) implementation
+brew "p7zip"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# Parallel bzip2
+brew "pbzip2"
+# PDF converter to SVG
+brew "pdf2svg"
+# PDF toolkit
+brew "pdftk"
+# Depedency retriever for version control and archives
+brew "peru"
+# Optimizer for PNG files
+brew "pngcrush"
+# QR Code generation
+brew "qrencode"
+# Wrap non-interactive programs with a REPL
+brew "repl"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Decodes signals from 433.9 MHz radio devices such temperature sensors
+brew "rtl_433"
+# Build tool for Scala projects
+brew "sbt"
+# JVM-based programming language
+brew "scala"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
+# Autoformat shell script source code
+brew "shfmt"
+# Command-line interface for https://speedtest.net bandwidth tests
+brew "speedtest-cli"
+# Filesystem in User Space
+cask "osxfuse"
+# File system client based on SSH File Transfer Protocol
+brew "sshfs"
+# SSH login cracker
+brew "sshtrix"
+# Statistics from the command-line
+brew "st"
+# Version control system designed to be a better CVS
+brew "subversion"
+# SVG to PNG converter
+brew "svg2png"
+# Powerful free data recovery utility
+brew "testdisk"
+# Text interface for Git repositories
+brew "tig"
+# Line timestamping tool
+brew "tj"
+# Terminal multiplexer
+brew "tmux"
+# CLI tool that moves files or folder to the trash
+brew "trash"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Tools for working with Lightbend Reactive Platform
+brew "typesafe-activator"
+# Zap words flying across the screen by typing them correctly
+brew "typespeed"
+# Compress/expand executable files
+brew "upx"
+# Bash completion for Vagrant
+brew "vagrant-completion"
+# Executes a program periodically, showing output fullscreen
+brew "watch"
+# Enhances tmux's to provide multiuser terminal multiplexing
+brew "wemux"
+# Internet file retriever
+brew "wget"
+# XML command-line utilities
+brew "xmlstarlet"
+# Graphs brew dependencies
+brew "martido/brew-graph/brew-graph"
+# Coursier launcher.
+brew "paulp/extras/coursier", args: ["HEAD"]
+
+# alternative cat that does syntax highlighting
+brew 'bat'
+
+############# CASKS
+
+cask "alfred"
+cask "android-file-transfer"
+cask "atom"
+cask "audacity"
+cask "betterzipql"
+cask "bitbar"
+cask "bittorrent-sync"
+cask "bonjour-browser"
+cask "brave"
+cask "caffeine"
+cask "cakebrew"
+cask "cathode"
+cask "cyberduck"
+cask "dia"
+cask "disk-inventory-x"
+cask "diskmaker-x"
+cask "displaylink"
+cask "docker"
+cask "dropbox"
+cask "electron-cash"
+cask "electrum"
+cask "etcher"
+cask "ethereum-wallet"
+cask "ffmpegx"
+cask "firefox"
+cask "flash"
+cask "flash-player"
+cask "flux"
+cask "font-fira-code"
+cask "font-input"
+cask "font-roboto"
+cask "fontforge"
+cask "gas-mask"
+cask "gimp"
+cask "gitx"
+cask "golly"
+cask "google-chrome"
+cask "google-earth"
+cask "google-photos-backup-and-sync"
+cask "gpgtools"
+cask "gqrx"
+cask "gulp"
+cask "hammerspoon"
+cask "handbrake"
+cask "hyperswitch"
+cask "iina"
+cask "imageoptim"
+cask "inkscape"
+cask "intellij-idea-ce"
+cask "iterm2"
+cask "keka"
+cask "kismac"
+cask "libreoffice"
+cask "licecap"
+cask "macdown"
+cask "macfusion"
+cask "macpaw-gemini"
+cask "macvim"
+cask "marp"
+cask "marshallofsound-google-play-music-player"
+cask "mattermost"
+cask "meteorologist"
+cask "mist"
+cask "mjolnir"
+cask "netspot"
+cask "ngrok"
+cask "notational-velocity"
+cask "obs"
+cask "opera"
+cask "pdfshaver"
+cask "phew"
+cask "poedit"
+cask "prey"
+cask "ps3-media-server"
+cask "qfinder-pro"
+cask "qlcolorcode"
+cask "qlmarkdown"
+cask "qlprettypatch"
+cask "qlstephen"
+cask "scapple"
+cask "shortcat"
+cask "shruplay"
+cask "sketchup"
+cask "skype"
+cask "slack"
+cask "snapz-pro-x"
+cask "steam"
+cask "torbrowser"
+cask "transmission"
+cask "tunnelblick"
+cask "tuntap"
+cask "unetbootin"
+cask "vagrant"
+cask "virtualbox"
+cask "virtualbox-extension-pack"
+cask "vlc"
+cask "wireshark"
+
+mas "Blackmagic Disk Speed Test", id: 425264550
+mas "EasyEnvelopes", id: 450882552
+mas "iMovie", id: 408981434
+mas "Issuepost", id: 673907630
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "qdigidocclient", id: 561422020
+mas "qesteidutil", id: 556524918
+mas "Skitch", id: 425955336
+mas "Slack", id: 803453959
+mas "The Unarchiver", id: 425424353
+mas "Xcode", id: 497799835

@@ -1,10 +1,15 @@
+" vim-plug itself, to get help
+Plug 'junegunn/vim-plug'
+
 " set sensible defaults
 Plug 'tpope/vim-sensible'
 
 " zenburn colorscheme
 Plug 'jnurmine/Zenburn'
 " distraction-free writing with :Goyo
-Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'junegunn/goyo.vim',  { 'for': 'markdown' }
+" Markdown rendering with :Xmark or :Xmark> or :Xmark<
+Plug 'junegunn/vim-xmark', { 'for': 'markdown', 'do': 'make' }
 
 " airline for nice stats
 Plug 'vim-airline/vim-airline'
