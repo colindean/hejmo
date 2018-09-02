@@ -21,5 +21,9 @@ MYPATH+=("$HOME/.cabal/bin")
 ## heroku
 MYPATH+=("/usr/local/heroku/bin")
 
+## go
+MYPATH+=("/usr/local/opt/go/libexec/bin")
+export GOPATH="${HOME}/.go"
+
 JOINED_PATH=$(join : "${MYPATH[@]}")
 export PATH=$JOINED_PATH:$PATH
