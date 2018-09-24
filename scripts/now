@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+SHORT_FORMAT="${1:-"hm"}"
+
+case "${SHORT_FORMAT}" in
+  hm)
+    FORMAT="+%H:%M"
+    ;;
+  hms)
+    FORMAT="+%H:%M:%S"
+    ;;
+  ymd)
+    FORMAT="+%Y-%m-%d"
+    ;;
+  *)
+    exit 1
+esac
+
+date "${FORMAT}"
