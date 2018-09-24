@@ -64,6 +64,6 @@ link_all_files_in_dir() {
       rm -f "${LINK}"
     fi
     echo "Linking ${LINK} to ${TARGET}"
-    ln -s "${TARGET}" "${LINK}"
+    ln -sFf "${TARGET}" "${LINK}"
   done
 }
