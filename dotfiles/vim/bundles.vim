@@ -48,9 +48,9 @@ Plug 'sheerun/vim-polyglot'
 " hocon for scala
 Plug 'GEverding/vim-hocon'
 " ledger
-Plug 'ledger/vim-ledger'
-Plug 'rcaputo/vim-ledger_x'
+Plug 'ledger/vim-ledger', { 'for': 'ledger' }
+Plug 'rcaputo/vim-ledger_x', { 'for': 'ledger' }
 " folding for yaml
-Plug 'pedrohdz/vim-yaml-folds'
+Plug 'pedrohdz/vim-yaml-folds', { 'for': 'yaml' }
 " :Rubocop -a
-Plug 'ngmy/vim-rubocop'
+Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }

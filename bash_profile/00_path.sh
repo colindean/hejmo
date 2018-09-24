@@ -8,9 +8,9 @@ MYPATH+=('~/.bin')
 ## brew's python
 MYPATH+=('/usr/local/opt/python/libexec/bin')
 ## homebrew
-MYPATH+=('/opt/local/bin:/usr/local/bin:/opt/local/sbin:/usr/local/sbin')
-## texlive
-MYPATH+=('/usr/local/texlive/2013/bin/x86_64-darwin')
+MYPATH+=('/usr/local/bin::/usr/local/sbin')
+## homebrew curl
+MYPATH+=('/usr/local/opt/curl/bin')
 ## java
 MYPATH+=("$JAVA_HOME/bin")
 ## rust
