@@ -7,10 +7,10 @@ MYPATH=()
 MYPATH+=('~/.bin')
 ## brew's python
 MYPATH+=('/usr/local/opt/python/libexec/bin')
-## homebrew
-MYPATH+=('/usr/local/bin::/usr/local/sbin')
 ## homebrew curl
 MYPATH+=('/usr/local/opt/curl/bin')
+## homebrew
+MYPATH+=('/usr/local/bin:/usr/local/sbin')
 ## java
 MYPATH+=("$JAVA_HOME/bin")
 ## rust
