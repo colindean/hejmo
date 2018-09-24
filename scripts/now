@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-SHORT_FORMAT="${1:-"hm"}"
+SHORT_FORMAT="${1:-"hms"}"
 
 case "${SHORT_FORMAT}" in
   hm)
