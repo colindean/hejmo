@@ -5,6 +5,8 @@ function join { local IFS="$1"; shift; echo "$*"; }
 MYPATH=()
 ## my scripts
 MYPATH+=('~/.bin')
+## brew's python
+MYPATH+=('/usr/local/opt/python/libexec/bin')
 ## homebrew
 MYPATH+=('/opt/local/bin:/usr/local/bin:/opt/local/sbin:/usr/local/sbin')
 ## texlive
