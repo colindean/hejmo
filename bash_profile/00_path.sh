@@ -5,10 +5,12 @@ function join { local IFS="$1"; shift; echo "$*"; }
 MYPATH=()
 ## my scripts
 MYPATH+=('~/.bin')
-## homebrew
-MYPATH+=('/usr/local/bin::/usr/local/sbin')
+## brew's python
+MYPATH+=('/usr/local/opt/python/libexec/bin')
 ## homebrew curl
 MYPATH+=('/usr/local/opt/curl/bin')
+## homebrew
+MYPATH+=('/usr/local/bin:/usr/local/sbin')
 ## java
 MYPATH+=("$JAVA_HOME/bin")
 ## rust
