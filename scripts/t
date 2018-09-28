@@ -60,19 +60,31 @@ _t_last() {
   sed -ne '/^o/{g;p;};h;' "${timelog}" | tail -n 1 | __t_extract_project
 }
 
-# Explicitly log a start and end
-_t_log() {
+_t_start() {
   if [[ ! -z "$(_t_cur)" ]]; then
     echo "Cannot add an entry when one is checked out. Run '$(basename $0) out' to check out first."
     exit 1
   fi
-  local start_date="$($date --date "$1" '+%Y-%m-%d %H:%M:%S')"
-  local end_date="$($date --date "$2" '+%Y-%m-%d %H:%M:%S')"
-  if [[ -z "$start_date" || -z "$end_date" ]]; then
+  local start_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+  if [[ -z "${start_date}" ]]; then
     exit 1 #rely on date to have shown the error
   fi
-  echo i "$start_date" $3 >> "$timelog"
-  echo o "$end_date" >> "$timelog"
+  echo i "${start_date}" "${2}" >> "${timelog}"
+
+}
+
+_t_end() {
+  local end_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+  if [[ -z "${end_date}" ]]; then
+    exit 1 #rely on date to have shown the error
+  fi
+  echo o "${end_date}" >> "${timelog}"
+}
+
+# Explicitly log a start and end
+_t_log() {
+  _t_start "${1}" "${3}"
+  _t_end "${2}"
 }
 
 _t_sheet() {
@@ -106,6 +118,8 @@ actions:
      less - show timelog in pager
      timelog - show timelog file
      log - record an exact time <"start"> <"end"> <project>
+     start - record an exact start time <"start"> <project>
+     end - record an exact end time to the open project <"end">
      p,projects - list projects used so far
      sheet - show a daily register of the previous week, optionally pass a start date
 EOF
@@ -135,7 +149,7 @@ case "${action}" in
   hours) _t_ledger bal -p "since today" --end "tomorrow" "$@";;
   week) _t_ledger bal -p "this week" "$@";;
   switch)   _t_sw "$@";;
-  edit) _t_do $EDITOR "$@";;
+  edit) _t_do "${EDITOR}" "$@";;
   cur)  _t_cur "$@";;
   last) _t_last "$@";;
   grep) _t_do grep "$@";;
@@ -144,6 +158,8 @@ case "${action}" in
   less)  _t_do less;;
   timelog) _t_timelog "$@";;
   log) _t_log "$@";;
+  start) _t_start "$@";;
+  end) _t_end "$@";;
   p) _t_ledger accounts "$@";;
   projects) _t_ledger accounts "$@";;
   sheet) _t_sheet "$@";;
