@@ -31,6 +31,11 @@ Plug 'scrooloose/nerdcommenter'
 " whitespace highlighting
 Plug 'ntpeters/vim-better-whitespace'
 
+" improves slash searching
+Plug 'junegunn/vim-slash'
+" hit zz to center a search hit
+noremap <plug>(slash-after) zz
+
 " surround control - type cs'" to turn single quotes to double!
 Plug 'tpope/vim-surround'
 
