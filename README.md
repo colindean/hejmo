@@ -19,6 +19,7 @@ bash setup-homebrew.sh
 bash setup-iterm.sh
 brew bundle --file=Brewfile.${hostname}
 bash setup-rust.sh
+bash setup-ruby.sh
 ```
 
 You will see errors about:
