@@ -26,3 +26,20 @@ You will see errors about:
 * `__git_ps1` until both `git` and `bash-completion` are installed from Homebrew
 * `$HOME/.cargo/env` until `setup-rust.sh` has been run or cargo is otherwise available
 * `hub` until hub is install from Homebrew
+
+## Things to copy
+
+These files diverge quickly, so I don't version them and instead copypaste them when necessary. Maybe others will find them to be a useful starting point!
+
+### `~/.ssh/config`
+
+Run `mkdir -p ~/.ssh/controls` first and then put this content into the above file:
+
+```
+Host *
+  UseRoaming no
+  Protocol 2
+  Compression yes
+  ControlMaster auto
+  ControlPath ~/.ssh/controls/sshcontrol-%r@%h:%p
+```
