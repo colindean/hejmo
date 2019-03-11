@@ -14,7 +14,7 @@ end
 
 # Associates the time with the file for easier manipulation
 class FileWithTime
-  REGEX = /(\d{4}-\d{2}-\d{2}) at (\d{1,2}\.\d{2}\.\d{2})( [AP]M)?/
+  REGEX = /(\d{4}-\d{2}-\d{2}) at (\d{1,2}\.\d{2}\.\d{2})( [AP]M)?/.freeze
 
   attr_reader :filename
 
