@@ -1,4 +1,42 @@
-# vim: setf ruby
+# vim: ft=ruby
 
 # alternative cat that does syntax highlighting
 brew 'bat'
+
+# better launcher, license key in Drive
+cask 'alfred'
+
+# text editor
+cask 'atom'
+
+# inhibit screensaver
+cask 'caffeine'
+
+# inevitable USB display drivers
+cask 'displaylink'
+
+# image editing
+cask 'gimp'
+
+# window management
+cask 'hammerspoon'
+
+# pane management
+cask 'hyperswitch'
+
+# google play music
+cask 'marshallofsound-google-play-music-player'
+
+# network tunnels
+cask 'ngrok'
+
+# better screencast recording, also, streaming
+cask 'obs'
+
+# quicklook plugins I cannot live without
+cask "qlcolorcode"
+cask "qlmarkdown"
+cask "qlprettypatch"
+cask "qlstephen"
+
+
