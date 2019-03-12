@@ -40,3 +40,7 @@ Thumbs.db
 *.iml
 .idea
 *.swp
+target/
+/target/
+**/project/target/
+*.iml
