@@ -3,6 +3,7 @@
 package.path = package.path .. ";" .. os.getenv("HOME") .. "/.hammerspoon/?.lua"
 
 require "window_mgmt"
+require "type"
 
 local anycomplete = require "anycomplete"
 anycomplete.registerDefaultBindings()
