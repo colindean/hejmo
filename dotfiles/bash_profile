@@ -9,6 +9,8 @@ HEJMO_DOTFILE_DIR="$( cd "$( dirname "${BASH_PROFILE_PHYSICAL}" )" && pwd -P)"
 export HEJMO="$( cd "${HEJMO_DOTFILE_DIR}/../" && pwd -P)"
 HEJMO_BASH_PROFILE_DIR="${HEJMO}/bash_profile"
 
+export XDG_CONFIG_HOME="${HOME}/.config"
+
 source "${HEJMO_BASH_PROFILE_DIR}/00_path.sh"
 source "${HEJMO_BASH_PROFILE_DIR}/00_ansi_color_helpers.sh"
 
