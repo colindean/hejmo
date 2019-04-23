@@ -59,3 +59,6 @@ Plug 'rcaputo/vim-ledger_x', { 'for': 'ledger' }
 Plug 'pedrohdz/vim-yaml-folds', { 'for': 'yaml' }
 " :Rubocop -a
 Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }
+
+" automatic formatting - I may regret this
+Plug 'Chiel92/vim-autoformat'

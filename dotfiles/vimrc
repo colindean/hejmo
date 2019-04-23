@@ -46,15 +46,15 @@ set expandtab
 set autoindent
 
 if $TERM_PROGRAM == 'Apple_Terminal'
-	colorscheme desert
+  colorscheme desert
 else
-	if $TERM_PROGRAM == 'MacVim.app'
-  	colorscheme zenburn
-	else
+  if $TERM_PROGRAM == 'MacVim.app'
+    colorscheme zenburn
+  else
     set termguicolors
     set t_Co=256
-		colorscheme zenburn
-	endif
+    colorscheme zenburn
+  endif
 endif
 
 set number
