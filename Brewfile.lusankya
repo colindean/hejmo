@@ -5,6 +5,8 @@ tap 'colindean/fonts-nonfree'
 tap 'homebrew/bundle'
 tap 'homebrew/core'
 tap 'olafurpg/scalafmt'
+tap 'coursier/formulas'
+
 
 # needed for basically everything
 cask 'java'
@@ -42,6 +44,11 @@ end
 
 # a better find, use like "fd PATTERN"
 brew 'fd'
+
+# scala dependency retriever and bootstrap setup
+brew 'coursier/formulas/coursier'
+# scala formatter
+brew 'olafurpg/scalafmt/scalafmt'
 
 # packages
 brew 'ack'
