@@ -51,40 +51,32 @@ source "${HEJMO_BASH_PROFILE_DIR}/99_chromecast.sh"
 source "${HEJMO_BASH_PROFILE_DIR}/99_bat.sh"
 
 HOMEBREW_PREFIX="$(brew --prefix)"
-# HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
-# HOMEBREW_PROF_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-# HOMEBREW_BASH_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/bash_completion"
-# echo "${HOMEBREW_PREFIX}"
-# if [[ -d "${HOMEBREW_PREFIX}" ]]; then
-#   if [[ -f "${HOMEBREW_BASH_COMPLETION_SCRIPT}" ]]; then
-#     source "${HOMEBREW_BASH_COMPLETION_SCRIPT}"
-#     echo "Sourced BCS"
-#   fi
-#
-#   if [[ -f "${HOMEBREW_PROF_COMPLETION_SCRIPT}" ]]; then
-#     source "${HOMEBREW_PROF_COMPLETION_SCRIPT}"
-#     echo "Sourced PCS"
-#   fi
-#
-#   sleep 5
-#
-#   for COMPLETION in "${HOMEBREW_COMPLETIONS_DIR}"/*
-#   do
-#     [[ -f $COMPLETION ]] && source "$COMPLETION"
-#     echo "Sourced ${COMPLETION}"
-#   done
-# fi
-[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
-if type brew &>/dev/null; then
-  for COMPLETION in "$HOMEBREW_PREFIX"/etc/bash_completion.d/*
-  do
-    [[ -f $COMPLETION ]] && source "$COMPLETION"
-  done
-  if [[ -f ${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh ]];
-  then
-    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
+HOMEBREW_PROF_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+#HOMEBREW_SOURCE_COMPLETIONS=yes
+if [[ -d "${HOMEBREW_PREFIX}" ]]; then
+  if [[ -f "${HOMEBREW_PROF_COMPLETION_SCRIPT}" ]]; then
+    # echo "BC (should be empty): [ ${BASH_COMPLETION} ]"
+    . "${HOMEBREW_PROF_COMPLETION_SCRIPT}" #&& echo "Sourced ${HOMEBREW_PROF_COMPLETION_SCRIPT} which set BC: [ ${BASH_COMPLETION} ]"
+  fi
+  if [[ -n "${HOMEBREW_SOURCE_COMPLETIONS}" ]]; then
+    for COMPLETION in "${HOMEBREW_COMPLETIONS_DIR}"/*
+    do
+      [[ -f $COMPLETION ]] && source "$COMPLETION" # && echo "Sourced ${COMPLETION}"
+    done
   fi
 fi
+# [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+# if type brew &>/dev/null; then
+#   if [[ -f ${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh ]];
+#   then
+#     . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+#   fi
+#   for COMPLETION in "$HOMEBREW_PREFIX"/etc/bash_completion.d/*
+#   do
+#     [[ -f $COMPLETION ]] && . "$COMPLETION"
+#   done
+# fi
 
 [[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"
 
