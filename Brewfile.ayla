@@ -31,8 +31,8 @@ brew "automake"
 
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
-# Programmable completion for Bash 3.2
-brew "bash-completion"
+# Programmable completion for Bash
+brew "bash-completion@2"
 # Color-highlighted diff(1) output
 brew "colordiff"
 # GNU File, Shell, and Text utilities

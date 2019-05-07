@@ -50,11 +50,25 @@ source "${HEJMO_BASH_PROFILE_DIR}/99_chromecast.sh"
 # bat
 source "${HEJMO_BASH_PROFILE_DIR}/99_bat.sh"
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
-
 [[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"
+
+HOMEBREW_PREFIX="$(brew --prefix)"
+HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
+export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_COMPLETIONS_DIR}"
+HOMEBREW_PROF_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+HOMEBREW_SOURCE_COMPLETIONS=yes
+if [[ -d "${HOMEBREW_PREFIX}" ]]; then
+  if [[ -f "${HOMEBREW_PROF_COMPLETION_SCRIPT}" ]]; then
+    # echo "BC (should be empty): [ ${BASH_COMPLETION} ]"
+    . "${HOMEBREW_PROF_COMPLETION_SCRIPT}" #&& echo "Sourced ${HOMEBREW_PROF_COMPLETION_SCRIPT} which set BC: [ ${BASH_COMPLETION} ]"
+  fi
+  if [[ -n "${HOMEBREW_SOURCE_COMPLETIONS}" ]]; then
+    for COMPLETION in "${HOMEBREW_COMPLETIONS_DIR}"/*
+    do
+      [[ -f $COMPLETION ]] && source "$COMPLETION" # && echo "Sourced ${COMPLETION}"
+    done
+  fi
+fi
 
 #autocomplete for g as well
 complete -o default -o nospace -F _git g
