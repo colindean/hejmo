@@ -50,8 +50,40 @@ source "${HEJMO_BASH_PROFILE_DIR}/99_chromecast.sh"
 # bat
 source "${HEJMO_BASH_PROFILE_DIR}/99_bat.sh"
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
+HOMEBREW_PREFIX="$(brew --prefix)"
+# HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
+# HOMEBREW_PROF_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+# HOMEBREW_BASH_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/bash_completion"
+# echo "${HOMEBREW_PREFIX}"
+# if [[ -d "${HOMEBREW_PREFIX}" ]]; then
+#   if [[ -f "${HOMEBREW_BASH_COMPLETION_SCRIPT}" ]]; then
+#     source "${HOMEBREW_BASH_COMPLETION_SCRIPT}"
+#     echo "Sourced BCS"
+#   fi
+#
+#   if [[ -f "${HOMEBREW_PROF_COMPLETION_SCRIPT}" ]]; then
+#     source "${HOMEBREW_PROF_COMPLETION_SCRIPT}"
+#     echo "Sourced PCS"
+#   fi
+#
+#   sleep 5
+#
+#   for COMPLETION in "${HOMEBREW_COMPLETIONS_DIR}"/*
+#   do
+#     [[ -f $COMPLETION ]] && source "$COMPLETION"
+#     echo "Sourced ${COMPLETION}"
+#   done
+# fi
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+if type brew &>/dev/null; then
+  for COMPLETION in "$HOMEBREW_PREFIX"/etc/bash_completion.d/*
+  do
+    [[ -f $COMPLETION ]] && source "$COMPLETION"
+  done
+  if [[ -f ${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh ]];
+  then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  fi
 fi
 
 [[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"
