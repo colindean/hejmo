@@ -16,6 +16,7 @@ ruby_version = if defined? RUBY_VERSION && defined? RUBY_PATCHLEVEL
   hirb-unicode
   hirb
   pry-theme
+  pry-coolline
 ).each do |gem|
   begin
     require gem
@@ -52,7 +53,7 @@ AwesomePrint.pry! if defined? AwesomePrint
 Pry.config.pager = true
 Pry.config.color = true
 Pry.config.editor = 'vim'
-Pry.config.prompt = Pry::NAV_PROMPT
+#Pry.config.prompt = Pry::NAV_PROMPT
 Pry.config.theme = 'pry-modern-256'
 
 Pry.config.commands.instance_eval do
