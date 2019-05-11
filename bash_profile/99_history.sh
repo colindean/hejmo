@@ -1,9 +1,10 @@
 #prevent jrnl from appearing in history
-HISTIGNORE="$HISTIGNORE:jrnl *"
+export HISTIGNORE="$HISTIGNORE:jrnl *"
 # load the last N into memory
-HISTSIZE=5000
+export HISTSIZE=5000
 # keep the last N on disk
-HISTFILESIZE=100000
+export HISTFILESIZE=100000
+export HISTTIMEFORMAT='[@ %Y-%m-%d %T] '
 # append the history instead of overwriting it when there are multiple sessions
 shopt -s histappend
 # write every command to the history log immediately
