@@ -63,10 +63,14 @@ if [[ -d "${HOMEBREW_PREFIX}" ]]; then
     . "${HOMEBREW_PROF_COMPLETION_SCRIPT}" #&& echo "Sourced ${HOMEBREW_PROF_COMPLETION_SCRIPT} which set BC: [ ${BASH_COMPLETION} ]"
   fi
   if [[ -n "${HOMEBREW_SOURCE_COMPLETIONS}" ]]; then
-    for COMPLETION in "${HOMEBREW_COMPLETIONS_DIR}"/*
-    do
-      [[ -f $COMPLETION ]] && source "$COMPLETION" # && echo "Sourced ${COMPLETION}"
-    done
+    if [[ -z "$(command -v have)" ]]; then
+      echo >&2 "'have' not found, so not loading bash completions. Is bash version ${BASH_VERSION} greater than 4?"
+    else
+      for COMPLETION in "${HOMEBREW_COMPLETIONS_DIR}"/*
+      do
+        [[ -f $COMPLETION ]] && source "$COMPLETION" # && echo "Sourced ${COMPLETION}"
+      done
+    fi
   fi
 fi
 
