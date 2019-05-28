@@ -10,7 +10,7 @@ cask 'alfred'
 cask 'atom'
 
 # inhibit screensaver
-cask 'caffeine'
+cask 'intelliscape-caffeine'
 
 # inevitable USB display drivers
 cask 'displaylink'
