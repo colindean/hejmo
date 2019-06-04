@@ -6,5 +6,7 @@ function join_with { local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/
 
 CLAP=" 👏 "
 
-join_with "${CLAP}" "${WORDS[@]}"
+SEPARATOR="${SEP:-$CLAP}"
+
+join_with "${SEPARATOR}" "${WORDS[@]}"
 
