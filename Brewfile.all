@@ -39,4 +39,6 @@ cask "qlmarkdown"
 cask "qlprettypatch"
 cask "qlstephen"
 
+# set default email app
+cask "rcdefaultapp"
 
