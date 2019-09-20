@@ -2,7 +2,7 @@
 BASH_PROFILE_PHYSICAL="$(readlink "${BASH_SOURCE[0]}" )"
 if [[ -z "${BASH_PROFILE_PHYSICAL}" ]]; then
   #but if it isn't
-  BASH_PROFILE_PHYSICAL="$BASH_SOURCE[0]"
+  BASH_PROFILE_PHYSICAL="${BASH_SOURCE[0]}"
 fi
 HEJMO_DOTFILE_DIR="$( cd "$( dirname "${BASH_PROFILE_PHYSICAL}" )" && pwd -P)"
 # conveniently, this means that
