@@ -141,6 +141,31 @@ __t_extract_project() {
 action=$1; shift
 [ "$TIMELOG" ] && timelog="$TIMELOG" || timelog="${HOME}/.timelog.ldg"
 
+_t_echo_actions() {
+  echo 'in
+out
+sw
+bal
+hours
+week
+switch
+edit
+cur
+last
+grep
+cat
+today
+less
+timelog
+log
+start
+end
+p
+projects
+sheet
+actions'
+}
+
 case "${action}" in
   in)   _t_in "$@";;
   out)  _t_out "$@";;
@@ -163,6 +188,7 @@ case "${action}" in
   p) _t_ledger accounts "$@";;
   projects) _t_ledger accounts "$@";;
   sheet) _t_sheet "$@";;
+  actions) _t_echo_actions;;
 
   h)    _t_usage;;
   *)    _t_usage;;
