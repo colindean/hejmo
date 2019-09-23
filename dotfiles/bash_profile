@@ -15,7 +15,8 @@ source "${HEJMO_BASH_PROFILE_DIR}/00_path.sh"
 source "${HEJMO_BASH_PROFILE_DIR}/00_ansi_color_helpers.sh"
 
 export EDITOR=vim
-alias vi='vim';
+alias vi='vim'
+alias rebash="source ${HOME}/.bash_profile"
 
 # string manipulation functions
 source "${HEJMO_BASH_PROFILE_DIR}/01_strings.sh"
