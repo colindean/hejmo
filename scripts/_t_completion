@@ -45,8 +45,8 @@ _main() {
   # subcommands have their own completion functions
   case "$cmd" in
     sw|switch|"in") _list_projects ;;
-    #subcommand) _main_subcommand ;;
-    #subcommand2) _main_subcommand2 ;;
+    start) _list_projects;;
+    log) _list_projects;;
     *)          ;;
   esac
 }
