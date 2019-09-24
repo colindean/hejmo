@@ -1,3 +1,25 @@
+#########################################
+# HEJMO #################################
+#########################################
+#########################################
+# a home directory system by Colin Dean #
+# use at your own risk if you are not ^ #
+# (c) 2015 Colin Dean                   #
+# Unlicense <https://unlicense.org>     #
+#########################################
+
+## Track load time
+current_time() {
+  # macox date doesn't provide resolution greater than seconds
+  # gdate isn't on the path yet when we need this but *almost*
+  # assuredly perl is and it loads faster than anything else
+  # https://superuser.com/a/713000
+  perl -MTime::HiRes -e 'printf("%.0f\n",Time::HiRes::time()*1000)'
+}
+HEJMO_LOAD_START=$(current_time)
+
+## Actually load stuff
+
 #this should be a symlink
 BASH_PROFILE_PHYSICAL="$(readlink "${BASH_SOURCE[0]}" )"
 if [[ -z "${BASH_PROFILE_PHYSICAL}" ]]; then
@@ -73,3 +95,6 @@ fi
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 source "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
+
+HEJMO_LOAD_END=$(current_time)
+export HEJMO_LOAD_TIME=$(echo "$HEJMO_LOAD_END - $HEJMO_LOAD_START" | bc )
