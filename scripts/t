@@ -163,7 +163,8 @@ end
 p
 projects
 sheet
-actions'
+actions
+lastweek'
 }
 
 case "${action}" in
@@ -173,6 +174,7 @@ case "${action}" in
   bal) _t_ledger bal "$@";;
   hours) _t_ledger bal -p "since today" --end "tomorrow" "$@";;
   week) _t_ledger bal -p "this week" "$@";;
+  lastweek) _t_ledger bal -p "last week" "$@";;
   switch)   _t_sw "$@";;
   edit) _t_do "${EDITOR}" "$@";;
   cur)  _t_cur "$@";;
