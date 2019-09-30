@@ -1,0 +1,144 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'date'
+require 'open3'
+
+# check for requirements
+deps = %w[ledger t gnuplot]
+# mkmf#find_executable uses which, which cannot find t
+deps_loc = deps.map { |cmd| `command -v #{cmd}` }
+raise "missing req'd in [${deps}]" unless deps_loc.all? { |s| !s.strip.empty? }
+
+# needs input from `ledger -J --weekly`
+# the last entry for a date is the one we want
+def parse_and_extract_weekly_cumul(all_entries)
+  all_entries.each_with_object({}) do |entry, acc|
+    date, amt = entry.split(' ')
+    acc[date] = amt.to_f
+  end
+end
+
+def cumulative_to_weekly(cumulative_entries)
+  prev = 0.0
+  cumulative_entries.map do |date, amt|
+    weekly_amt = (amt.to_f - prev).round(1)
+    prev = amt.to_f
+    [date, weekly_amt]
+  end.to_h
+end
+
+def generate_par_data(first_day, last_day)
+  start = Date.parse(first_day)
+  finish = Date.parse(last_day)
+
+  start.upto(finish)
+       .select { |d| d.wday == start.wday } # same weekday
+       .drop(1) # drop the first because we're seeding with it
+       .reduce([[start, 40]]) { |acc, d| acc + [[d, acc.last[1] + 40]] } # add
+       .to_h
+end
+
+WEEKLY_CUMULATIVE_IMG = 'weekly.png'
+def build_weekly_plot(first_day, last_day)
+  <<~PLOT
+    set xdata time
+    set timefmt "%Y-%m-%d"
+    set xrange ["#{first_day}":"#{last_day}"]
+    set format x "%Y/%m/%d"
+    set term png font "Arial" size 1280,720
+    set xlabel "Date"
+    set ylabel "Hours"
+    set grid
+    set title "Cumulative hours since tracking began, #{first_day}"
+    set output "#{WEEKLY_CUMULATIVE_IMG}"
+    plot "weekly_cumulative.dat" using 1:2 ls 1 title "Actual" with lines ,\
+         "weekly_par.dat" using 1:2 ls 2 title "Par (40 hrs/wk)" with lines
+  PLOT
+end
+
+WEEKLY_BAR_IMG = 'weekly_bar.png'
+def build_weekly_bar_plot(first_day, last_day)
+  <<~PLOT
+    set term png font "Arial" size 1280,720
+    set xlabel "Week starting date"
+    set ylabel "Hours"
+    set grid ytics
+    set title "Weekly hours since #{first_day}"
+    set output "#{WEEKLY_BAR_IMG}"
+    set boxwidth 0.3 relative
+    set style fill solid
+    set xdata time
+    set timefmt "%Y-%m-%d"
+    set format x "%Y/%m/%d"
+    set xrange ["#{first_day}":"#{last_day}"]
+    set yrange [35:70]
+    # set arrow from graph 0,first 40 to graph 1,first 40 nohead lc rgb "#000000" front
+    plot \
+      "weekly.dat" using 1:2 title "Hours during week" with boxes, \
+      40 w lines title "Normal 40-hour week"
+  PLOT
+end
+
+def write_data(filename, data)
+  File.open(filename, 'w') do |file|
+    file.write data
+  end
+  puts "write: #{data.size} bytes written to #{filename}"
+end
+
+def entries_to_text(entries)
+  entries.map { |k, v| "#{k} #{v}" }.join("\n")
+end
+
+def run_gnuplot(script)
+  _output, err, status = Open3.capture3('gnuplot', stdin_data: script)
+  puts "gnuplot: err: #{err}" unless status.success?
+end
+
+def run_ledger_with_timelog(args)
+  timelog = `t timelog`.strip
+  cmd = "ledger -f '#{timelog}' #{args}"
+  output, err, status = Open3.capture3(cmd)
+  puts "ledger: err: #{cmd}\t\n\t#{err}" unless status.success?
+  # puts "ledger: out: #{output}" if status.success?
+  output.split("\n")
+end
+
+# get weekly register data from ledger in cumulative by week
+cumulative_weekly_data_lines = run_ledger_with_timelog('-J --weekly reg')
+
+# extract the last entry for a week because that's the weekly total
+cumulative_weekly = parse_and_extract_weekly_cumul(cumulative_weekly_data_lines)
+puts "analysis: weeks: #{cumulative_weekly.size}"
+
+# subtract the differences to get a total for each week individually
+per_week = cumulative_to_weekly(cumulative_weekly)
+
+first_day = per_week.keys.first
+last_day = per_week.keys.last
+puts "analysis: from #{first_day} to #{last_day}"
+
+# generate data for what a normal 40 hour week looks like
+par_data = generate_par_data(first_day, last_day)
+
+# do some statistics
+mean = (per_week.values.sum / per_week.size).round(1)
+puts "analysis: mean per week, cumulative: #{mean} hrs"
+
+last_four_full_weeks = per_week.values.select { |v| v > 30 }.last(4)
+last_four_full_weeks_mean = (last_four_full_weeks.sum / 4).round(1)
+puts "analysis: mean per week, last 4 wks: #{last_four_full_weeks_mean} hrs"
+
+overunder = (cumulative_weekly.values.last - par_data.values.last).round(1)
+puts "analysis: cumulative overwork: #{overunder} hrs"
+
+# draw some graphs
+write_data 'weekly_cumulative.dat', entries_to_text(cumulative_weekly)
+write_data 'weekly.dat', entries_to_text(per_week)
+write_data 'weekly_par.dat', entries_to_text(par_data)
+run_gnuplot(build_weekly_plot(first_day, last_day))
+run_gnuplot(build_weekly_bar_plot(first_day, last_day))
+
+puts "plot: weekly cumulative written to #{WEEKLY_CUMULATIVE_IMG}"
+puts "plot: weekly bar written to #{WEEKLY_BAR_IMG}"
