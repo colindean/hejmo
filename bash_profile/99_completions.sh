@@ -16,3 +16,6 @@ complete -o default -o nospace -F _git g
 # shellcheck source=../scripts/_t_completion
 [[ -n "$(command -v t)" ]] && [[ -n "$(command -v _t_completion)" ]] && source "$(command -v _t_completion)"
 
+# autocomplete for pandoc
+[[ -n "$(command -v pandoc)" ]] && eval "$(pandoc --bash-completion)"
+
