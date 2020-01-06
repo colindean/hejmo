@@ -4,3 +4,6 @@ function trim() {
   var="${var%"${var##*[![:space:]]}"}"   # remove trailing whitespace characters
   echo -n "$var"
 }
+function urldecode() {
+  perl -pe 's/\%(\w\w)/chr hex $1/ge'
+}
