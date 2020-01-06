@@ -46,8 +46,14 @@ _t_out() {
 
 # switch projects
 _t_sw() {
-  echo o `$date '+%Y-%m-%d %H:%M:%S'` >> "$timelog"
-  echo i `$date '+%Y-%m-%d %H:%M:%S'` $* >> "$timelog"
+  if [[ $# -eq 2 ]]; then
+    SWITCH_TS="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+    shift
+  else
+    SWITCH_TS="$($date '+%Y-%m-%d %H:%M:%S')"
+  fi
+  echo o "${SWITCH_TS}" >> "$timelog"
+  echo i "${SWITCH_TS}" $* >> "$timelog"
 }
 
 # Show the currently clocked-in project
