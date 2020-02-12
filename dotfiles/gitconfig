@@ -49,10 +49,16 @@
   branches = branch -a
   stashes = stash list
   remotes = remote -v
+  # Print URLs of remote repositories. (git config --get-regex '^remote' is a simpler command, but its output isn’t aligned.)
+  remote-paths = "!grep -A2 '^\\[remote' $(git root)/.git/config"
   prestage = diff -w --word-diff=color # show unstaged changes
   precommit = diff --cached -w --word-diff=color --word-diff-regex='[^[:space:]<>]+' # show staged changes
   move = mv
   remove = rm
+  # Mark removed files as deleted, and new files as added
+  addremove = !git add . && git ls-files --deleted | xargs git rm
+  # All files under version control in the current revision
+  manifest = ls-tree -r --full-tree --name-only HEAD
   unmerged = branch --no-merged
   unstash = stash pop
   what = show -w
