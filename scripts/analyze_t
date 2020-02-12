@@ -59,6 +59,7 @@ def build_weekly_plot(first_day, last_day)
     set y2tics nomirror
     set logscale y2 1.6
     set style line 3 linetype 1 linewidth 2 linecolor rgb "green"
+    set key left top
     plot "weekly_cumulative.dat" using 1:2 ls 1 title "Actual" with lines axis x1y1,\
          "weekly_par.dat" using 1:2 ls 2 title "Par (40 hrs/wk)" with lines axis x1y1,\
          "weekly.dat" using 1:3 ls 3 title "Over/Under 40 hrs/wk" with impulses axis x1y2
