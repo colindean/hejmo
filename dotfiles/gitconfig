@@ -26,12 +26,15 @@
 	grep = grep --line-number --color
   # branches and tagging
   current-branch = symbolic-ref --short -q HEAD
-	cleanup = !git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d
-	semtag = !git tag -a $(semver tag) -m \"tagging $(semver tag)\"
+  cleanup = !git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d
+  # Delete local branches also gone from the origin (pass in -D to force-delete)
+  cleanup-gone-branches = "!f() { git fetch -p && git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch ${1:--d}; }; f"
+  semtag = !git tag -a $(semver tag) -m \"tagging $(semver tag)\"
   fancy-diff = !git diff --color $@ | diff-so-fancy
   # pushing
   pupr = !git push -u origin HEAD && hub pull-request -o
   fpush = !git push --force-with-lease
+
   # https://github.com/gggritso/dotfiles/blob/master/gitconfig.symlink
   unstage = reset -q HEAD --
   discard = checkout --
