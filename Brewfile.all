@@ -42,3 +42,5 @@ cask "qlstephen"
 # set default email app
 cask "rcdefaultapp"
 
+# better git diff/patch output
+brew 'git-delta'

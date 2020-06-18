@@ -12,6 +12,9 @@
 	whitespace = trailing-space,space-before-tab
 	excludesfile = ~/.gitignore_global
 	autocrlf = input
+  pager = delta --theme="zenburn" #--plus-color="#012800" --minus-color="#340001" --theme="zenburn"
+[interactive]
+  diffFilter = delta --color-only
 [diff]
 	renames = copies
 [rerere]
@@ -114,3 +117,5 @@
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
+[pull]
+	ff = only
