@@ -1,5 +1,10 @@
 # vim: ft=ruby
 
+tap 'homebrew/cask-fonts'
+
+# gotta use bash
+brew 'bash'
+
 # alternative cat that does syntax highlighting
 brew 'bat'
 
@@ -13,7 +18,7 @@ cask 'atom'
 cask 'keepingyouawake'
 
 # inevitable USB display drivers
-cask 'displaylink'
+# cask 'displaylink'
 
 # image editing
 cask 'gimp'
@@ -40,7 +45,19 @@ cask "qlprettypatch"
 cask "qlstephen"
 
 # set default email app
-cask "rcdefaultapp"
+cask 'swiftdefaultappsprefpane'
 
 # better git diff/patch output
 brew 'git-delta'
+
+# gnu coreutils, mostly for GNU date
+brew 'coreutils'
+
+cask 'font-fira-code'
+cask 'font-fira-code-nerd-font'
+cask 'font-noto-mono'
+cask 'font-noto-mono-for-powerline'
+cask 'font-noto-sans'
+cask 'font-noto-serif'
+cask 'font-open-sans'
+cask 'font-libre-franklin'

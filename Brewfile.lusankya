@@ -1,12 +1,11 @@
-tap 'caskroom/cask'
-tap 'caskroom/fonts'
-tap 'caskroom/versions'
+# vim: ft=ruby
+
+tap 'homebrew/cask'
+tap 'homebrew/cask-fonts'
+tap 'homebrew/cask-versions'
 tap 'colindean/fonts-nonfree'
-tap 'homebrew/bundle'
-tap 'homebrew/core'
 tap 'olafurpg/scalafmt'
 tap 'coursier/formulas'
-
 
 # needed for basically everything
 cask 'java'
@@ -15,9 +14,10 @@ cask 'licecap'
 # good screen recording
 cask 'snapz-pro-x'
 # IDE for Scala and Java development
-cask 'intellij-idea-ce'
-# allows changing default mail client without opening Mail.app
-cask 'rcdefaultapp'
+cask 'intellij-idea'
+
+# JDK 1.8 for way too much still
+cask 'adoptopenjdk8'
 
 # macos trash from cli
 brew 'trash'
@@ -37,7 +37,7 @@ brew 'bat'
 # mac app store apps
 brew 'mas'
 begin
-  mas 'Trello', id: 1278508951
+  # mas 'Trello', id: 1278508951
 rescue
   echo "mas is unavailable, skipping Mac App Store apps"
 end
@@ -79,9 +79,6 @@ brew 'bison'
 brew 'boost'
 brew 'boost-python'
 brew 'cabal-install'
-brew 'gmp@4'
-brew 'ppl@0.11'
-brew 'cloog@0.15'
 brew 'cmake'
 brew 'colordiff'
 brew 'cowsay'
@@ -102,7 +99,6 @@ brew 'gd'
 brew 'gdk-pixbuf'
 brew 'gdub'
 brew 'gist'
-brew 'giter8'
 brew 'glew'
 brew 'gmp'
 brew 'gnu-getopt'
@@ -116,11 +112,9 @@ brew 'gource'
 brew 'gradle'
 brew 'libtool'
 brew 'graphviz'
-brew 'groovy', args: ['with-invokedynamic']
 brew 'hicolor-icon-theme'
 brew 'pango'
 brew 'gtk+'
-brew 'heroku'
 brew 'htop'
 brew 'hub'
 brew 'perl'
@@ -130,7 +124,6 @@ brew 'jbig2dec'
 brew 'jo'
 brew 'oniguruma'
 brew 'jq'
-brew 'mpfr'
 brew 'ledger'
 brew 'leiningen'
 brew 'libarchive'
@@ -139,7 +132,6 @@ brew 'libevent'
 brew 'libgpg-error'
 brew 'libksba'
 brew 'mpfr@2'
-brew 'libmpc@0.8'
 brew 'librsvg'
 brew 'libssh'
 brew 'libssh2'
@@ -151,7 +143,6 @@ brew 'makedepend'
 brew 'maven-completion'
 brew 'mercurial'
 brew 'mobile-shell'
-brew 'mplayer'
 brew 'tokyo-cabinet'
 brew 'mutt'
 brew 'mvnvm'
@@ -182,7 +173,6 @@ brew 'sshtrix'
 brew 'tig'
 brew 'tmux'
 brew 'tree'
-brew 'typesafe-activator'
 brew 'typespeed'
 brew 'unixodbc'
 brew 'utf8proc'
@@ -192,6 +182,4 @@ brew 'watch'
 brew 'wemux'
 brew 'wget'
 brew 'xmlstarlet'
-brew 'olafurpg/scalafmt/scalafmt', args: ["HEAD"]
 
-# vim: ft=ruby
