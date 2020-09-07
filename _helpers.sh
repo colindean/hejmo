@@ -56,6 +56,13 @@ link_all_files_in_dir() {
   rm="$3"
   prepend="$4"
 
+  case "$(uname -s)" in
+    Darwin) LN_OPTIONS="sFf" ;;
+    Linux) LN_OPTIONS="sf" ;;
+    # TODO: determine safe defaults for OSes I never use
+    *) LN_OPTIONS="sf" ;;
+  esac
+
   for f in $(ls "${from_dir}"); do
     TARGET="${from_dir}/${f}"
     LINK="${to_dir}/${prepend}${f}"

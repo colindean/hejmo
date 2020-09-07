@@ -8,7 +8,7 @@ Plug 'tpope/vim-sensible'
 Plug 'jnurmine/Zenburn'
 " distraction-free writing with :Goyo
 Plug 'junegunn/goyo.vim',  { 'for': 'markdown' }
-" Markdown rendering with :Xmark or :Xmark> or :Xmark<
+" Markdown rendering with :MarkdownPreview and :MarkdownPreviewStop
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " airline for nice stats
