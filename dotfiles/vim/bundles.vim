@@ -9,7 +9,7 @@ Plug 'jnurmine/Zenburn'
 " distraction-free writing with :Goyo
 Plug 'junegunn/goyo.vim',  { 'for': 'markdown' }
 " Markdown rendering with :Xmark or :Xmark> or :Xmark<
-Plug 'junegunn/vim-xmark', { 'for': 'markdown', 'do': 'make' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " airline for nice stats
 Plug 'vim-airline/vim-airline'
