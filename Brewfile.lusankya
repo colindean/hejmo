@@ -19,6 +19,10 @@ cask 'intellij-idea'
 # JDK 1.8 for way too much still
 cask 'adoptopenjdk8'
 
+# video conferencing
+cask 'zoomus'
+cask 'zoomus-outlook-plugin'
+
 # macos trash from cli
 brew 'trash'
 
