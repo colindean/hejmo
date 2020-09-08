@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# Set computer name (as done via System Preferences → Sharing)
+# set INTENDED_HOSTNAME in ~/.env.local
+NEW_HOSTNAME="${INTENDED_HOSTNAME:-$(hostname)}"
+sudo scutil --set ComputerName "${NEW_HOSTNAME}"
+sudo scutil --set HostName "${NEW_HOSTNAME}"
+sudo scutil --set LocalHostName "${NEW_HOSTNAME}"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${NEW_HOSTNAME}"
+
 # enable sshd
 sudo systemsetup -f -setremotelogin on
 
@@ -100,5 +108,14 @@ defaults write com.apple.ActivityMonitor ShowCategory -int 0
 # Sort Activity Monitor results by CPU usage
 defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
 defaults write com.apple.ActivityMonitor SortDirection -int 0
+
+# automatically hide Dock
+defaults write com.apple.dock autohide -bool true && killall Dock
+
+# show network volumes on the desktop
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool true && killall Finder
+
+# TextEdit should always start in plain text mode
+defaults write com.apple.TextEdit RichText -int 0
 
 
