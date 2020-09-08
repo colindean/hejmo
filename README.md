@@ -17,7 +17,7 @@ bash link_dotbin.sh
 bash link_dotfiles.sh
 bash setup-homebrew.sh
 bash setup-iterm.sh
-brew bundle --file=Brewfile.${hostname}
+brew bundle --file=Brewfile.$(hostname)
 bash setup-rust.sh
 bash setup-ruby.sh
 ```
