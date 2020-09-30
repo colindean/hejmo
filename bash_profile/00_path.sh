@@ -34,3 +34,7 @@ export GOPATH="${HOME}/.go"
 
 JOINED_PATH=$(join : "${MYPATH[@]}")
 export PATH=$JOINED_PATH:$PATH
+
+if [[ -n "$(command -v pyenv)" ]]; then
+  eval "$(pyenv init -)"
+fi
