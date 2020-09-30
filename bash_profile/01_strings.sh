@@ -7,3 +7,6 @@ function trim() {
 function urldecode() {
   perl -pe 's/\%(\w\w)/chr hex $1/ge'
 }
+
+alias eo="eoconv --from=post-x --to=utf-8"
+

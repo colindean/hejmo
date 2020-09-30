@@ -1,5 +1,5 @@
 # vim: ft=ruby
-
+tap 'colindean/personal'
 tap 'homebrew/cask-fonts'
 
 # gotta use bash
@@ -52,6 +52,9 @@ brew 'git-delta'
 
 # gnu coreutils, mostly for GNU date
 brew 'coreutils'
+
+# Esperanto character conversion
+brew 'eoconv'
 
 cask 'font-fira-code'
 cask 'font-fira-code-nerd-font'
