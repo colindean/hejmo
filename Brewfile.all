@@ -56,6 +56,9 @@ brew 'coreutils'
 # Esperanto character conversion
 brew 'eoconv'
 
+# fuzzy finder
+brew 'fzf'
+
 cask 'font-fira-code'
 cask 'font-fira-code-nerd-font'
 cask 'font-noto-mono'

@@ -72,6 +72,8 @@ source "${HEJMO_BASH_PROFILE_DIR}/99_man_colors.sh"
 source "${HEJMO_BASH_PROFILE_DIR}/99_chromecast.sh"
 # bat
 source "${HEJMO_BASH_PROFILE_DIR}/99_bat.sh"
+# fzf
+source "${HEJMO_BASH_PROFILE_DIR}/99_fzf.sh"
 
 [[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"
 
