@@ -80,7 +80,7 @@ vnoremap <F1> <ESC>
 nnoremap ; :
 
 if filereadable(expand("~/.vim/airline.vim"))
-  set guifont=Fira\ Mono:h16
+  set guifont=FiraCodeNerdFontCompleteM-Regular:h16
   source ~/.vim/airline.vim
 endif
 
