@@ -54,6 +54,9 @@ brew 'coursier/formulas/coursier'
 # scala formatter
 brew 'olafurpg/scalafmt/scalafmt'
 
+# shell code linting
+brew 'shellcheck'
+
 # packages
 brew 'ack'
 brew 'aha'
