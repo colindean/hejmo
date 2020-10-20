@@ -13,6 +13,7 @@
 	excludesfile = ~/.gitignore_global
 	autocrlf = input
   pager = delta --theme="zenburn" #--plus-color="#012800" --minus-color="#340001" --theme="zenburn"
+	attributesfile = /Users/Z003XC4/.gitattributes
 [interactive]
   diffFilter = delta --color-only
 [diff]
