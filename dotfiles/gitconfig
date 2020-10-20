@@ -21,6 +21,7 @@
 [rerere]
 	enabled = true
 [alias]
+	sw = switch
   # better logging
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   lsum = log --color --pretty=format:'%s %Cgreen(%cr) %Creset' --abbrev-commit #--not --grep 'maven-release-plugin'
