@@ -129,7 +129,7 @@ _t_sheet() {
 # Show usage
 _t_usage() {
   # TODO
-  cat << EOF
+  cat << EOF | column -t -s '-'
 Usage: t action
 actions:
      in - clock into project or last project
