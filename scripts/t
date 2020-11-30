@@ -76,7 +76,6 @@ _t_start() {
     exit 1 #rely on date to have shown the error
   fi
   echo i "${start_date}" "${2}" >> "${timelog}"
-
 }
 
 _t_end() {
@@ -85,6 +84,30 @@ _t_end() {
     exit 1 #rely on date to have shown the error
   fi
   echo o "${end_date}" >> "${timelog}"
+}
+
+_t_vacation() {
+  local account="${3:-A:Vacation}"
+  local start_date;
+  start_date="$($date --date "${1}" '+%Y-%m-%d')"
+  local end_date;
+  end_date="$($date --date "${2:-$1}" '+%Y-%m-%d')"
+  local loop_end_date;
+  loop_end_date="$($date --date "${end_date} + 1 day" '+%Y-%m-%d')"
+
+  if [[ -z "$start_date" ]] || [[ -z "$end_date" ]]; then
+    echo "A required date was malformed. Check output for hints."
+    exit 1
+  fi
+
+  echo "Logging ${account} from ${start_date} to ${end_date}"
+  local d="${start_date}"
+  while [ "${d}" != "${loop_end_date}" ]; do
+    echo "Logging for ${d}…"
+    _t_log "${d} 09:30" "${d} 17:30" "${account}"
+    d="$($date --date "${d} + 1 day" '+%Y-%m-%d')"
+  done
+  _t_ledger register --begin "${start_date}" --end "${d}"
 }
 
 # Explicitly log a start and end
@@ -128,6 +151,7 @@ actions:
      end - record an exact end time to the open project <"end">
      p,projects - list projects used so far
      sheet - show a daily register of the previous week, optionally pass a start date
+     vacation - log a project daily from <"start"> ["end"] [project, default A:Vacation]
 EOF
 }
 
@@ -170,7 +194,8 @@ p
 projects
 sheet
 actions
-lastweek'
+lastweek
+vacation'
 }
 
 case "${action}" in
@@ -197,6 +222,7 @@ case "${action}" in
   projects) _t_ledger accounts "$@";;
   sheet) _t_sheet "$@";;
   actions) _t_echo_actions;;
+  vacation) _t_vacation "$@";;
 
   h)    _t_usage;;
   *)    _t_usage;;
