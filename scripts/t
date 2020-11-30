@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # figure out which version of date to use
 # GNU date responds to --version and BSD date does not.
