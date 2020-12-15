@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+ZETTELKASTEN_DIR="${ZETTELKASTEN_DIR:-"${HOME}/zettelkasten"}"
+LOCAL_INSTALL="/usr/local/bin/neuron"
+LISTEN_PORT=1440
+DOCKER_NAME="neuron-zettelkasten"
+
+printf "Starting Neuron in %s " "${ZETTELKASTEN_DIR}" >&2
+
+declare -a CMD
+CMD=${@}
+
+if [ "${1}" = "serve" ]; then
+  CMD=("rib -ws 0.0.0.0:${LISTEN_PORT}")
+  EXTRA_DOCKER_CMDS="--detach --name ${DOCKER_NAME}"
+fi
+
+if [ "${1}" = "kill" ]; then
+  docker stop "${DOCKER_NAME}"
+  exit 0
+fi
+
+if [ -x "${LOCAL_INSTALL}" ]; then
+  printf "using %s\n" "${LOCAL_INSTALL}" >&2
+  "${LOCAL_INSTALL}" ${CMD[*]}
+elif [ -n "$(command -v docker)" ]; then
+  printf "using docker\n" >&2
+  docker run --rm --tty --interactive ${EXTRA_DOCKER_CMDS} \
+    --publish ${LISTEN_PORT}:${LISTEN_PORT} \
+    --volume "${ZETTELKASTEN_DIR}:/notes" \
+    sridca/neuron \
+    neuron ${CMD[*]}
+fi
+
