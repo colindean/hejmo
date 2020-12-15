@@ -1,0 +1,5 @@
+#!/bin/sh
+text="${*}"
+printf "\033#3%s\n" "${text}"
+printf "\033#4%s\n" "${text}"
+printf "\033#5"
