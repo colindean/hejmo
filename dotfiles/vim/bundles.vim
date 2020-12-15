@@ -24,12 +24,16 @@ Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 " fuzzy finder
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 " .editorconfig support
 Plug 'editorconfig/editorconfig-vim'
 " better commenting
 Plug 'scrooloose/nerdcommenter'
 " whitespace highlighting
 Plug 'ntpeters/vim-better-whitespace'
+" floating terminal
+Plug 'voldikss/vim-floaterm'
 
 " improves slash searching
 Plug 'junegunn/vim-slash'
@@ -64,3 +68,6 @@ Plug 'kamichidu/vim-edit-properties'
 
 " automatic formatting - I may regret this
 Plug 'Chiel92/vim-autoformat'
+
+" zettelkasten
+Plug 'fiatjaf/neuron.vim'
