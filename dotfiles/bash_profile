@@ -74,3 +74,8 @@ if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "Total time: ${HEJMO_LOAD_TIME} milliseconds"
 fi
 
+############################################################
+### ANYTHING added after here was added automatically      #
+### and should be added to a file in ${HEJMO}/bash_profile #
+############################################################
+
