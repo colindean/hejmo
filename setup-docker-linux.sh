@@ -39,3 +39,9 @@ docker run hello-world
 
 sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
 sudo chmod g+rwx "$HOME/.docker" -R
+
+# if we have homebrew, install docker-compose through that
+# because it's guaranteed to be out of date in the OS repo
+# and it's not in Docker's repo added above.
+command -v brew && brew install docker-compose
+
