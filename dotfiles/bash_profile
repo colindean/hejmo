@@ -98,5 +98,9 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
 
+if [[ "Linux" = "$(uname -s)" ]]; then
+  export HOMEBREW_CASK_OPTS="--appdir=/dev/null --fontdir=${HOME}/.fonts"
+fi
+
 HEJMO_LOAD_END=$(current_time)
 export HEJMO_LOAD_TIME=$(echo "$HEJMO_LOAD_END - $HEJMO_LOAD_START" | bc )
