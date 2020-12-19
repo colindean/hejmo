@@ -11,7 +11,7 @@
 
 ## Track load time
 current_time() {
-  # macox date doesn't provide resolution greater than seconds
+  # macos date doesn't provide resolution greater than seconds
   # gdate isn't on the path yet when we need this but *almost*
   # assuredly perl is and it loads faster than anything else
   # https://superuser.com/a/713000
