@@ -1,4 +1,5 @@
 #!/bin/bash
+# upsearch
 
 #props to @PaulSCoder and @joelmccracken for this wizardry
 

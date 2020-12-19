@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+# string manipulation functions
+
 function trim() {
   local var=$@
   var="${var#"${var%%[![:space:]]*}"}"   # remove leading whitespace characters

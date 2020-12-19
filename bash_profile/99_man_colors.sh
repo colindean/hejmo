@@ -1,4 +1,5 @@
 #!/bin/sh
+# manpage colors
 
 #https://russellparker.me/2018/02/23/adding-colors-to-man/
 

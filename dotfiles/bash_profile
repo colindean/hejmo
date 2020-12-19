@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #########################################
 # HEJMO #################################
 #########################################
@@ -32,75 +33,37 @@ export HEJMO="$( cd "${HEJMO_DOTFILE_DIR}/../" && pwd -P)"
 HEJMO_BASH_PROFILE_DIR="${HEJMO}/bash_profile"
 
 export XDG_CONFIG_HOME="${HOME}/.config"
-
-source "${HEJMO_BASH_PROFILE_DIR}/00_path.sh"
-source "${HEJMO_BASH_PROFILE_DIR}/00_ansi_color_helpers.sh"
+export XDG_CACHE_HOME="${HOME}/.cache"
 
 export EDITOR=vim
 alias vi='vim'
 alias rebash="source ${HOME}/.bash_profile"
 
-# string manipulation functions
-source "${HEJMO_BASH_PROFILE_DIR}/01_strings.sh"
-# directory navigation
-source "${HEJMO_BASH_PROFILE_DIR}/02_navigation.sh"
-# upsearch
-source "${HEJMO_BASH_PROFILE_DIR}/02_upsearch.sh"
-# configures ls and some useful aliases
-source "${HEJMO_BASH_PROFILE_DIR}/50_ls.sh"
-# ssh functions and aliases
-source "${HEJMO_BASH_PROFILE_DIR}/99_ssh_aliases.sh"
-# hashing functions and aliases
-source "${HEJMO_BASH_PROFILE_DIR}/99_hashing.sh"
-
-#export INTERNAL_GITHUB="" #set when setting up
-#export INTERNAL_GITHUB_API_TOKEN=
-#export INTERNAL_GITHUB_USER=
-#export INTERNAL_EMAIL_USER=colindean
-
-# prompt customization
-source "${HEJMO_BASH_PROFILE_DIR}/99_prompt.sh"
-# git functions and aliases
-source "${HEJMO_BASH_PROFILE_DIR}/99_git.sh"
-# gradle functions and aliases
-source "${HEJMO_BASH_PROFILE_DIR}/99_gradle.sh"
-# history management
-source "${HEJMO_BASH_PROFILE_DIR}/99_history.sh"
-# manpage colors
-source "${HEJMO_BASH_PROFILE_DIR}/99_man_colors.sh"
-# chromecasting
-source "${HEJMO_BASH_PROFILE_DIR}/99_chromecast.sh"
-# bat
-source "${HEJMO_BASH_PROFILE_DIR}/99_bat.sh"
-# fzf
-source "${HEJMO_BASH_PROFILE_DIR}/99_fzf.sh"
-
-[[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"
-
-# bash completions
-source "${HEJMO_BASH_PROFILE_DIR}/99_completions.sh"
-
-if [[ -z $NO_RVM ]]; then
-  [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
+if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
+  export HEJMO_BENCH_RESULTS="${HOME}/.hejmo_bench_results.txt"
+  touch "${HEJMO_BENCH_RESULTS}"
+  printf "" > "${HEJMO_BENCH_RESULTS}"
 fi
+for i in ${HEJMO_BASH_PROFILE_DIR}/*.sh; do
+  if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
+    TIMEFORMAT="%R $i"
 
-if [[ -z $NO_CHRUBY ]]; then
-  chruby_share="$(brew --prefix chruby)/share/chruby"
-  [[ -s "${chruby_share}/chruby.sh" ]] && . "${chruby_share}/chruby.sh"
-  [[ -s "${chruby_share}/auto.sh" ]] && . "${chruby_share}/auto.sh"
-fi
-
-# added by travis gem
-[[ -f "$HOME/.travis/travis.sh" ]] && . "$HOME/.travis/travis.sh"
-#THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
-[[ -s "$HOME/.gvm/bin/gvm-init.sh" ]] && source "$HOME/.gvm/bin/gvm-init.sh"
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-export PATH="$HOME/.cargo/bin:$PATH"
-
-if [[ "Linux" = "$(uname -s)" ]]; then
-  export HOMEBREW_CASK_OPTS="--appdir=/dev/null --fontdir=${HOME}/.fonts"
-fi
+    { time . "$i" ; } 2>> "${HEJMO_BENCH_RESULTS}"
+    unset TIMEFORMAT
+  else
+    . "$i"
+  fi
+done; unset i
 
 HEJMO_LOAD_END=$(current_time)
 export HEJMO_LOAD_TIME=$(echo "$HEJMO_LOAD_END - $HEJMO_LOAD_START" | bc )
+
+if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
+  >&2 echo "Hejmo Bash loading times, in user seconds"
+  >&2 echo "------------------------"
+  >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --output-separator "\t"
+  >&2 echo "------------------------------"
+  >&2 echo "Total time: ${HEJMO_LOAD_TIME} milliseconds"
+fi
+
+

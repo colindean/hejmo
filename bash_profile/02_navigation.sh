@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# directory navigation
 
 # move up directories quickly instead of cd ../; cd ../; etc/.
 # adapted from http://www.bashoneliners.com/oneliners/oneliner/231/
