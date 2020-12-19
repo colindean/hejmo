@@ -6,7 +6,7 @@ if [[ -z $NO_RVM ]]; then
 fi
 
 if [[ -z $NO_CHRUBY ]]; then
-  chruby_share="$(brew --prefix chruby)/share/chruby"
+  chruby_share="$(${BREW_PREFIX} chruby)/share/chruby"
   [[ -s "${chruby_share}/chruby.sh" ]] && . "${chruby_share}/chruby.sh"
   [[ -s "${chruby_share}/auto.sh" ]] && . "${chruby_share}/auto.sh"
 fi

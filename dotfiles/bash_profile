@@ -43,8 +43,36 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 
 alias rebash="source ${HOME}/.bash_profile"
 
+## Setup caching of `brew --prefix` responses
+## This reduces `brew --prefix <cmd>` by about 100x
+## by writing responses to a file and reading from that
+## file if it's populated.
+export CACHE_BREW_PREFIX_DIR="${XDG_CACHE_HOME}/brew_--prefix"
+cached_brew_prefix() {
+  mkdir -p "${CACHE_BREW_PREFIX_DIR}"
+  local formula="${1}"
+  local cache_file="${CACHE_BREW_PREFIX_DIR}/${formula:-brew_itself}"
+  if [ -s "${cache_file}" ]; then
+    cat "${cache_file}"
+  else
+    if [ -n "${formula}" ]; then
+      # Because of how brew parses commands, even if an empty string is passed
+      # it thinks that something was passed.
+      brew --prefix "${formula}" | tee "${cache_file}"
+    else
+      brew --prefix | tee "${cache_file}"
+    fi
+  fi
+}
+clear_brew_prefix_cache(){
+  rm -rf "${CACHE_BREW_PREFIX_DIR}"
+}
+export BREW_PREFIX=cached_brew_prefix
+
 ### BENCHMARKING:
-### Run this command to enable benchmarking output:
+### Run this command to reload with benchmarking output:
+###     HEJMO_BENCH_BASH_PROFILE=1 rebash
+### Run this command to benchmark a whole new shell:
 ###     HEJMO_BENCH_BASH_PROFILE=1 bash -i
 
 if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
