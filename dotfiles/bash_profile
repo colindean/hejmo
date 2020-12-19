@@ -19,7 +19,9 @@ current_time() {
 }
 HEJMO_LOAD_START=$(current_time)
 
-## Actually load stuff
+## Actually load stuff!
+
+## Setup Hejmo base directories
 
 #this should be a symlink
 BASH_PROFILE_PHYSICAL="$(readlink "${BASH_SOURCE[0]}" )"
@@ -32,12 +34,18 @@ HEJMO_DOTFILE_DIR="$( cd "$( dirname "${BASH_PROFILE_PHYSICAL}" )" && pwd -P)"
 export HEJMO="$( cd "${HEJMO_DOTFILE_DIR}/../" && pwd -P)"
 HEJMO_BASH_PROFILE_DIR="${HEJMO}/bash_profile"
 
+## Explicitly set some XDG directories
+
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
 
-export EDITOR=vim
-alias vi='vim'
+## Explicitly set some early vars and aliases
+
 alias rebash="source ${HOME}/.bash_profile"
+
+### BENCHMARKING:
+### Run this command to enable benchmarking output:
+###     HEJMO_BENCH_BASH_PROFILE=1 bash -i
 
 if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   export HEJMO_BENCH_RESULTS="${HOME}/.hejmo_bench_results.txt"
@@ -46,8 +54,8 @@ if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
 fi
 for i in ${HEJMO_BASH_PROFILE_DIR}/*.sh; do
   if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
-    TIMEFORMAT="%R $i"
-
+    # seconds
+    TIMEFORMAT="%R = $i"
     { time . "$i" ; } 2>> "${HEJMO_BENCH_RESULTS}"
     unset TIMEFORMAT
   else
@@ -61,9 +69,8 @@ export HEJMO_LOAD_TIME=$(echo "$HEJMO_LOAD_END - $HEJMO_LOAD_START" | bc )
 if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "Hejmo Bash loading times, in user seconds"
   >&2 echo "------------------------"
-  >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --output-separator "\t"
+  >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --separator " = " --output-separator "\t"
   >&2 echo "------------------------------"
   >&2 echo "Total time: ${HEJMO_LOAD_TIME} milliseconds"
 fi
-
 
