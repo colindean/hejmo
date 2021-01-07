@@ -97,7 +97,8 @@ for i in ${HEJMO_BASH_PROFILE_DIR}/*.sh; do
 done; unset i
 
 HEJMO_LOAD_END=$(current_time)
-export HEJMO_LOAD_TIME=$(echo "$HEJMO_LOAD_END - $HEJMO_LOAD_START" | bc )
+((HEJMO_LOAD_TIME=$HEJMO_LOAD_END - $HEJMO_LOAD_START))
+export HEJMO_LOAD_TIME
 
 if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "Hejmo Bash loading times, in user seconds"
