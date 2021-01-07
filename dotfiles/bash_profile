@@ -55,14 +55,19 @@ cached_brew_prefix() {
   if [ -s "${cache_file}" ]; then
     cat "${cache_file}"
   else
-    if [ -n "${formula}" ]; then
-      # Because of how brew parses commands, even if an empty string is passed
-      # it thinks that something was passed.
-      brew --prefix "${formula}" | tee "${cache_file}"
+    if [ -n "$(command -v brew)" ]; then
+      if [ -n "${formula}" ]; then
+        # Because of how brew parses commands, even if an empty string is passed
+        # it thinks that something was passed.
+        brew --prefix "${formula}" | tee "${cache_file}"
+      else
+        brew --prefix | tee "${cache_file}"
+      fi
     else
-      brew --prefix | tee "${cache_file}"
+      return 1
     fi
   fi
+  return 0
 }
 clear_brew_prefix_cache(){
   rm -rf "${CACHE_BREW_PREFIX_DIR}"
