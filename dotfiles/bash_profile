@@ -103,7 +103,13 @@ export HEJMO_LOAD_TIME
 if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "Hejmo Bash loading times, in user seconds"
   >&2 echo "------------------------"
-  >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --separator " = " --output-separator "\t"
+  if column --table &>/dev/null; then
+    # Good column
+    >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --separator " = " --output-separator "\t"
+  else
+    # Bland BSD column
+    >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column -t -s " = "
+  fi
   >&2 echo "------------------------------"
   >&2 echo "Total time: ${HEJMO_LOAD_TIME} milliseconds"
 fi
