@@ -2,7 +2,7 @@
 
 if [ -n "$(command -v brew)" ]; then
   # completions
-  HOMEBREW_PREFIX="$(brew --prefix)"
+  HOMEBREW_PREFIX="$(${BREW_PREFIX})"
   export HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
   export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_COMPLETIONS_DIR}"
   HOMEBREW_PROF_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"

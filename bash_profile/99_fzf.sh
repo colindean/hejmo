@@ -4,7 +4,7 @@
 [[ "$(uname -s)" == "Darwin" ]] && XARGS="gxargs" || XARGS="xargs"
 
 default_fzf_location=/usr/local/opt/fzf
-[[ -n "$(command -v brew)" ]] && BREW_FZF="$(brew --prefix fzf)"
+[[ -n "$(command -v brew)" ]] && BREW_FZF="$(${BREW_PREFIX} fzf)"
 FZF_SHELL="${BREW_FZF:-$default_fzf_location}/shell"
 
 if [[ -d "$FZF_SHELL" ]]; then

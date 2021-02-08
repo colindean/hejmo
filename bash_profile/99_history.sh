@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+# history management
+
 #prevent jrnl from appearing in history
 export HISTIGNORE="$HISTIGNORE:jrnl *"
 # load the last N into memory
