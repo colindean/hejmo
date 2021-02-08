@@ -17,16 +17,3 @@ hejmo(){
   [[ -n "$(command -v tabname)" ]] && tabname
 }
 
-# setup zoxide
-THIS_SHELL="$(basename "${SHELL}")"
-
-if [ -n "$(command -v zoxide)" ]; then
-  case "${THIS_SHELL}" in
-    bash)
-      eval "$(zoxide init bash)";;
-    zsh)
-      eval "$(zoxide init zsh)";;
-    *)
-      eval "$(zoxide init posix --hook prompt)";;
-  esac
-fi
