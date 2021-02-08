@@ -27,7 +27,8 @@
   lsum = log --color --pretty=format:'%s %Cgreen(%cr) %Creset' --abbrev-commit #--not --grep 'maven-release-plugin'
   lsince = log --oneline --not --grep '^Merge pull request' --grep '^Merge branch'
   log1 = log --pretty=oneline --abbrev-commit
-  author-count = !git log --format="%ae" $@ | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -nr
+  author-count-commit = !git log --format="%ae" $@ | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -nr
+  author-count-lines = !git ls-files -z | xargs -0n1 git blame --line-porcelain | sed -n 's/^author //p' | sort | uniq -c | sort -rn
 	grep = grep --line-number --color
   # branches and tagging
   current-branch = symbolic-ref --short -q HEAD
