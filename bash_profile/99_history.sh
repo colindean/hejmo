@@ -10,8 +10,13 @@ export HISTFILESIZE=100000
 export HISTTIMEFORMAT='[@ %Y-%m-%d %T] '
 # append the history instead of overwriting it when there are multiple sessions
 shopt -s histappend
+HISTORY_CMDS="history -a; history -c; history -r"
 # write every command to the history log immediately
 #    this is expensive, because it must be appended, cleared, and re-read for
 #    every command executed.
 #    TODO: introduce something that can disable this for a session
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+case "$PROMPT_COMMAND" in
+    *history*) ;;
+    *) PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND};}${HISTORY_CMDS}" ;;
+esac
+export PROMPT_COMMAND
