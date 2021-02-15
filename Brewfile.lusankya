@@ -4,15 +4,12 @@ tap 'homebrew/cask'
 tap 'homebrew/cask-fonts'
 tap 'homebrew/cask-versions'
 tap 'colindean/fonts-nonfree'
-tap 'olafurpg/scalafmt'
 tap 'coursier/formulas'
 
-# needed for basically everything
-cask 'java'
+# needed for basically everything, might as well install it
+cask 'adoptopenjdk8'
 # quick screen recording
 cask 'licecap'
-# good screen recording
-cask 'snapz-pro-x'
 # IDE for Scala and Java development
 cask 'intellij-idea'
 
@@ -20,8 +17,9 @@ cask 'intellij-idea'
 cask 'adoptopenjdk8'
 
 # video conferencing
-cask 'zoomus'
-cask 'zoomus-outlook-plugin'
+unless Dir.exist? "/Applications/zoom.us.app"
+  cask 'zoom'
+end
 
 # macos trash from cli
 brew 'trash'
@@ -51,8 +49,6 @@ brew 'fd'
 
 # scala dependency retriever and bootstrap setup
 brew 'coursier/formulas/coursier'
-# scala formatter
-brew 'olafurpg/scalafmt/scalafmt'
 
 # shell code linting
 brew 'shellcheck'
@@ -72,7 +68,7 @@ brew 'fontconfig'
 brew 'pixman'
 brew 'cairo'
 brew 'curl'
-brew 'git', args: ['with-blk-sha1', 'with-brewed-curl', 'with-brewed-openssl', 'with-pcre', 'with-persistent-https']
+brew 'git'
 brew 'pkg-config'
 brew 'gdbm'
 brew 'readline'
@@ -138,7 +134,6 @@ brew 'libcroco'
 brew 'libevent'
 brew 'libgpg-error'
 brew 'libksba'
-brew 'mpfr@2'
 brew 'librsvg'
 brew 'libssh'
 brew 'libssh2'

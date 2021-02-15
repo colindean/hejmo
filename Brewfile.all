@@ -62,6 +62,9 @@ brew 'fzf'
 # better cd with z
 brew 'zoxide'
 
+# subversion, required for some fonts
+brew 'svn'
+
 cask 'font-fira-code'
 cask 'font-fira-code-nerd-font'
 cask 'font-noto-mono'
