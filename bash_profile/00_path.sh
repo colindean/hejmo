@@ -32,9 +32,26 @@ MYPATH+=("/usr/local/heroku/bin")
 MYPATH+=("/usr/local/opt/go/libexec/bin")
 export GOPATH="${HOME}/.go"
 
+## coursier
+COURSIER_BIN_MAC="${HOME}/Library/Application Support/Coursier/bin"
+COURSIER_BIN_LINUX="${HOME}/.local/share/coursier/bin"
+if [ -z "${COURSIER_BIN_DIR}" ]; then
+  case "$(uname -s)" in
+    Darwin)
+      [[ -d "${COURSIER_BIN_MAC}" ]] && COURSIER_BIN_DIR="${COURSIER_BIN_MAC}" ;;
+    Linux)
+      [[ -d "${COURSIER_BIN_LINUX}" ]] && COURSIER_BIN_DIR="${COURSIER_BIN_LINUX}" ;;
+  esac
+fi
+if [ -n "${COURSIER_BIN_DIR}" ]; then
+  MYPATH+=("${COURSIER_BIN_DIR}")
+fi
+
+## PATHS, ASSEMBLE
 JOINED_PATH=$(join : "${MYPATH[@]}")
 export PATH=$JOINED_PATH:$PATH
 
+## pyenv, the slow one
 if [[ -n "$(command -v pyenv)" ]]; then
   eval "$(pyenv init -)"
 fi
