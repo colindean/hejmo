@@ -45,6 +45,7 @@ function prompt
   #local RUBY="${LIGHT_BLUE}\$(if [ ! -z \"\`upsearch Gemfile\`\" ]; then echo -n \"(\${RUBY_VERSION})\"; fi)"
   local GIT_B="${RED}\$(if [ ! -z \"\`command -v __git_ps1\`\" ]; then _GITPS1=\"\`__git_ps1\`\"; if [ ! -z \"\${_GITPS1}\" ]; then echo -n \"±\${_GITPS1}\"; echo -n ' '; fi; fi)"
   local DEPTH="\$(if [ \$SHLVL -gt 1 ]; then echo \"⇟\$SHLVL\"; fi)"
-  export PS1="${WHITE}[${YELLOW}\t ${GREEN}\u@\H ${CYAN}\w ${RUBY}${WHITE}]\n${GIT_B}${GRAY}${DEPTH}\$ "
+  local HOST="${INTENDED_HOSTNAME:-\H}"
+  export PS1="${WHITE}[${YELLOW}\t ${GREEN}\u@${HOST} ${CYAN}\w ${RUBY}${WHITE}]\n${GIT_B}${GRAY}${DEPTH}\$ "
 }
 prompt
