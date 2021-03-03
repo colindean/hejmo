@@ -71,3 +71,7 @@ Plug 'Chiel92/vim-autoformat'
 
 " zettelkasten
 Plug 'fiatjaf/neuron.vim'
+" jq interactivity - https://github.com/bfrg/vim-jqplay
+Plug 'bfrg/vim-jqplay'
+" jq language support
+Plug 'bfrg/vim-jq'
