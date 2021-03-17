@@ -75,3 +75,7 @@ Plug 'fiatjaf/neuron.vim'
 Plug 'bfrg/vim-jqplay'
 " jq language support
 Plug 'bfrg/vim-jq'
+
+" flake8 for python
+Plug 'nvie/vim-flake8'
+

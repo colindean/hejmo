@@ -162,3 +162,7 @@ let g:goyo_linenr = 0
 
 com! FormatJSON %!jq .
 nmap =j :FormatJSON<CR>
+
+" run flake8 when saving Python files
+autocmd BufWritePost *.py call flake8#Flake8()
+
