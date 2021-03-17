@@ -16,8 +16,10 @@ function toggle_zoom_mute()
   local zoom = hs.application.find("zoom.us")
   if not(zoom:findMenuItem("Unmute Audio")) then
     zoom:selectMenuItem("Mute Audio")
+    alert.show("Z 🔇")
   elseif not(zoom:findMenuItem("Mute Audio")) then
     zoom:selectMenuItem("Unmute Audio")
+    alert.show("Z 🔈")
   end
 end
 
