@@ -47,3 +47,4 @@ target/
 *.iml
 # Elementary Code backup files
 *~
+Brewfile.lock.json
