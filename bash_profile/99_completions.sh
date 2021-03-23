@@ -12,7 +12,10 @@ if [ -n "$(command -v brew)" ]; then
 fi
 
 #autocomplete for g as well
-complete -o default -o nospace -F _git g
+#complete -o default -o nospace -F _git g
+if [ -n "$(command -v __git_complete)" ]; then
+  __git_complete g git
+fi
 
 #autocomplete for t
 # shellcheck source=../scripts/_t_completion
