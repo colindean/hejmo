@@ -1,2 +1,11 @@
 #!/bin/sh
-python -m SimpleHTTPServer "$@"
+
+if [ -n "$(command -v miniserve)" ]; then
+  miniserve "$@"
+elif [ -n "$(command -v twist)" ]; then
+  twist web "$@"
+elif python -V | grep -q "Python 3"; then
+  python -m http.server "$@"
+elif python -V | grep -q "Python 2"; then
+  python -m SimpleHTTPServer "$@"
+fi
