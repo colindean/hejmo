@@ -9,6 +9,7 @@
 sudo apt-get -qy install netcat || (sudo apt-get update && sudo apt-get -qy install netcat)
 PROXY_DETECTION_SCRIPT_PATH=/usr/local/bin/cadcx-proxy-detect
 PROXY_DETECTION_APT_CONF_PATH=/etc/apt/apt.conf.d/99cadcx-proxy-detect
+# quotes around the keyword makes bash not substitute inside the HEREDOC
 sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" > /dev/null <<- "SCRIPT"
     #!/bin/bash
     IP=proxy.blackridge.cad.cx
@@ -19,7 +20,7 @@ sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" > /dev/null <<- "SCRIPT"
         echo -n "DIRECT"
     fi
 SCRIPT
-sudo tee "${PROXY_DETECTION_APT_CONF_PATH}" > /dev/null << "APTCONF"
+sudo tee "${PROXY_DETECTION_APT_CONF_PATH}" > /dev/null << APTCONF
     Acquire::http::Proxy-Auto-Detect "${PROXY_DETECTION_SCRIPT_PATH}";
 APTCONF
 
@@ -62,4 +63,22 @@ if [[ "$(lsb_release --id --short)" == "elementary" ]]; then
     sudo add-apt-repository ppa:philip.scott/elementary-tweaks
     sudo apt install elementary-tweaks
   fi
+fi
+
+# ChromeOS terminal essentials
+if [[ "$(hostname)" == "penguin" ]]; then
+    if [[ "$(lsb_release --id --short)" == "Debian" ]]; then
+        # setup Debian backports
+        sudo tee /etc/apt/sources.list.d/debian-backports.list <<- DEBCONF
+        deb http://deb.debian.org/debian $(lsb_release --codename --short)-backports main
+DEBCONF
+        sudo apt-get update
+        
+        # install flatpak
+        sudo apt install flatpak/$(lsb_release --codename --short)-backports
+        flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        
+        # install some flatpak packages
+        flatpak install flathub org.videolan.VLC
+    fi
 fi
