@@ -20,6 +20,7 @@ sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" > /dev/null <<- "SCRIPT"
         echo -n "DIRECT"
     fi
 SCRIPT
+sudo chmod +x "${PROXY_DETECTION_SCRIPT_PATH}"
 sudo tee "${PROXY_DETECTION_APT_CONF_PATH}" > /dev/null << APTCONF
     Acquire::http::Proxy-Auto-Detect "${PROXY_DETECTION_SCRIPT_PATH}";
 APTCONF
