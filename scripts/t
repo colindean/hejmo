@@ -126,6 +126,14 @@ _t_sheet() {
   done
 }
 
+_t_edit() {
+  if [[ "${EDITOR}" =~ "vi" ]]; then
+    # go to the bottom of the file by default for vi/m
+    EDITOR_OPTIONS=("+ normal GA")
+  fi
+  _t_do "${EDITOR}" "${EDITOR_OPTIONS[@]}" "$@"
+}
+
 # Show usage
 _t_usage() {
   # TODO
@@ -207,7 +215,7 @@ case "${action}" in
   week) _t_ledger bal -p "this week" "$@";;
   lastweek) _t_ledger bal -p "last week" "$@";;
   switch)   _t_sw "$@";;
-  edit) _t_do "${EDITOR}" "$@";;
+  edit) _t_edit "$@";;
   cur)  _t_cur "$@";;
   last) _t_last "$@";;
   grep) _t_do grep "$@";;
