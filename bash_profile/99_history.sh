@@ -8,6 +8,8 @@ export HISTSIZE=5000
 # keep the last N on disk
 export HISTFILESIZE=100000
 export HISTTIMEFORMAT='[@ %Y-%m-%d %T] '
+# don't log any command that begins with an empty space
+export HISTCONTROL="ignorespace"
 # append the history instead of overwriting it when there are multiple sessions
 shopt -s histappend
 HISTORY_CMDS="history -a; history -c; history -r"
