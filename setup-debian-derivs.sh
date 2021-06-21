@@ -27,6 +27,7 @@ SCRIPT
 sudo chmod +x "${PROXY_DETECTION_SCRIPT_PATH}"
 sudo tee "${PROXY_DETECTION_APT_CONF_PATH}" > /dev/null << APTCONF
     Acquire::http::Proxy-Auto-Detect "${PROXY_DETECTION_SCRIPT_PATH}";
+    Acquire::https::Proxy-Auto-Detect "${PROXY_DETECTION_SCRIPT_PATH}";
 APTCONF
 
 # update and install some basics
