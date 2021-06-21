@@ -15,11 +15,13 @@ sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" > /dev/null <<- "SCRIPT"
 	#!/bin/bash
 	IP=proxy.blackridge.cad.cx
 	PORT=3128
-	>&2 echo "Checking proxy ${IP}:${PORT}"
-	if nc -w3 -z $IP $PORT; then
-		echo -n "http://${IP}:${PORT}"
+	>&2 echo "Checking proxy for ${@}"
+	if nc -w2 -z $IP $PORT; then
+        	>&2 echo "✓ $IP:$PORT"
+        	echo -n "http://${IP}:${PORT}"
 	else
-		echo -n "DIRECT"
+        	>&2 echo "🗴 DIRECT"
+        	echo -n "DIRECT"
 	fi
 SCRIPT
 sudo chmod +x "${PROXY_DETECTION_SCRIPT_PATH}"
