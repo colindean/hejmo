@@ -10,15 +10,17 @@ sudo apt-get -qy install netcat || (sudo apt-get update && sudo apt-get -qy inst
 PROXY_DETECTION_SCRIPT_PATH=/usr/local/bin/cadcx-proxy-detect
 PROXY_DETECTION_APT_CONF_PATH=/etc/apt/apt.conf.d/99cadcx-proxy-detect
 # quotes around the keyword makes bash not substitute inside the HEREDOC
+# inside _must_ be tabs for <<- to remove them when writing
 sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" > /dev/null <<- "SCRIPT"
-    #!/bin/bash
-    IP=proxy.blackridge.cad.cx
-    PORT=3128
-    if nc -w1 -z $IP $PORT; then
-        echo -n "http://${IP}:${PORT}"
-    else
-        echo -n "DIRECT"
-    fi
+	#!/bin/bash
+	IP=proxy.blackridge.cad.cx
+	PORT=3128
+	>&2 echo "Checking proxy ${IP}:${PORT}"
+	if nc -w3 -z $IP $PORT; then
+		echo -n "http://${IP}:${PORT}"
+	else
+		echo -n "DIRECT"
+	fi
 SCRIPT
 sudo chmod +x "${PROXY_DETECTION_SCRIPT_PATH}"
 sudo tee "${PROXY_DETECTION_APT_CONF_PATH}" > /dev/null << APTCONF
