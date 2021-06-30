@@ -10,12 +10,28 @@ MYPATH+=("${HOME}/.bin")
 MYPATH+=('/usr/local/opt/python/libexec/bin')
 ## homebrew curl
 MYPATH+=('/usr/local/opt/curl/bin')
-## homebrew
+## locally installed stuff, including homebrew
 MYPATH+=('/usr/local/bin:/usr/local/sbin')
-LINUXBREW_PATH="${LINUXBREW_PATH:-/home/linuxbrew/.linuxbrew}"
+
+__determine_brew_path(){
+  local local_brew_path
+
+  if [ -d "${HOME}/.linuxbrew" ]; then
+    local_brew_path="${HOME}/.linuxbrew"
+  elif [ -d "$(dirname "${HOME}")/linuxbrew/.linuxbrew" ]; then
+    local_brew_path="$(dirname "${HOME}")/linuxbrew/.linuxbrew"
+  elif [ -f "/usr/local/bin/brew" ]; then
+    local_brew_path="/usr/local/bin"
+  elif [ -f "/opt/homebrew/bin/brew"; then
+    local_brew_path="/opt/homebrew"
+  fi
+
+  echo "${local_brew_path}"
+}
+
+eval "$($(__determine_brew_path)/bin/brew shellenv)"
 [[ "Linux" == "$(uname -s)" ]] && \
-  [[ -d "${LINUXBREW_PATH}/bin" ]] && \
-  MYPATH+=("${LINUXBREW_PATH}/bin")
+  MYPATH+=("$(__determine_brew_path)/bin")
 ## java
 MYPATH+=("$JAVA_HOME/bin")
 ## rust
