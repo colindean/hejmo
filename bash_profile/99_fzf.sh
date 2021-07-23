@@ -54,4 +54,5 @@ cd_home_fzf() {
   cd_fzf "$HOME"
 }
 
-
+# show all branches in a menu
+alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
