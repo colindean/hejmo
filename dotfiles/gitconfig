@@ -124,3 +124,9 @@
 	ff = only
 [init]
 	defaultBranch = main
+[url "git@github.com:colindean"]
+  insteadof = https://github.com/colindean
+[url "git@gitlab.com:colindean"]
+  insteadof = https://gitlab.com/colindean
+[github]
+  user = colindean
