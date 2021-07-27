@@ -12,3 +12,6 @@ if true && [ -n "$(command -v zoxide)" ]; then
       eval "$(zoxide init posix --hook prompt)";;
   esac
 fi
+
+# because the zoxide thing messes this up
+export PROMPT_COMMAND="${PROMPT_COMMAND/;;/;}"
