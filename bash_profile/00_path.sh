@@ -21,15 +21,15 @@ __determine_brew_path(){
   elif [ -d "$(dirname "${HOME}")/linuxbrew/.linuxbrew" ]; then
     local_brew_path="$(dirname "${HOME}")/linuxbrew/.linuxbrew"
   elif [ -f "/usr/local/bin/brew" ]; then
-    local_brew_path="/usr/local/bin"
-  elif [ -f "/opt/homebrew/bin/brew"; then
+    local_brew_path="/usr/local/"
+  elif [ -f "/opt/homebrew/bin/brew" ]; then
     local_brew_path="/opt/homebrew"
   fi
 
   echo "${local_brew_path}"
 }
 
-eval "$($(__determine_brew_path)/bin/brew shellenv)"
+eval "$("$(__determine_brew_path)/bin/brew" shellenv)"
 [[ "Linux" == "$(uname -s)" ]] && \
   MYPATH+=("$(__determine_brew_path)/bin")
 ## java
