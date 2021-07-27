@@ -4,5 +4,7 @@
 alias gradle="gw --daemon"
 alias gw="gw --daemon"
 
-[[ -s "$HOME/.gvm/bin/gvm-init.sh" ]] && . "$HOME/.gvm/bin/gvm-init.sh"
+if [ -s "$HOME/.gvm/bin/gvm-init.sh" ]; then
+  "$HOME/.gvm/bin/gvm-init.sh"
+fi
 
