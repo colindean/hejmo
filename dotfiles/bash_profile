@@ -17,6 +17,21 @@ current_time() {
   # https://superuser.com/a/713000
   perl -MTime::HiRes -e 'printf("%.0f\n",Time::HiRes::time()*1000)'
 }
+## trap failures during startup more, uh, grandiloquently
+failure() {
+  local lineno=$2
+  local fn=$3
+  local exitstatus=$4
+  local msg=$5
+  local lineno_fns=${1% 0}
+  if [[ "$lineno_fns" != "0" ]] ; then
+    lineno="${lineno} ${lineno_fns}"
+  fi
+  echo "${BASH_SOURCE[1]}:${fn}[${lineno}] Failed with status ${exitstatus}: $msg"
+}
+trap 'failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
+
+## SO IT BEGINS
 HEJMO_LOAD_START=$(current_time)
 
 ## Actually load stuff!
@@ -89,6 +104,7 @@ for i in ${HEJMO_BASH_PROFILE_DIR}/*.sh; do
   if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
     # seconds
     TIMEFORMAT="%R = $i"
+    echo "Loading $i"
     { time . "$i" ; } 2>> "${HEJMO_BENCH_RESULTS}"
     unset TIMEFORMAT
   else
@@ -113,6 +129,9 @@ if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "------------------------------"
   >&2 echo "Total time: ${HEJMO_LOAD_TIME} milliseconds"
 fi
+
+## drop the custom error handler
+trap - ERR
 
 ############################################################
 ### ANYTHING added after here was added automatically      #
