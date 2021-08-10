@@ -79,7 +79,12 @@ _t_start() {
 }
 
 _t_end() {
-  local end_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+  local end_date
+  if [[ -z "${1}" ]]; then
+    _t_out "${@}"
+    return 0
+  fi
+  end_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
   if [[ -z "${end_date}" ]]; then
     exit 1 #rely on date to have shown the error
   fi
