@@ -1,0 +1,10 @@
+#!/bin/sh
+
+unset NO_PROXY
+unset FTP_PROXY
+unset RSYNC_PROXY
+unset HTTPS_PROXY
+unset HTTP_PROXY
+unset ALL_PROXY
+
+${@}
