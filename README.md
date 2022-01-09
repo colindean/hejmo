@@ -11,21 +11,38 @@ way.
 I usually put this into `mkdir ~/Source/Personal` on my work machine or into `mkdir ~/Source/` on a personal machine.
 
 ```bash
-git clone https://github.com/colindean/hejmo.git
-cd hejmo
-bash link_dotbin.sh
-bash link_dotfiles.sh
-bash setup-homebrew.sh
+git clone https://github.com/colindean/hejmo.git && cd hejmo
+bash link_dotbin.sh && \
+bash link_dotfiles.sh && \
+bash setup-homebrew.sh && \
+brew bundle --file=Brewfile.all && \
+brew bundle --file=Brewfile.$(hostname) && \
+git remote set-url origin git@github.com:colindean/hejmo.git
+```
+
+On Linux only:
+
+```
+bash setup-debian-derivs.sh && bash setup-docker-linux.sh
+```
+
+On macOS only:
+
+```
 bash setup-iterm.sh
-brew bundle --file=Brewfile.$(hostname)
-bash setup-rust.sh
+```
+
+And when I need them:
+
+
+```
+bash setup-rust.sh && \
 bash setup-ruby.sh
 ```
 
 You will see errors about:
 
-* `__git_ps1` until both `git` and `bash-completion` are installed from Homebrew
-* `$HOME/.cargo/env` until `setup-rust.sh` has been run or cargo is otherwise available
+* `__git_ps1` until both `git` and `bash-completion` are installed (from apt or Homebrew)
 * `hub` until hub is install from Homebrew
 
 ## Things to copy
