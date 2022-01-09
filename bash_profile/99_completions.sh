@@ -19,8 +19,14 @@ fi
 
 #autocomplete for t
 # shellcheck source=../scripts/_t_completion
-[[ -n "$(command -v t)" ]] && [[ -n "$(command -v _t_completion)" ]] && source "$(command -v _t_completion)"
+if [ -n "$(command -v t)" ]; then
+  if [ -n "$(command -v _t_completion)" ]; then
+    source "$(command -v _t_completion)"
+  fi
+fi
 
 # autocomplete for pandoc
-[[ -n "$(command -v pandoc)" ]] && eval "$(pandoc --bash-completion)"
+if [ -n "$(command -v pandoc)" ]; then
+  eval "$(pandoc --bash-completion)"
+fi
 
