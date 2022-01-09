@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+# Completions from OS
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# Completions from Homebrew
+
 if [ -n "$(command -v brew)" ]; then
   # completions
   HOMEBREW_PREFIX="$(${BREW_PREFIX})"
