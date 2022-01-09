@@ -36,6 +36,14 @@ sudo apt-get -qy install \
     fonts-firacode \
     fonts-liberation2
 
+# make capslock into escape
+if command -v gsettings; then
+  gsettings set org.gnome.desktop.input-sources xkb-options "['grp:alt_shift_toggle', 'caps:escape']"
+elif command -v dconf; then
+  dconf write /org/gnome/desktop/input-sources/xkb-options "['grp:alt_shift_toggle', 'caps:escape']"
+fi
+  
+
 # elementaryOS-specific stuff
 if [[ "$(lsb_release --id --short)" == "elementary" ]]; then
 
