@@ -109,6 +109,9 @@ for i in ${HEJMO_BASH_PROFILE_DIR}/*.sh; do
     unset TIMEFORMAT
   else
     . "$i"
+    if [[ $? != 0 ]]; then
+      >&2 echo "Error was in loading $i"
+    fi
   fi
 done; unset i
 
