@@ -2,27 +2,24 @@
 
 command_exists() {
   local cmd="$1"
-  command -v ${cmd} >/dev/null 2>&1
+  command -v "${cmd}" >/dev/null 2>&1
 }
 
 install_homebrew() {
-  local homebrew_installer_url="https://raw.githubusercontent.com/Homebrew/install/master/install"
+  local homebrew_installer_url="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
   command_exists "curl"
   curl_exists=$?
   if [[ $curl_exists -ne 0 ]]; then
-    echo >&2 "curl isn't available. What's up?"
-    exit 2
+    if [[ -n "$(command -v "apt")" ]]; then
+        sudo apt install curl
+    else
+      echo >&2 "curl isn't available. What's up?"
+      exit 2
+    fi
   fi
 
-  command_exists "ruby"
-  ruby_exists=$?
-  if [[ $ruby_exists -ne 0 ]]; then
-    echo >&2 "ruby isn't available. What's up?"
-    exit 2
-  fi
-
-  ruby -e "$(curl -fsSL ${homebrew_installer_url})"
+  bash -c "$(curl -fsSL ${homebrew_installer_url})"
 }
 
 install_packages() {
@@ -73,4 +70,11 @@ link_all_files_in_dir() {
     echo "Linking ${LINK} to ${TARGET}"
     ln -sFf "${TARGET}" "${LINK}"
   done
+}
+
+banner_text() {
+  local text="${@}"
+  printf "\033#3%s\n" "${text}"
+  printf "\033#4%s\n" "${text}"
+  printf "\033#5"
 }
