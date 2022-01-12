@@ -2,16 +2,6 @@
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home
 export JAVA_HOME=/Library/Java/Home
 function join { local IFS="$1"; shift; echo "$*"; }
-# Setup PATH
-MYPATH=()
-## my scripts
-MYPATH+=("${HOME}/.bin")
-## brew's python
-MYPATH+=('/usr/local/opt/python/libexec/bin')
-## homebrew curl
-MYPATH+=('/usr/local/opt/curl/bin')
-## locally installed stuff, including homebrew
-MYPATH+=('/usr/local/bin:/usr/local/sbin')
 
 __determine_brew_path(){
   local local_brew_path
@@ -28,6 +18,16 @@ __determine_brew_path(){
 
   echo "${local_brew_path}"
 }
+
+# Setup PATH
+MYPATH=()
+## my scripts
+MYPATH+=("${HOME}/.local/bin" "${HOME}/.bin")
+## homebrew curl
+MYPATH+=("$(__determine_brew_path)/opt/curl/bin")
+## locally installed stuff, including homebrew
+#MYPATH+=('/usr/local/bin:/usr/local/sbin')
+
 
 eval "$("$(__determine_brew_path)/bin/brew" shellenv)"
 [[ "Linux" == "$(uname -s)" ]] && \

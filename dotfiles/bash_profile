@@ -141,3 +141,6 @@ trap - ERR
 ### and should be added to a file in ${HEJMO}/bash_profile #
 ############################################################
 
+
+# Created by `pipx` on 2021-10-02 00:23:56
+export PATH="$PATH:/Users/Z003XC4/.local/bin"
