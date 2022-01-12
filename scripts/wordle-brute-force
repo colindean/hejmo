@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# YEP="_a__r" NOPE=etyipsdglcbn MUST=""
+
+PATTERN="${1}"
+EXCLUDE="${2}"
+INCLUDE="${3}"
+
+if [[ ! "${PATTERN}" =~ "_" ]]; then
+  echo "First arg must have _ in it to indicate blanks, or you're already done!"
+  echo "Pass excludes as second arg and includes as third."
+  exit 1
+fi
+
+
+echo "Looking for words fitting [${PATTERN}]"
+if [[ -n "${EXCLUDE}" ]]; then
+  echo "and not having [${EXCLUDE}]"
+fi
+if [[ -n "${INCLUDE}" ]]; then
+  echo "and having [${INCLUDE}]"
+fi
+
+NOT="[^${PATTERN//_/}${EXCLUDE}]"
+
+echo "Candidates:"
+grep "^${PATTERN//_/${NOT}}$" /usr/share/dict/words | grep "${INCLUDE:-}"
