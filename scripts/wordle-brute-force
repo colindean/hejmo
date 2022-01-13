@@ -23,5 +23,11 @@ fi
 
 NOT="[^${PATTERN//_/}${EXCLUDE}]"
 
+REGEX="^${PATTERN//_/${NOT}}$"
+
+if [[ -n "${DEBUG}" ]]; then
+  echo "with regex: ${REGEX}"
+fi
+
 echo "Candidates:"
-grep "^${PATTERN//_/${NOT}}$" /usr/share/dict/words | grep "${INCLUDE:-}"
+grep "${REGEX}" /usr/share/dict/words | grep "${INCLUDE:-}"
