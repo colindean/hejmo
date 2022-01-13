@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-# YEP="_a__r" NOPE=etyipsdglcbn MUST=""
-
 PATTERN="${1}"
 EXCLUDE="${2}"
 INCLUDE="${3}"
 
 log() {
-  >&2 echo ${@}
+  >&2 echo "${@}"
 }
 
 if command -v rg >/dev/null; then
