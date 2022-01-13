@@ -6,6 +6,12 @@ PATTERN="${1}"
 EXCLUDE="${2}"
 INCLUDE="${3}"
 
+if command -v rg >/dev/null; then
+  GREP="${GREP:-rg}"
+else
+  GREP="${GREP:-grep}"
+fi
+
 if [[ ! "${PATTERN}" =~ "_" ]]; then
   echo "First arg must have _ in it to indicate blanks, or you're already done!"
   echo "Pass excludes as second arg and includes as third."
@@ -13,13 +19,15 @@ if [[ ! "${PATTERN}" =~ "_" ]]; then
 fi
 
 
-echo "Looking for words fitting [${PATTERN}]"
+echo -n "Looking for words fitting [${PATTERN}]"
 if [[ -n "${EXCLUDE}" ]]; then
-  echo "and not having [${EXCLUDE}]"
+  echo -n " and not having [${EXCLUDE}]"
 fi
 if [[ -n "${INCLUDE}" ]]; then
-  echo "and having [${INCLUDE}]"
+  echo -n " and having [${INCLUDE}]"
 fi
+
+echo
 
 NOT="[^${PATTERN//_/}${EXCLUDE}]"
 
@@ -30,4 +38,4 @@ if [[ -n "${DEBUG}" ]]; then
 fi
 
 echo "Candidates:"
-grep "${REGEX}" /usr/share/dict/words | grep "${INCLUDE:-}"
+"${GREP}" "${REGEX}" /usr/share/dict/words | "${GREP}" "${INCLUDE:-}"
