@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home
-export JAVA_HOME=/Library/Java/Home
 function join { local IFS="$1"; shift; echo "$*"; }
 
 __determine_brew_path(){
@@ -33,7 +31,18 @@ eval "$("$(__determine_brew_path)/bin/brew" shellenv)"
 [[ "Linux" == "$(uname -s)" ]] && \
   MYPATH+=("$(__determine_brew_path)/bin")
 ## java
-MYPATH+=("$JAVA_HOME/bin")
+if [[ "Linux" == "$(uname -s)" ]] && [[ -f /bin/update-alternatives ]]; then
+  # update-alternatives gives ${JAVA_HOME}/jre/bin/java, so we gotta safely traverse upward
+  export JAVA_HOME="$(dirname $(dirname $(dirname $(/bin/update-alternatives --query java | grep "^Value" | cut -f 2 -d ' '))))"
+elif [[ "Darwin" == "$(uname -s)" ]]; then
+  # macOS manages Java smartly
+  export JAVA_HOME=/Library/Java/Home
+else
+  echo "Could not determine JAVA_HOME"
+fi
+if [[ -n "${JAVA_HOME}" ]]; then
+  MYPATH+=("$JAVA_HOME/bin")
+fi
 ## rust
 MYPATH+=("$HOME/.cargo/bin:$PATH")
 MYPATH+=('/usr/local/opt/rust/bin')
