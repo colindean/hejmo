@@ -12,12 +12,18 @@
 	whitespace = trailing-space,space-before-tab
 	excludesfile = ~/.gitignore_global
 	autocrlf = input
-  pager = delta --theme="zenburn" #--plus-color="#012800" --minus-color="#340001" --theme="zenburn"
-	attributesfile = /Users/Z003XC4/.gitattributes
+	pager = delta
+	attributesfile = ~/.gitattributes
 [interactive]
-  diffFilter = delta --color-only
+	diffFilter = delta --color-only
 [diff]
 	renames = copies
+	colorMoved = default
+[merge]
+	conflictstyle = diff3
+[delta]
+	navigate = true
+	features = zenburn
 [rerere]
 	enabled = true
 [alias]
