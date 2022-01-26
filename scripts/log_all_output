@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# write a process's stderr and stdout to the console as well as to separate files
+# inspired by https://stackoverflow.com/a/692407/204052
+
+stdout="${STDOUT:-stdout.log}"
+stderr="${STDERR:-stderr.log}"
+
+"${@}" >(tee -a "${stdout}") 2> >(tee -a "${stderr}" >&2)
