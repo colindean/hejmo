@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+: "${GITHUB_TOKEN:=}"
+
+set -eu -o pipefail
+
+SITE="${1:-"github.com"}"
+
+if [[ -n "${GITHUB_TOKEN}" ]]; then
+  printf "%s" "${GITHUB_TOKEN}"
+  exit 0
+fi
+
+HUB_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/hub"
+
+if [[ -r "${HUB_CONFIG}" ]]; then
+  if ! command -v yaml2json > /dev/null; then
+    >&2 echo "Need 'yaml2json' executable to convert ${HUB_CONFIG} from YAML to JSON"
+    exit 1
+  fi
+  if ! command -v jq > /dev/null;  then
+    >&2 echo "Need 'jq' to extract the tokens from ${HUB_CONFIG}"
+    exit 1
+  fi
+
+  yaml2json "${HUB_CONFIG}" \
+    | jq -r --arg site "${SITE}" '.[$site] | first | .oauth_token'
+
+  exit $?
+fi
+
+>&2 printf "No token in GITHUB_TOKEN and %s is missing or does not contain a token for %s" "${HUB_CONFIG}" "${SITE}"
+exit 1
