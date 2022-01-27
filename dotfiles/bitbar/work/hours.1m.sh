@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# <bitbar.title>Time checker</bitbar.title>
-# <bitbar.version>v1.0</bitbar.version>
-# <bitbar.author>colindean</bitbar.author>
-# <bitbar.author.github>colindean</bitbar.author.github>
-# <bitbar.desc>
+# <xbar.title>Time checker</xbar.title>
+# <xbar.version>v1.0</xbar.version>
+# <xbar.author>colindean</xbar.author>
+# <xbar.author.github>colindean</xbar.author.github>
+# <xbar.desc>
 #   Runs `t hours` to show the current hours logged today
-# </bitbar.desc>
+# </xbar.desc>
 
 #Unfortunately, t requires basically everything.
 

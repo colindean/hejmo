@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# <bitbar.title>Pomodoro Timer</bitbar.title>
-# <bitbar.version>v1.1</bitbar.version>
-# <bitbar.author>Martin Kourim</bitbar.author>
-# <bitbar.author.github>mkoura</bitbar.author.github>
-# <bitbar.desc>Timer that uses Pomodoro timeboxing</bitbar.desc>
-# <bitbar.image>https://i.imgur.com/WswKpT4.png</bitbar.image>
+# <xbar.title>Pomodoro Timer</xbar.title>
+# <xbar.version>v1.1</xbar.version>
+# <xbar.author>Martin Kourim</xbar.author>
+# <xbar.author.github>mkoura</xbar.author.github>
+# <xbar.desc>Timer that uses Pomodoro timeboxing</xbar.desc>
+# <xbar.image>https://i.imgur.com/WswKpT4.png</xbar.image>
 
 # pomodoro duration
 readonly POMODORO=1500 # 25 min
@@ -40,7 +40,7 @@ readonly UNCHECKED_ICON="✗"
 readonly MAX_UPDATE_INTERVAL=60
 
 # file for saving status
-readonly STATUS_FILE="$HOME/.bitbar_pomodoro"
+readonly STATUS_FILE="$HOME/.xbar_pomodoro"
 
 # running on Linux or Mac OS X?
 [ -e /proc/uptime ] && LINUX="true" || LINUX=""
@@ -264,7 +264,7 @@ print_remaining_minutes() {
   fi
 }
 
-# prints menu for argos/bitbar
+# prints menu for argos/xbar
 print_menu() {
   case "$state" in
     "STOP")
