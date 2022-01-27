@@ -2,11 +2,16 @@
 
 # Set computer name (as done via System Preferences → Sharing)
 # set INTENDED_HOSTNAME in ~/.env.local
-NEW_HOSTNAME="${INTENDED_HOSTNAME:-$(hostname)}"
-sudo scutil --set ComputerName "${NEW_HOSTNAME}"
-sudo scutil --set HostName "${NEW_HOSTNAME}"
-sudo scutil --set LocalHostName "${NEW_HOSTNAME}"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${NEW_HOSTNAME}"
+if [ -z ${DISABLE_HOSTNAME_CHANGE+x} ]; then
+  NEW_HOSTNAME="${INTENDED_HOSTNAME:-$(hostname)}"
+  >&2 echo "Changing hostname to ${NEW_HOSTNAME}"
+  sudo scutil --set ComputerName "${NEW_HOSTNAME}"
+  sudo scutil --set HostName "${NEW_HOSTNAME}"
+  sudo scutil --set LocalHostName "${NEW_HOSTNAME}"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${NEW_HOSTNAME}"
+else
+  >&2 echo "Not changing hostname from $(hostname) because DISABLE_HOSTNAME_CHANGE is set."
+fi
 
 # enable sshd
 sudo systemsetup -f -setremotelogin on

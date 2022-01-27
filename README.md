@@ -14,9 +14,12 @@ I usually put this into `mkdir ~/Source/Personal` on my work machine or into `mk
 git clone https://github.com/colindean/hejmo.git && cd hejmo
 bash link_dotbin.sh && \
 bash link_dotfiles.sh && \
-bash setup-homebrew.sh && \
+bash setup-homebrew.sh
+
+source ~/.bash_profile # or restart the terminal process
+
 brew bundle --file=Brewfile.all && \
-brew bundle --file=Brewfile.$(hostname) && \
+brew bundle --file=Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
 git remote set-url origin git@github.com:colindean/hejmo.git
 ```
 
@@ -29,7 +32,13 @@ bash setup-debian-derivs.sh && bash setup-docker-linux.sh
 On macOS only:
 
 ```
-bash setup-iterm.sh
+bash setup-iterm.sh && bash setup-mac.sh
+```
+
+Then handle some standard tooling updates:
+
+```
+plug install && plug update   # install vim plugins with plug helper
 ```
 
 And when I need them:
