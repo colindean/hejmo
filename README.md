@@ -11,6 +11,7 @@ way.
 I usually put this into `mkdir ~/Source/Personal` on my work machine or into `mkdir ~/Source/` on a personal machine.
 
 ```bash
+mkdir -p ~/Source/Personal && cd ~/Source/Personal && \
 git clone https://github.com/colindean/hejmo.git && cd hejmo
 bash link_dotbin.sh && \
 bash link_dotfiles.sh && \
