@@ -77,6 +77,10 @@ JOINED_PATH=$(join : "${MYPATH[@]}")
 export PATH=$JOINED_PATH:$PATH
 
 ## pyenv, the slow one
-if [[ -n "$(command -v pyenv)" ]]; then
-  eval "$(pyenv init -)"
+if command -v pyenv >/dev/null; then
+  eval "$(pyenv init --path)" && \
+    eval "$(pyenv init -)"
+  if pyenv virtualenv-init > /dev/null 2>&1; then
+    eval "$(pyenv virtualenv-init -)"
+  fi
 fi
