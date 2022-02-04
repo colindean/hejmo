@@ -66,6 +66,9 @@ Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }
 " Java properties files
 Plug 'kamichidu/vim-edit-properties'
 
+" Gemini text
+Plug 'https://tildegit.org/sloum/gemini-vim-syntax.git'
+
 " automatic formatting - I may regret this
 Plug 'Chiel92/vim-autoformat'
 
