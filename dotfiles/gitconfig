@@ -82,10 +82,13 @@
 	fpush = !git push --force-with-lease
 
 	# Et cetera
-  	# Print URLs of remote repositories. (git config --get-regex '^remote' is a simpler command, but its output isn’t aligned.)
-  	remote-paths = "!grep -A2 '^\\[remote' $(git root)/.git/config"
-	# All files under version control in the current revision
+	## Print URLs of remote repositories. (git config --get-regex '^remote' is a simpler command, but its output isn’t aligned.)
+	remote-paths = "!grep -A2 '^\\[remote' $(git root)/.git/config"
+	## All files under version control in the current revision
 	manifest = ls-tree -r --full-tree --name-only HEAD
+	## Create default .git-blame-ignore-revs file from revs that contain "Reformat"
+	#write-reformats-to-blame-ignore = !git log --grep Reformat --format="%H%n\0x23 %s" >> .git-blame-ignore-revs
+	set-blame-ignore-revs = config set blame.ignoreRevsFile .git-blame-ignore-revs
 
   	# Misspellings, Plurals, etc.
 	ad = add
@@ -148,3 +151,6 @@
 
 # Sources:
 # https://github.com/gggritso/dotfiles/blob/master/gitconfig.symlink
+[blame]
+	markIgnoredLines = true
+	markUnblamableLines = true
