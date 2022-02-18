@@ -8,9 +8,9 @@ ugh=$($date --version 2>&1 )
 if [[ $? -ne 0 ]]; then
   date="gdate";
   if [[ -z "$(command -v $date)" ]]; then
-    echo "No date command with --date support found."
+    >&2 echo "No date command with --date support found."
     if [[ "$(uname -s)" == "Darwin" ]]; then
-      echo "Try installing GNU Coreutils with 'brew install coreutils' to get GNU date, which supports relative dates."
+      >&2 echo "Try installing GNU Coreutils with 'brew install coreutils' to get GNU date, which supports relative dates."
     fi
     exit 1
   fi
