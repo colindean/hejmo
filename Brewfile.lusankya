@@ -7,14 +7,11 @@ tap 'colindean/fonts-nonfree'
 tap 'coursier/formulas'
 
 # needed for basically everything, might as well install it
-cask 'adoptopenjdk8'
+cask 'adoptopenjdk'
 # quick screen recording
 cask 'licecap'
 # IDE for Scala and Java development
 cask 'intellij-idea'
-
-# JDK 1.8 for way too much still
-cask 'adoptopenjdk8'
 
 # video conferencing
 unless Dir.exist? "/Applications/zoom.us.app"
@@ -31,24 +28,24 @@ brew 'jrnl'
 brew 'ghostscript'
 
 # used for menu bar stuff like time tracking
-cask 'bitbar'
+cask 'xbar'
 
 # alternative cat that does syntax highlighting
 brew 'bat'
 
 # mac app store apps
-brew 'mas'
-begin
+#brew 'mas'
+#begin
   # mas 'Trello', id: 1278508951
-rescue
-  echo "mas is unavailable, skipping Mac App Store apps"
-end
+#rescue
+#  echo "mas is unavailable, skipping Mac App Store apps"
+#end
 
 # a better find, use like "fd PATTERN"
 brew 'fd'
 
 # scala dependency retriever and bootstrap setup
-brew 'coursier/formulas/coursier'
+#brew 'coursier/formulas/coursier'
 
 # shell code linting
 brew 'shellcheck'
