@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO: metaprogram this so that it's all generated at execution/sourcing
-export HEJMO_USE_ANSI=""
+export HEJMO_USE_ANSI="${HEJMO_USE_ANSI}"
 
 ansi_escape(){
   if [[ $HEJMO_USE_ANSI -eq 1 ]]; then
@@ -92,12 +92,15 @@ ansi_demo(){
   echo -e "$(ansi_reset)"
 }
 
+if echo "${-}" | grep -q i; then
+  export HEJMO_USE_ANSI=0
+fi
+
 if [[ -z "${HEJMO_USE_ANSI}" ]]; then
-  tput colors > /dev/null
-  if [[ $? -gt 0 ]]; then
-    export HEJMO_USE_ANSI=0
-  else
+  if tput colors > /dev/null 2> /dev/null; then
     export HEJMO_USE_ANSI=1
+  else
+    export HEJMO_USE_ANSI=0
   fi
 fi
 

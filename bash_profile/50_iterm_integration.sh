@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# don't run if not in interactive mode
+if ! (echo "${-}" | grep -q i); then
+  return 0
+fi
+
 ITERM_INTEGRATION_SCRIPT="${HOME}/.iterm2_shell_integration.bash"
 
 if [ -z "${NO_ITERM}" ] && [ -f "${ITERM_INTEGRATION_SCRIPT}" ] ; then
