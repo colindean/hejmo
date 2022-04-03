@@ -26,6 +26,9 @@ MYPATH+=("$(__determine_brew_path)/opt/curl/bin")
 ## locally installed stuff, including homebrew
 #MYPATH+=('/usr/local/bin:/usr/local/sbin')
 
+## homebrew llvm
+#MYPATH+=("$(__determine_brew_path)/opt/llvm@11/bin")
+MYPATH+=("$(__determine_brew_path)/opt/llvm/bin")
 
 eval "$("$(__determine_brew_path)/bin/brew" shellenv)"
 [[ "Linux" == "$(uname -s)" ]] && \
@@ -34,13 +37,14 @@ eval "$("$(__determine_brew_path)/bin/brew" shellenv)"
 if [[ "Linux" == "$(uname -s)" ]] && [[ -f /bin/update-alternatives ]]; then
   # update-alternatives gives ${JAVA_HOME}/jre/bin/java, so we gotta safely traverse upward
   if java_ua_output="$(/bin/update-alternatives --query java 2>/dev/null)"; then
-    export JAVA_HOME="$(dirname $(dirname $(dirname $( echo "${java_ua_output}" | grep "^Value" | cut -f 2 -d ' '))))"
+    JAVA_HOME="$(dirname $(dirname $(dirname $( echo "${java_ua_output}" | grep "^Value" | cut -f 2 -d ' '))))"
+    export JAVA_HOME
   fi
 elif [[ "Darwin" == "$(uname -s)" ]]; then
   # macOS manages Java smartly
   export JAVA_HOME=/Library/Java/Home
 else
-  echo "Could not determine JAVA_HOME for $(uname -s) $(command -v lsb_release >/dev/null && lsb_release -sd || true) "
+  echo "Could not determine JAVA_HOME for $(uname -s) $( (command -v lsb_release >/dev/null && lsb_release -sd) || true) "
 fi
 if [[ -n "${JAVA_HOME}" ]]; then
   MYPATH+=("$JAVA_HOME/bin")
@@ -78,11 +82,3 @@ fi
 JOINED_PATH=$(join : "${MYPATH[@]}")
 export PATH=$JOINED_PATH:$PATH
 
-## pyenv, the slow one
-if command -v pyenv >/dev/null; then
-  eval "$(pyenv init --path)" && \
-    eval "$(pyenv init -)"
-  if pyenv virtualenv-init > /dev/null 2>&1; then
-    eval "$(pyenv virtualenv-init -)"
-  fi
-fi
