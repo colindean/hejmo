@@ -82,3 +82,5 @@ Plug 'bfrg/vim-jq'
 " flake8 for python
 Plug 'nvie/vim-flake8'
 
+" Brewfile
+Plug 'bfontaine/Brewfile.vim'
