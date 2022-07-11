@@ -5,7 +5,7 @@ export HEJMO_USE_ANSI="${HEJMO_USE_ANSI}"
 
 ansi_escape(){
   if [[ $HEJMO_USE_ANSI -eq 1 ]]; then
-    echo -en "[$@"
+    echo -en "[${*}"
   fi
 }
 ansi_erase_display(){
@@ -130,6 +130,8 @@ ansi_demo(){
   echo -en "$(ansi_color_fg_white)W"
   echo -en "$(ansi_color_fg_default)D"
 
+  echo -en "$(ansi_reset)"
+
   echo -en "$(ansi_color_fg_black_bold)K"
   echo -en "$(ansi_color_fg_red_bold)R"
   echo -en "$(ansi_color_fg_green_bold)G"
@@ -139,6 +141,8 @@ ansi_demo(){
   echo -en "$(ansi_color_fg_cyan_bold)C"
   echo -en "$(ansi_color_fg_white_bold)W"
   echo -en "$(ansi_color_fg_default_bold)D"
+
+  echo -en "$(ansi_reset)"
 
   echo -en "$(ansi_color_fg_black_underline)K"
   echo -en "$(ansi_color_fg_red_underline)R"
@@ -150,6 +154,8 @@ ansi_demo(){
   echo -en "$(ansi_color_fg_white_underline)W"
   echo -en "$(ansi_color_fg_default_underline)D"
 
+  echo -en "$(ansi_reset)"
+
   echo -en "$(ansi_color_fg_black_high)K"
   echo -en "$(ansi_color_fg_red_high)R"
   echo -en "$(ansi_color_fg_green_high)G"
@@ -159,6 +165,8 @@ ansi_demo(){
   echo -en "$(ansi_color_fg_cyan_high)C"
   echo -en "$(ansi_color_fg_white_high)W"
   echo -en "$(ansi_color_fg_default_high)D"
+
+  echo -en "$(ansi_reset)"
 
   echo -en "$(ansi_color_fg_black_bold_high)K"
   echo -en "$(ansi_color_fg_red_bold_high)R"
@@ -170,6 +178,8 @@ ansi_demo(){
   echo -en "$(ansi_color_fg_white_bold_high)W"
   echo -en "$(ansi_color_fg_default_bold_high)D"
 
+  echo -en "$(ansi_reset)"
+
   echo -en "$(ansi_color_bg_black)K"
   echo -en "$(ansi_color_bg_red)R"
   echo -en "$(ansi_color_bg_green)G"
@@ -180,6 +190,8 @@ ansi_demo(){
   echo -en "$(ansi_color_bg_white)$(ansi_color_fg_black)W"
   echo -en "$(ansi_color_bg_default)D"
 
+  echo -en "$(ansi_reset)"
+
   echo -en "$(ansi_color_bg_black_high)K"
   echo -en "$(ansi_color_bg_red_high)R"
   echo -en "$(ansi_color_bg_green_high)G"
@@ -189,12 +201,13 @@ ansi_demo(){
   echo -en "$(ansi_color_bg_cyan_high)$(ansi_color_fg_black_high)C"
   echo -en "$(ansi_color_bg_white_high)$(ansi_color_fg_black_high)W"
   echo -en "$(ansi_color_bg_default_high)D"
-  
+
   echo -en "$(ansi_reset)$(ansi_color_fg_magenta)$(ansi_color_bg_black) LOOKING $(ansi_mode_bold)GOOD"
   echo -e "$(ansi_reset)"
 }
 
-if echo "${-}" | grep -q i; then
+if echo "${-}" | grep -qv i; then
+  >&2 echo "Avoiding ANSI because \$- has no 'i': [${-}]"
   export HEJMO_USE_ANSI=0
 fi
 
