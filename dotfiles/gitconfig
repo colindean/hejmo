@@ -80,6 +80,7 @@
 	# Pushing
 	pupr = !git push -u origin HEAD && hub pull-request -o
 	fpush = !git push --force-with-lease
+	puoh = !git push -u origin HEAD
 
 	# Et cetera
 	## Print URLs of remote repositories. (git config --get-regex '^remote' is a simpler command, but its output isn’t aligned.)
