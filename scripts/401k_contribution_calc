@@ -14,7 +14,7 @@
 # TL;DR Tell your 401k administrator to get with the program and do deferral
 #       maximization.
 
-MAX_DEFERRABLE = (ENV['MAX_DEFERRABLE'] || 20_500.00).to_f
+MAX_DEFERRABLE = (ENV['MAX_DEFERRABLE'] || 22_500.00).to_f
 
 if ARGV.size <= 1
   me = File.basename($PROGRAM_NAME, File.extname($PROGRAM_NAME))
