@@ -12,15 +12,34 @@ fi
 # Completions from Homebrew
 
 if [ -n "$(command -v brew)" ]; then
+  if [ -n "${HEJMO_DEBUG_COMPLETIONS}" ]; then
+    set -x
+  fi
+
   # completions
   HOMEBREW_PREFIX="$(${BREW_PREFIX})"
   export HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
   export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_COMPLETIONS_DIR}"
   HOMEBREW_PROF_COMPLETION_SCRIPT="${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
   export HOMEBREW_SOURCE_COMPLETIONS=yes
+
+  if [ -n "${HEJMO_DEBUG_COMPLETIONS}" ]; then
+    set +x
+  fi
+
   # shellcheck source=/dev/null
-  [[ -f "${HOMEBREW_PROF_COMPLETION_SCRIPT}" ]] && . "${HOMEBREW_PROF_COMPLETION_SCRIPT}"
+  if [ -f "${HOMEBREW_PROF_COMPLETION_SCRIPT}" ]; then
+    # use the bash completion loader from the bash-completion package
+    source "${HOMEBREW_PROF_COMPLETION_SCRIPT}"
+  else
+    # load them manually
+		for COMPLETION in "${HOMEBREW_COMPLETIONS_DIR}/"*
+    do
+      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+    done
+  fi
 fi
+
 
 #autocomplete for g as well
 #complete -o default -o nospace -F _git g
