@@ -100,6 +100,7 @@
 	idff = diff
 	mergfe = merge
 	mregetool = mergetool
+  mt = mergetool
 	oull = pull
 	pish = push
 	pl = pull
