@@ -4,14 +4,7 @@ repos:
     #  rev: v0.1.5
     #  hooks:
     #  - id: ripsecrets
--   repo: local
-    hooks:
-    -   id: ripsecrets
-        name: ripsecrets
-        description: 'Prevent committing secret keys into your source code'
-        entry: ripsecrets
-        language: system
-        'types': [text]
-        args: [--strict-ignore]
-        require_serial: true
-        minimum_pre_commit_version: '0'
+    -   repo: https://github.com/colindean/secrets.git
+        rev: patch-3
+        hooks:
+        -   id: ripsecrets-system
