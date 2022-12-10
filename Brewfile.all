@@ -4,6 +4,7 @@ tap 'homebrew/cask-fonts'
 
 # gotta use bash
 brew 'bash'
+brew 'bash-completion@2'
 
 # alternative cat that does syntax highlighting
 brew 'bat'
