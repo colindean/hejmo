@@ -1,6 +1,5 @@
 # vim: ft=ruby
 tap 'colindean/personal'
-tap 'homebrew/cask-fonts'
 
 # gotta use bash
 brew 'bash'
@@ -8,45 +7,6 @@ brew 'bash-completion@2'
 
 # alternative cat that does syntax highlighting
 brew 'bat'
-
-# better launcher, license key in Drive
-cask 'alfred'
-
-# text editor
-cask 'atom'
-
-# inhibit screensaver
-cask 'keepingyouawake'
-
-# inevitable USB display drivers
-# cask 'displaylink'
-
-# image editing
-cask 'gimp'
-
-# window management
-cask 'hammerspoon'
-
-# pane management
-cask 'hyperswitch'
-
-# google play music
-cask 'marshallofsound-google-play-music-player'
-
-# network tunnels
-cask 'ngrok'
-
-# better screencast recording, also, streaming
-cask 'obs'
-
-# quicklook plugins I cannot live without
-cask "qlcolorcode"
-cask "qlmarkdown"
-cask "qlprettypatch"
-cask "qlstephen"
-
-# set default email app
-cask 'swiftdefaultappsprefpane'
 
 # better git diff/patch output
 brew 'git-delta'
@@ -66,11 +26,3 @@ brew 'zoxide'
 # subversion, required for some fonts
 brew 'svn'
 
-cask 'font-fira-code'
-cask 'font-fira-code-nerd-font'
-cask 'font-noto-mono'
-cask 'font-noto-mono-for-powerline'
-cask 'font-noto-sans'
-cask 'font-noto-serif'
-cask 'font-open-sans'
-cask 'font-libre-franklin'

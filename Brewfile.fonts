@@ -1,0 +1,12 @@
+# vim: ft=ruby
+
+tap 'homebrew/cask-fonts'
+
+cask 'font-fira-code'
+cask 'font-fira-code-nerd-font'
+cask 'font-noto-mono'
+cask 'font-noto-mono-for-powerline'
+cask 'font-noto-sans'
+cask 'font-noto-serif'
+cask 'font-open-sans'
+cask 'font-libre-franklin'
