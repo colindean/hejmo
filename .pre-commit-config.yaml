@@ -1,10 +1,6 @@
 repos:
-    #- repo: https://github.com/sirwart/ripsecrets.git
-    # Set your version, be sure to use the latest and update regularly or use 'main'
-    #  rev: v0.1.5
-    #  hooks:
-    #  - id: ripsecrets
-    -   repo: https://github.com/colindean/secrets.git
-        rev: patch-3
-        hooks:
-        -   id: ripsecrets-system
+- repo: https://github.com/sirwart/ripsecrets.git
+  # use v0.1.6 when it's out
+  rev: a0d3a739b20d54170762e531c34518d94bf8329c
+  hooks:
+  - id: ripsecrets-system
