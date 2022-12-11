@@ -4,3 +4,8 @@ repos:
   rev: a0d3a739b20d54170762e531c34518d94bf8329c
   hooks:
   - id: ripsecrets-system
+- repo: https://github.com/jumanjihouse/pre-commit-hooks
+  rev: 3.0.0
+  hooks:
+    - id: shellcheck
+    - id: shfmt

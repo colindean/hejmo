@@ -1,0 +1,8 @@
+# This is for stuff required to work on these scripts
+# vim: ft=ruby
+
+brew "shfmt"
+brew "shellcheck"
+brew "pre-commit"
+brew "make"
+
