@@ -84,3 +84,12 @@ Plug 'nvie/vim-flake8'
 
 " Brewfile
 Plug 'bfontaine/Brewfile.vim'
+
+" Language Server Protocol
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+
+" Autocomplete
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
