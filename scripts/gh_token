@@ -7,27 +7,50 @@ set -eu -o pipefail
 SITE="${1:-"github.com"}"
 
 if [[ -n "${GITHUB_TOKEN}" ]]; then
-  printf "%s" "${GITHUB_TOKEN}"
-  exit 0
+	echo >&2 "Reading GitHub token from GITHUB_TOKEN envvar..."
+	printf "%s" "${GITHUB_TOKEN}"
+	exit 0
 fi
 
 HUB_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/hub"
+GH_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/gh/hosts.yml"
 
-if [[ -r "${HUB_CONFIG}" ]]; then
-  if ! command -v yaml2json > /dev/null; then
-    >&2 echo "Need 'yaml2json' executable to convert ${HUB_CONFIG} from YAML to JSON"
-    exit 1
-  fi
-  if ! command -v jq > /dev/null;  then
-    >&2 echo "Need 'jq' to extract the tokens from ${HUB_CONFIG}"
-    exit 1
-  fi
+need_cmd() {
+	local cmd="${1}"
+	local msg="${2}"
+	if ! command -v "${cmd}" >/dev/null; then
+		echo >&2 "${msg}"
+		exit 1
+	fi
+}
 
-  yaml2json "${HUB_CONFIG}" \
-    | jq -r --arg site "${SITE}" '.[$site] | first | .oauth_token'
-
-  exit $?
+if command -v gh >/dev/null; then
+	echo >&2 "Reading GitHub token from 'gh' command..."
+	gh auth token --hostname "${SITE}"
+	exit $?
 fi
 
->&2 printf "No token in GITHUB_TOKEN and %s is missing or does not contain a token for %s" "${HUB_CONFIG}" "${SITE}"
+if [[ -r "${GH_CONFIG}" ]]; then
+	need_cmd yaml2json "Need 'yaml2json' executable to convert ${GH_CONFIG} from YAML to JSON"
+	need_cmd jq "Need 'jq' to extract the tokens from ${GH_CONFIG}"
+	echo >&2 "Reading GitHub token from 'gh' config file..."
+
+	yaml2json "${GH_CONFIG}" |
+		jq -r --arg site "${SITE}" '.[$site].oauth_token'
+
+	exit $?
+fi
+
+if [[ -r "${HUB_CONFIG}" ]]; then
+	need_cmd yaml2json "Need 'yaml2json' executable to convert ${HUB_CONFIG} from YAML to JSON"
+	need_cmd jq "Need 'jq' to extract the tokens from ${HUB_CONFIG}"
+	echo >&2 "Reading GitHub token from 'hub' config file..."
+
+	yaml2json "${HUB_CONFIG}" |
+		jq -r --arg site "${SITE}" '.[$site] | first | .oauth_token'
+
+	exit $?
+fi
+
+printf >&2 "No token in GITHUB_TOKEN and %s is missing or does not contain a token for %s" "${HUB_CONFIG}" "${SITE}"
 exit 1
