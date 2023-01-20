@@ -25,7 +25,7 @@ tones = {
 def play_input(digit):
   first, second = tones[digit]
   print(f"{digit}: {first},{second}")
-  os.system(f"play -V1 -n synth 0.1 sin {first} sin {second} remix 1,2")
+  os.system(f"play -V1 -n synth 0.3 sin {first} sin {second} remix 1,2")
 
 def handle_input_char(ch):
     if ch in tones:

@@ -64,7 +64,7 @@ end
 File.expand_path('~/.pry/history').tap do |history_file|
   dir = File.dirname(history_file)
   Dir.mkdir dir unless Dir.exist? dir
-  Pry.config.history.file = history_file
+  #Pry.config.history.file = history_file
 end
 
 # Welcome message.

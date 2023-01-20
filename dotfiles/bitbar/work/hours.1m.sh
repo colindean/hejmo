@@ -21,6 +21,13 @@ if [[ ! -f "${T}" ]]; then
 fi
 
 OUTPUT="$("${T}" hours)"
+
+if [ 0 -ne $? ]; then
+  echo "❌ t"
+  echo "---"
+  echo "Bad problem running ${T}. Write some debugging code."
+fi
+
 OUTPUT_LINE_COUNT="$(echo -e "${OUTPUT}" | wc -l | awk '{print $1}')"
 if [[ "${OUTPUT_LINE_COUNT}" -eq 1 ]]; then
   HOURS="$(echo -e "${OUTPUT}" | awk '{print $1}')"
