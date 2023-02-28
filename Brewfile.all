@@ -26,3 +26,5 @@ brew 'zoxide'
 # subversion, required for some fonts
 brew 'svn'
 
+# disk usage utility
+brew 'diskus'
