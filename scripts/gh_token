@@ -18,6 +18,9 @@ fi
 HUB_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/hub"
 GH_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/gh/hosts.yml"
 
+declare -a config_files
+config_files=("${HUB_CONFIG}" "${GH_CONFIG}")
+
 need_cmd() {
 	local cmd="${1}"
 	local msg="${2}"
@@ -58,7 +61,5 @@ if [[ -z "${SKIP_HUB_CONFIG}" ]] && [[ -r "${HUB_CONFIG}" ]]; then
 	exit $?
 fi
 
-declare -a config_files
-config_files=("${HUB_CONFIG}" "${GH_CONFIG}")
 printf >&2 "No token in GITHUB_TOKEN and config files in [%s] are missing or does not contain a token for %s\n" "${config_files[*]}" "${SITE}"
 exit 1
