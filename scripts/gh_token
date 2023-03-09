@@ -28,8 +28,8 @@ need_cmd() {
 }
 
 require_yaml2json_and_jq() {
-	need_cmd yaml2json "Need 'yaml2json' executable to convert ${GH_CONFIG} from YAML to JSON"
-	need_cmd jq "Need 'jq' to extract the tokens from ${GH_CONFIG}"
+	need_cmd yaml2json "Need 'yaml2json' executable to convert from YAML to JSON"
+	need_cmd jq "Need 'jq' to extract the tokens"
 }
 
 if [[ -z "${SKIP_GH}" ]] && command -v gh >/dev/null; then
