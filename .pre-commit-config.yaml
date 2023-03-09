@@ -9,3 +9,9 @@ repos:
   hooks:
     - id: shellcheck
     - id: shfmt
+
+ci:
+  skip:
+    - ripsecrets-system
+    - shellcheck
+    - shfmt
