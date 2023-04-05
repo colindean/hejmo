@@ -9,6 +9,18 @@ repos:
   hooks:
     - id: shellcheck
     - id: shfmt
+- repo: https://github.com/executablebooks/mdformat
+  rev: 0.7.16
+  hooks:
+  - id: mdformat
+    additional_dependencies:
+    - mdformat-black
+    - mdformat-config
+    - mdformat-deflist
+    - mdformat-frontmatter
+    - mdformat-footnote
+    - mdformat-gfm
+    - mdformat-tables
 
 ci:
   skip:
