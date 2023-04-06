@@ -44,7 +44,6 @@ plug install && plug update   # install vim plugins with plug helper
 
 And when I need them:
 
-
 ```
 bash setup-rust.sh && \
 bash setup-ruby.sh
@@ -52,8 +51,8 @@ bash setup-ruby.sh
 
 You will see errors about:
 
-* `__git_ps1` until both `git` and `bash-completion` are installed (from apt or Homebrew)
-* `hub` until hub is install from Homebrew
+- `__git_ps1` until both `git` and `bash-completion` are installed (from apt or Homebrew)
+- `hub` until hub is install from Homebrew
 
 ## Things to copy
 
