@@ -128,6 +128,8 @@
 	branches = branch -a
 	stashes = stash list
 	remotes = remote -v
+	## Utilties
+	master-to-main = !git checkout master && git branch -m master main && git fetch && git branch --unset-upstream && git branch -u origin/main && git remote set-head origin -a
 [push]
 	default = simple
 [filter "lfs"]
@@ -156,3 +158,5 @@
 [blame]
 	markIgnoredLines = true
 	markUnblamableLines = true
+[safe]
+	directory = /vela/mosaic-ml-models-extended-service-plan

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 : "${GITHUB_TOKEN:=}"
+: "${SKIP_GH:=}"
+: "${SKIP_GH_CONFIG:=}"
+: "${SKIP_HUB_CONFIG:=}"
 
 set -eu -o pipefail
 
@@ -15,6 +18,9 @@ fi
 HUB_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/hub"
 GH_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/gh/hosts.yml"
 
+declare -a config_files
+config_files=("${HUB_CONFIG}" "${GH_CONFIG}")
+
 need_cmd() {
 	local cmd="${1}"
 	local msg="${2}"
@@ -24,16 +30,20 @@ need_cmd() {
 	fi
 }
 
-if command -v gh >/dev/null; then
+require_yaml2json_and_jq() {
+	need_cmd yaml2json "Need 'yaml2json' executable to convert from YAML to JSON"
+	need_cmd jq "Need 'jq' to extract the tokens"
+}
+
+if [[ -z "${SKIP_GH}" ]] && command -v gh >/dev/null; then
 	echo >&2 "Reading GitHub token from 'gh' command..."
 	gh auth token --hostname "${SITE}"
 	exit $?
 fi
 
-if [[ -r "${GH_CONFIG}" ]]; then
-	need_cmd yaml2json "Need 'yaml2json' executable to convert ${GH_CONFIG} from YAML to JSON"
-	need_cmd jq "Need 'jq' to extract the tokens from ${GH_CONFIG}"
-	echo >&2 "Reading GitHub token from 'gh' config file..."
+if [[ -z "${SKIP_GH_CONFIG}" ]] && [[ -r "${GH_CONFIG}" ]]; then
+	require_yaml2json_and_jq
+	echo >&2 "Reading GitHub token from 'gh' config file ${GH_CONFIG}..."
 
 	yaml2json "${GH_CONFIG}" |
 		jq -r --arg site "${SITE}" '.[$site].oauth_token'
@@ -41,10 +51,9 @@ if [[ -r "${GH_CONFIG}" ]]; then
 	exit $?
 fi
 
-if [[ -r "${HUB_CONFIG}" ]]; then
-	need_cmd yaml2json "Need 'yaml2json' executable to convert ${HUB_CONFIG} from YAML to JSON"
-	need_cmd jq "Need 'jq' to extract the tokens from ${HUB_CONFIG}"
-	echo >&2 "Reading GitHub token from 'hub' config file..."
+if [[ -z "${SKIP_HUB_CONFIG}" ]] && [[ -r "${HUB_CONFIG}" ]]; then
+	require_yaml2json_and_jq
+	echo >&2 "Reading GitHub token from 'hub' config filei ${HUB_CONFIG}..."
 
 	yaml2json "${HUB_CONFIG}" |
 		jq -r --arg site "${SITE}" '.[$site] | first | .oauth_token'
@@ -52,5 +61,5 @@ if [[ -r "${HUB_CONFIG}" ]]; then
 	exit $?
 fi
 
-printf >&2 "No token in GITHUB_TOKEN and %s is missing or does not contain a token for %s" "${HUB_CONFIG}" "${SITE}"
+printf >&2 "No token in GITHUB_TOKEN and config files in [%s] are missing or does not contain a token for %s\n" "${config_files[*]}" "${SITE}"
 exit 1

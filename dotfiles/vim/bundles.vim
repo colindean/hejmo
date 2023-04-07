@@ -93,3 +93,8 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
+
+" Confluence, so I can mock up JIRA tickets in VIM without losing data
+Plug 'flniu/confluencewiki.vim'
+" Starlark, for Vela
+Plug 'cappyzawa/starlark.vim'

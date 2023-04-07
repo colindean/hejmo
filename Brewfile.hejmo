@@ -5,4 +5,5 @@ brew "shfmt"
 brew "shellcheck"
 brew "pre-commit"
 brew "make"
+brew "ripsecrets"
 
