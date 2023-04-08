@@ -46,7 +46,8 @@ if [[ -z "${BASH_PROFILE_PHYSICAL}" ]]; then
 fi
 HEJMO_DOTFILE_DIR="$( cd "$( dirname "${BASH_PROFILE_PHYSICAL}" )" && pwd -P)"
 # conveniently, this means that
-export HEJMO="$( cd "${HEJMO_DOTFILE_DIR}/../" && pwd -P)"
+HEJMO="$(cd "${HEJMO_DOTFILE_DIR}/../" && pwd -P)"
+export HEJMO
 HEJMO_BASH_PROFILE_DIR="${HEJMO}/bash_profile"
 
 ## Explicitly set some XDG directories
@@ -56,7 +57,7 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 
 ## Explicitly set some early vars and aliases
 
-alias rebash="source ${HOME}/.bash_profile"
+alias rebash='source ${HOME}/.bash_profile'
 
 ## Setup caching of `brew --prefix` responses
 ## This reduces `brew --prefix <cmd>` by about 100x
@@ -99,30 +100,34 @@ if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   export HEJMO_BENCH_RESULTS="${HOME}/.hejmo_bench_results.txt"
   touch "${HEJMO_BENCH_RESULTS}"
   printf "" > "${HEJMO_BENCH_RESULTS}"
+  >&2 echo "Profiling Hejmo load from ${HEJMO_BASH_PROFILE_DIR}, logs in ${HEJMO_BENCH_RESULTS}"
 fi
-for i in ${HEJMO_BASH_PROFILE_DIR}/*.sh; do
+for i in "${HEJMO_BASH_PROFILE_DIR}"/*.sh; do
   if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
     # seconds
     TIMEFORMAT="%R = $i"
-    echo "Loading $i"
-    { time . "$i" ; } 2>> "${HEJMO_BENCH_RESULTS}"
+    >&2 echo "Loading [$(basename "$i")]"
+    # shellcheck source=/dev/null
+    { time source "$i" ; } 2>> "${HEJMO_BENCH_RESULTS}"
+      >&2 echo "...done"
+      #>&2 printf "...done: [%s]\n" "$(basename "$i")"
     unset TIMEFORMAT
   else
-    . "$i"
-    if [[ $? != 0 ]]; then
+    # shellcheck source=/dev/null
+    if ! source "$i"; then
       >&2 echo "Error was in loading $i"
     fi
   fi
 done; unset i
 
 HEJMO_LOAD_END=$(current_time)
-((HEJMO_LOAD_TIME=$HEJMO_LOAD_END - $HEJMO_LOAD_START))
+((HEJMO_LOAD_TIME=HEJMO_LOAD_END - HEJMO_LOAD_START))
 export HEJMO_LOAD_TIME
 
 if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "Hejmo Bash loading times, in user seconds"
   >&2 echo "------------------------"
-  if column --table &>/dev/null; then
+  if echo "test" | column --table &>/dev/null; then
     # Good column
     >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --separator " = " --output-separator "\t"
   else
