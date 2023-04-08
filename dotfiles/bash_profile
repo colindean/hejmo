@@ -71,13 +71,13 @@ cached_brew_prefix() {
   if [[ -s "${cache_file}" ]]; then
     cat "${cache_file}"
   else
-    if [[ -n "$(command -v brew)" ]]; then
+    if command -v brew > /dev/null; then
       if [[ -n "${formula}" ]]; then
         # Because of how brew parses commands, even if an empty string is passed
         # it thinks that something was passed.
-        brew --prefix "${formula}" | tee "${cache_file}"
+        brew --prefix "${formula}" | tee "${cache_file}" || true
       else
-        brew --prefix | tee "${cache_file}"
+        brew --prefix | tee "${cache_file}" || true
       fi
     else
       return 1
@@ -129,10 +129,10 @@ if [[ -n ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "------------------------"
   if echo "test" | column --table &>/dev/null; then
     # Good column
-    >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --separator " = " --output-separator "\t"
+    >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column --table --separator " = " --output-separator "\t" || true
   else
     # Bland BSD column
-    >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column -t -s " = "
+    >&2 sort --numeric-sort --reverse "${HEJMO_BENCH_RESULTS}" | column -t -s " = " || true
   fi
   >&2 echo "------------------------------"
   >&2 echo "Total time: ${HEJMO_LOAD_TIME} milliseconds"
