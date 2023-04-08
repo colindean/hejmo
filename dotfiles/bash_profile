@@ -24,10 +24,10 @@ failure() {
   local exitstatus=$4
   local msg=$5
   local lineno_fns=${1% 0}
-  if [[ "$lineno_fns" != "0" ]] ; then
+  if [[ "${lineno_fns}" != "0" ]] ; then
     lineno="${lineno} ${lineno_fns}"
   fi
-  echo "${BASH_SOURCE[1]}:${fn}[${lineno}] Failed with status ${exitstatus}: $msg"
+  echo "${BASH_SOURCE[1]}:${fn}[${lineno}] Failed with status ${exitstatus}: ${msg}"
 }
 trap 'failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
 
@@ -68,11 +68,11 @@ cached_brew_prefix() {
   mkdir -p "${CACHE_BREW_PREFIX_DIR}"
   local formula="${1}"
   local cache_file="${CACHE_BREW_PREFIX_DIR}/${formula:-brew_itself}"
-  if [ -s "${cache_file}" ]; then
+  if [[ -s "${cache_file}" ]]; then
     cat "${cache_file}"
   else
-    if [ -n "$(command -v brew)" ]; then
-      if [ -n "${formula}" ]; then
+    if [[ -n "$(command -v brew)" ]]; then
+      if [[ -n "${formula}" ]]; then
         # Because of how brew parses commands, even if an empty string is passed
         # it thinks that something was passed.
         brew --prefix "${formula}" | tee "${cache_file}"
@@ -96,26 +96,26 @@ export BREW_PREFIX=cached_brew_prefix
 ### Run this command to benchmark a whole new shell:
 ###     HEJMO_BENCH_BASH_PROFILE=1 bash -i
 
-if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
+if [[ -n ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   export HEJMO_BENCH_RESULTS="${HOME}/.hejmo_bench_results.txt"
   touch "${HEJMO_BENCH_RESULTS}"
   printf "" > "${HEJMO_BENCH_RESULTS}"
   >&2 echo "Profiling Hejmo load from ${HEJMO_BASH_PROFILE_DIR}, logs in ${HEJMO_BENCH_RESULTS}"
 fi
 for i in "${HEJMO_BASH_PROFILE_DIR}"/*.sh; do
-  if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
+  if [[ -n ${HEJMO_BENCH_BASH_PROFILE} ]]; then
     # seconds
-    TIMEFORMAT="%R = $i"
-    >&2 echo "Loading [$(basename "$i")]"
+    TIMEFORMAT="%R = ${i}"
+    >&2 echo "Loading [$(basename "${i}")]"
     # shellcheck source=/dev/null
-    { time source "$i" ; } 2>> "${HEJMO_BENCH_RESULTS}"
+    { time source "${i}" ; } 2>> "${HEJMO_BENCH_RESULTS}"
       >&2 echo "...done"
       #>&2 printf "...done: [%s]\n" "$(basename "$i")"
     unset TIMEFORMAT
   else
     # shellcheck source=/dev/null
-    if ! source "$i"; then
-      >&2 echo "Error was in loading $i"
+    if ! source "${i}"; then
+      >&2 echo "Error was in loading ${i}"
     fi
   fi
 done; unset i
@@ -124,7 +124,7 @@ HEJMO_LOAD_END=$(current_time)
 ((HEJMO_LOAD_TIME=HEJMO_LOAD_END - HEJMO_LOAD_START))
 export HEJMO_LOAD_TIME
 
-if [[ ${HEJMO_BENCH_BASH_PROFILE} ]]; then
+if [[ -n ${HEJMO_BENCH_BASH_PROFILE} ]]; then
   >&2 echo "Hejmo Bash loading times, in user seconds"
   >&2 echo "------------------------"
   if echo "test" | column --table &>/dev/null; then
