@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+# from https://github.blog/2023-03-23-we-updated-our-rsa-ssh-host-key/
+
+if ! command -v jq >/dev/null; then
+	if command -v brew >/dev/null; then
+		brew install jq
+	elif command -v apt >/dev/null; then
+		sudo apt install jq
+	fi
+fi
+
+ssh-keygen -R github.com
+curl -L https://api.github.com/meta | jq -r '.ssh_keys | .[]' | sed -e 's/^/github.com /' >>~/.ssh/known_hosts
