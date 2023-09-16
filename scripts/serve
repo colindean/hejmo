@@ -1,9 +1,12 @@
 #!/bin/sh
 
-if [ -n "$(command -v miniserve)" ]; then
+if command -v miniserve > /dev/null; then
   miniserve "$@"
-elif [ -n "$(command -v twist)" ]; then
+elif command -v twist > /dev/null; then
   twist web "$@"
+elif command -v go > /dev/null; then
+  # https://github.com/eliben/static-server
+  go run github.com/eliben/static-server@latest "$@"
 elif python -V | grep -q "Python 3"; then
   python -m http.server "$@"
 elif python -V | grep -q "Python 2"; then
