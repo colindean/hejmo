@@ -52,10 +52,11 @@ class FileWithTime
 end
 
 DRY_RUN = ENV['DRY_RUN'] || false
-DESKTOP_DIR = "#{ENV['HOME']}/Desktop".freeze
-DEFAULT_SCREENSHOT_GLOB = "#{DESKTOP_DIR}/Screen Shot**".freeze
+SCREENSHOT_DIR = `defaults read com.apple.screencapture location`.strip.freeze
+SCREENSHOT_PREFIX = "Screenshot"
+DEFAULT_SCREENSHOT_GLOB = "#{SCREENSHOT_DIR}/#{SCREENSHOT_PREFIX}**".freeze
 SCREENSHOT_GLOB = ENV['SCREENSHOT_GLOB'] || DEFAULT_SCREENSHOT_GLOB
-DEFAULT_ARCHIVE_GLOB = "#{DESKTOP_DIR}/Screenshot Archive/Screen Shot**".freeze
+DEFAULT_ARCHIVE_GLOB = "#{SCREENSHOT_DIR}/Screenshot Archive/#{SCREENSHOT_PREFIX}**".freeze
 ARCHIVE_GLOB = ENV['ARCHIVE_GLOB'] || DEFAULT_ARCHIVE_GLOB
 ARCHIVE_DIR = `dirname "#{ARCHIVE_GLOB}"`.strip
 
@@ -74,6 +75,8 @@ def archive(entry)
   File.rename entry.filename, new_name unless DRY_RUN
 end
 
+
+puts "Looking at dirglob #{ARCHIVE_GLOB} for deletion…"
 # clean archive
 Dir[ARCHIVE_GLOB].each do |e|
   entry = FileWithTime.new e
@@ -83,7 +86,9 @@ Dir[ARCHIVE_GLOB].each do |e|
     puts "🗄 ⬇ #{entry}"
   end
 end
+puts "Looking at dirglob #{SCREENSHOT_GLOB} for archival…"
 Dir[SCREENSHOT_GLOB].each do |e|
+  next if File.directory? e
   entry = FileWithTime.new e
   if entry.age_in_days > 7
     archive entry
