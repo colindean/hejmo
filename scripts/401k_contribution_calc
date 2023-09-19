@@ -13,14 +13,17 @@
 #
 # TL;DR Tell your 401k administrator to get with the program and do deferral
 #       maximization.
+require 'date'
 
+# https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-401k-and-profit-sharing-plan-contribution-limits
 MAX_DEFERRABLE = (ENV['MAX_DEFERRABLE'] || 22_500.00).to_f
 
 if ARGV.size <= 1
+  weeks_remaining_in_current_calendar_year = 52 - Date.today().cweek
   me = File.basename($PROGRAM_NAME, File.extname($PROGRAM_NAME))
   STDERR.puts "Usage: #{me} <number of periods remaining> <pretax pay per period> [amount already contributed]"
-  STDERR.puts 'Example, for the beginning of the year for someone who makes $60,000/yr with 24 pay periods:'
-  STDERR.puts "\t#{me} 24 2500"
+  STDERR.puts 'Example, for the beginning of the year for someone who makes $60,000/yr with 26 pay periods:'
+  STDERR.puts "\t#{me} #{(weeks_remaining_in_current_calendar_year / 2).floor} 2500"
   STDERR.puts "Set MAX_DEFERRABLE envvar if it's not #{MAX_DEFERRABLE}."
   exit 1
 end
