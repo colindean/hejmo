@@ -44,6 +44,7 @@
   	filetrail = log --follow -p -w # show commits made to a file over time
   	mergetrail = log --ancestry-path --merges
 	bigfiles = !git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | sed -n 's/^blob //p' | sort --numeric-sort --key=2 | tail -n 10 | cut -c 2-12,41- | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
+	author-latest-commit = !git log --branches --format='%ad %aN' --date=iso --no-merges | sort -k4,4 -u
 
 	# Changes
 	summary = status -u -s
@@ -130,6 +131,8 @@
 	remotes = remote -v
 	## Utilties
 	master-to-main = !git checkout master && git branch -m master main && git fetch && git branch --unset-upstream && git branch -u origin/main && git remote set-head origin -a
+	## Debugging remotes
+	push-loud = !GIT_TRACE=2 GIT_TRACE_PERFORMANCE=2 GIT_TRACE_PACK_ACCESS=2 GIT_TRACE_PACKET=2 GIT_TRACE_PACKFILE=2 GIT_TRACE_SETUP=2 git push
 [push]
 	default = simple
 [filter "lfs"]
