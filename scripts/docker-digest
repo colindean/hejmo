@@ -1,0 +1,3 @@
+#!/bin/sh
+# Gets the digest of a given image
+docker inspect ${OPTS} --format='{{index .RepoDigests 0}}' ${@}
