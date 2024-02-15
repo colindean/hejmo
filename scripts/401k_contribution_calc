@@ -16,7 +16,7 @@
 require 'date'
 
 # https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-401k-and-profit-sharing-plan-contribution-limits
-MAX_DEFERRABLE = (ENV['MAX_DEFERRABLE'] || 22_500.00).to_f
+MAX_DEFERRABLE = (ENV['MAX_DEFERRABLE'] || 23_000.00).to_f
 
 if ARGV.size <= 1
   weeks_remaining_in_current_calendar_year = 52 - Date.today().cweek
