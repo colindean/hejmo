@@ -163,3 +163,5 @@
 	markUnblamableLines = true
 [safe]
 	directory = /vela/mosaic-ml-models-extended-service-plan
+[branch]
+	sort = -committerdate
