@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+PKG=$1
+
+set -x
+curl -s -L "https://pypi.python.org/pypi/${PKG}/json" |
+	jq '.info | {name, version, requires_dist, requires, setup_requires, test_requires, install_requires}'
