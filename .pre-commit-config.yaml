@@ -1,7 +1,7 @@
 repos:
 - repo: https://github.com/sirwart/ripsecrets.git
   # use v0.1.6 when it's out
-  rev: v0.1.7
+  rev: v0.1.8
   hooks:
   - id: ripsecrets-system
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
