@@ -14,12 +14,12 @@ mash = {"cmd", "alt", "ctrl"}
 
 function toggle_zoom_mute()
   local zoom = hs.application.find("zoom.us")
-  if not(zoom:findMenuItem("Unmute Audio")) then
-    zoom:selectMenuItem("Mute Audio")
-    alert.show("Z 🔇")
-  elseif not(zoom:findMenuItem("Mute Audio")) then
-    zoom:selectMenuItem("Unmute Audio")
-    alert.show("Z 🔈")
+  if not(zoom:findMenuItem("Unmute audio")) then
+    zoom:selectMenuItem("Mute audio")
+    alert.show("Zoom 🔇")
+  elseif not(zoom:findMenuItem("Mute audio")) then
+    zoom:selectMenuItem("Unmute audio")
+    alert.show("Zoom 🔈")
   end
 end
 
