@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # mostly copied from https://github.com/tednaleid/shared-zshrc/blob/master/zshrc_base#L265-L279
 
-default_fzf_location=/usr/local/opt/fzf
+default_fzf_location=/opt/homebrew/opt/fzf
 if [[ -n "$(command -v brew)" ]]; then
   BREW_FZF="$(${BREW_PREFIX} fzf)"
 fi
