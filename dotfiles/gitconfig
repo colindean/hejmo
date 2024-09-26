@@ -165,3 +165,8 @@
 	directory = /vela/mosaic-ml-models-extended-service-plan
 [branch]
 	sort = -committerdate
+[credential "https://github.com"]
+	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+

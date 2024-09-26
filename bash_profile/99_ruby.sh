@@ -3,7 +3,12 @@
 
 if [[ -z $NO_RVM ]]; then
   if [ -s "$HOME/.rvm/scripts/rvm" ]; then
-    . "$HOME/.rvm/scripts/rvm" # Load RVM function
+    . "$HOME/.rvm/scripts/rvm" # Load RVM installed locally
+  elif [ -s "/etc/profile.d/rvm.sh" ]; then
+    if ! groups | grep rvm > /dev/null; then
+      >&2  echo "$USER is not in group 'rvm', sourcing /etc/profile.d/rvm.sh may not work as intended."
+    fi
+    . "/etc/profile.d/rvm.sh"  # Load RVM installed at system level
   fi
 fi
 
