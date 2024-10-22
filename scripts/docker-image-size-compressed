@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker manifest inspect "${@}" | jq '[.layers[].size] | add' | numfmt --to=iec-i
