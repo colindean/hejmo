@@ -16,3 +16,12 @@ alias scw="shellcheck_wiki"
 function wttr() {
 	curl "https://wttr.in/${*}"
 }
+
+function urlencode() {
+	# @uri for "applies percent-encoding, by mapping all reserved URI characters to a %XX sequence."
+	jq --slurp --raw-input --raw-output @uri
+}
+
+function urldecode() {
+	perl -pe 's/\%(\w\w)/chr hex $1/ge'
+}
