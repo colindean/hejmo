@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
-#!/usr/bin/env bash
-
+# https://github.com/purarue/frinkconv
 declare script_name='frinkconv'
 
 # function to verify an external command is installed
