@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+#!/usr/bin/env bash
+
+declare script_name='frinkconv'
+
+# function to verify an external command is installed
+havecmd() {
+	local BINARY ERRMSG
+	BINARY="${1:?Must provide command to check}"
+	if command -v "${BINARY}" >/dev/null 2>&1; then
+		return 0
+	else
+		ERRMSG="'${script_name}' requires '${BINARY}', could not find that on your \$PATH"
+		if [[ -n "$2" ]]; then
+			ERRMSG="${ERRMSG}. $2"
+		fi
+		printf '%s\n' "${ERRMSG}" 1>&2
+		return 1
+	fi
+}
+
+FRINKCONV_JAVA_PATH="${FRINKCONV_JAVA_PATH:-java}"
+
+set -e
+havecmd "${FRINKCONV_JAVA_PATH}"
+havecmd rlwrap
+havecmd wget
+set +e
+
+declare frink_dir jar unitsfile functionsfile
+
+frink_dir="${FRINKCONV_DIR:-${XDG_DATA_HOME:-${HOME}/.local/share}/frinkconv}"
+mkdir -p "${frink_dir}"
+
+jar="${frink_dir}/frink.jar"
+unitsfile="${frink_dir}/unitnames.txt"
+functionsfile="${frink_dir}/functionnames.txt"
+
+setup_frink() {
+	# if the data files don't exist, download them
+	[[ ! -r "${jar}" ]] && wget "https://frinklang.org/frinkjar/frink.jar" -O "${jar}"
+	[[ ! -r "${unitsfile}" ]] && wget "https://frinklang.org/frinkjar/unitnames.txt" -O "${unitsfile}"
+	[[ ! -r "${functionsfile}" ]] && wget "https://frinklang.org/frinkjar/functionnames.txt" -O "${functionsfile}"
+}
+
+repl() {
+	echo 'Dropping into repl...'
+	# add unit/functions file to rlwrap flags for completion
+	local -a rlwrapflags=()
+	if [[ -f "${unitsfile}" ]]; then
+		rlwrapflags+=(-f "${unitsfile}")
+	fi
+	if [[ -f "${functionsfile}" ]]; then
+		rlwrapflags+=(-b '$' -f "${functionsfile}")
+	fi
+	# add history file
+	rlwrapflags+=(-H "${FRINKCONV_HISTORY:-${frink_dir}/history.txt}")
+	rlwrap "${rlwrapflags[@]}" "${FRINKCONV_JAVA_PATH}" -classpath "${jar}" frink.parser.Frink "$@"
+}
+
+# run conversions non-interactively, specified as CLI args
+runconversions() {
+	local -a exprargs
+	for exp in "$@"; do
+		exprargs+=(-e "${exp}")
+	done
+	"${FRINKCONV_JAVA_PATH}" -classpath "${jar}" frink.parser.Frink "${exprargs[@]}"
+}
+
+main() {
+	case "$1" in
+	repl)
+		shift
+		repl "$@"
+		;;
+	*)
+		# default to REPL if nothing is provided
+		if [[ -z "$1" ]]; then
+			repl
+		else
+			runconversions "$@"
+		fi
+		;;
+	esac
+}
+
+setup_frink
+main "$@"
