@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+declare BREW_RUBY
+BREW_RUBY="$(brew ruby -e "puts File.join(File.expand_path(RbConfig::CONFIG['bindir'] + '../../..'), 'current/bin', RbConfig::CONFIG['ruby_install_name'])")"
+
+rvm mount "${BREW_RUBY}" ruby-brew-current
