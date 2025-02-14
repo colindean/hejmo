@@ -53,7 +53,7 @@ fi
 
 if [[ -z "${SKIP_HUB_CONFIG}" ]] && [[ -r "${HUB_CONFIG}" ]]; then
 	require_yaml2json_and_jq
-	echo >&2 "Reading GitHub token from 'hub' config filei ${HUB_CONFIG}..."
+	echo >&2 "Reading GitHub token from 'hub' config file ${HUB_CONFIG}..."
 
 	yaml2json "${HUB_CONFIG}" |
 		jq -r --arg site "${SITE}" '.[$site] | first | .oauth_token'
