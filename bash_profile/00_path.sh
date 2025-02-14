@@ -64,7 +64,7 @@ fi
 
 ### Ecosystem-specific binary paths
 ## rust
-MYPATH+=("$HOME/.cargo/bin:$PATH")
+MYPATH+=("$HOME/.cargo/bin")
 
 ## haskell
 MYPATH+=("$HOME/.cabal/bin")
