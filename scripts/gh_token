@@ -4,13 +4,20 @@
 : "${SKIP_GH:=}"
 : "${SKIP_GH_CONFIG:=}"
 : "${SKIP_HUB_CONFIG:=}"
+: "${DEBUG:=}"
 
 set -eu -o pipefail
 
 SITE="${1:-"github.com"}"
 
+log() {
+	if [[ -n "${DEBUG}" ]]; then
+		>&2 echo "$*"
+	fi
+}
+
 if [[ -n "${GITHUB_TOKEN}" ]]; then
-	echo >&2 "Reading GitHub token from GITHUB_TOKEN envvar..."
+	log "Reading GitHub token from GITHUB_TOKEN envvar..."
 	printf "%s" "${GITHUB_TOKEN}"
 	exit 0
 fi
@@ -25,7 +32,7 @@ need_cmd() {
 	local cmd="${1}"
 	local msg="${2}"
 	if ! command -v "${cmd}" >/dev/null; then
-		echo >&2 "${msg}"
+		log "${msg}"
 		exit 1
 	fi
 }
@@ -36,14 +43,14 @@ require_yaml2json_and_jq() {
 }
 
 if [[ -z "${SKIP_GH}" ]] && command -v gh >/dev/null; then
-	echo >&2 "Reading GitHub token from 'gh' command..."
+	log "Reading GitHub token from 'gh' command..."
 	gh auth token --hostname "${SITE}"
 	exit $?
 fi
 
 if [[ -z "${SKIP_GH_CONFIG}" ]] && [[ -r "${GH_CONFIG}" ]]; then
 	require_yaml2json_and_jq
-	echo >&2 "Reading GitHub token from 'gh' config file ${GH_CONFIG}..."
+	log "Reading GitHub token from 'gh' config file ${GH_CONFIG}..."
 
 	yaml2json "${GH_CONFIG}" |
 		jq -r --arg site "${SITE}" '.[$site].oauth_token'
@@ -53,7 +60,7 @@ fi
 
 if [[ -z "${SKIP_HUB_CONFIG}" ]] && [[ -r "${HUB_CONFIG}" ]]; then
 	require_yaml2json_and_jq
-	echo >&2 "Reading GitHub token from 'hub' config file ${HUB_CONFIG}..."
+	log "Reading GitHub token from 'hub' config file ${HUB_CONFIG}..."
 
 	yaml2json "${HUB_CONFIG}" |
 		jq -r --arg site "${SITE}" '.[$site] | first | .oauth_token'
