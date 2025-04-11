@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eu
+
+IMAGE_BASE="${1}"
+
+if [[ -z "${IMAGE_BASE}" ]]; then
+	>&2 echo "Usage: $0 <image base url>"
+	exit 1
+fi
+if ! command -v fzf >/dev/null; then
+	>&2 echo "fzf not found, install it."
+	exit 2
+fi
+
+tags=$(regctl tag list "${IMAGE_BASE}")
+
+# shellcheck disable=SC2312
+tag=$(echo "${tags}" | sort -V | fzf)
+
+image_tag="$(printf "%s:%s" "${IMAGE_BASE}" "${tag}")"
+
+digest=$(regctl image digest "${image_tag}")
+
+printf "%s@%s\n" "${image_tag}" "${digest}"

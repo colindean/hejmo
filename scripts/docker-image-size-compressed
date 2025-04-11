@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
+if [[ "${1}" == "-x" ]]; then
+	shift
+	set -x
+fi
 
 docker manifest inspect "${@}" | jq '[.layers[].size] | add' | numfmt --to=iec-i
