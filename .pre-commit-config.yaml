@@ -1,6 +1,5 @@
 repos:
 - repo: https://github.com/sirwart/ripsecrets.git
-  # use v0.1.6 when it's out
   rev: v0.1.11
   hooks:
   - id: ripsecrets-system
