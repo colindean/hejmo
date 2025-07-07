@@ -6,8 +6,11 @@ repos:
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
   rev: 3.0.0
   hooks:
-    - id: shellcheck
     - id: shfmt
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.10.0.1
+  hooks:
+    - id: shellcheck
 - repo: https://github.com/executablebooks/mdformat
   rev: 0.7.22
   hooks:
