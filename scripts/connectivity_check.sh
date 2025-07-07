@@ -38,9 +38,9 @@ candidates=(
 
 for candidate in "${candidates[@]}"; do
   if is_online "${candidate}" "${1:-1}"; then
-    status=0
+    status="✓"
   else
-    status=1
+    status="✗"
   fi
   printf "%d\t%s\n" "${status}" "${candidate}"
 done
