@@ -36,6 +36,11 @@ candidates=(
   "http://www.msftncsi.com/ncsi.txt"
 )
 
-for candidate in ${candidates[@]}; do
-  printf "%d\t%s" $(is_online "${candidate}" "${1:-1}") "${candidate}"
+for candidate in "${candidates[@]}"; do
+  if is_online "${candidate}" "${1:-1}"; then
+    status=0
+  else
+    status=1
+  fi
+  printf "%d\t%s\n" "${status}" "${candidate}"
 done
