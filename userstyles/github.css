@@ -1,0 +1,9 @@
+@-moz-document domain("git.target.com"), domain("github.com") {
+.text-mono, .blob-code-inner, .input-monospace {
+    font-family: "Fira Code", "Source Code Pro", "Input Mono", "Jetbrains Mono", "Liberation Mono";
+}
+
+body, .markdown-body {
+    font-family: "Source Sans 3", "Source Sans", "Input Sans", "Open Sans", "Noto Sans";
+}
+}
