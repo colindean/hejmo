@@ -1,5 +1,5 @@
 @-moz-document domain("git.target.com"), domain("github.com") {
-.text-mono, .blob-code-inner, .input-monospace {
+.text-mono, .blob-code-inner, .input-monospace, textarea#commit-description-input {
     font-family: "Fira Code", "Source Code Pro", "Input Mono", "Jetbrains Mono", "Liberation Mono";
 }
 
