@@ -5,6 +5,7 @@ This guide helps existing users migrate from the legacy `link_dotfiles.sh` and `
 ## Why Migrate?
 
 Chezmoi provides several advantages:
+
 - **Symlink Mode**: Changes are immediately reflected without re-running scripts
 - **Better Organization**: All dotfiles are in one place with clear naming
 - **Template Support**: Customize configs per machine
@@ -47,9 +48,10 @@ bash setup-chezmoi.sh --apply
 ```
 
 This will:
+
 1. Install chezmoi if not already installed
-2. Link the `home/` directory to `~/.local/share/chezmoi`
-3. Create symlinks for all dotfiles
+1. Link the `home/` directory to `~/.local/share/chezmoi`
+1. Create symlinks for all dotfiles
 
 **Note**: Scripts are now accessed via `$PATH` (configured in the repository's `bash_profile/00_hejmo_scripts.sh`, which is NOT managed by chezmoi) instead of being symlinked.
 
@@ -82,18 +84,18 @@ exec bash
 
 ### File Locations
 
-| Old Location | New Location | Deployed As |
-|-------------|-------------|-------------|
-| `dotfiles/bashrc` | `home/dot_bashrc` | `~/.bashrc` |
-| `dotfiles/gitconfig` | `home/dot_gitconfig` | `~/.gitconfig` |
-| `scripts/t` | `scripts/t` | Available in `$PATH` |
+| Old Location         | New Location         | Deployed As          |
+| -------------------- | -------------------- | -------------------- |
+| `dotfiles/bashrc`    | `home/dot_bashrc`    | `~/.bashrc`          |
+| `dotfiles/gitconfig` | `home/dot_gitconfig` | `~/.gitconfig`       |
+| `scripts/t`          | `scripts/t`          | Available in `$PATH` |
 
 ### Setup Commands
 
-| Old Way | New Way |
-|---------|---------|
-| `bash link_dotfiles.sh` | `chezmoi apply` |
-| `bash link_dotbin.sh` | Scripts accessed via `$PATH` |
+| Old Way                 | New Way                      |
+| ----------------------- | ---------------------------- |
+| `bash link_dotfiles.sh` | `chezmoi apply`              |
+| `bash link_dotbin.sh`   | Scripts accessed via `$PATH` |
 
 ## Rollback
 

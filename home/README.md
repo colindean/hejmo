@@ -75,5 +75,6 @@ This configuration uses chezmoi in **symlink mode**, which means:
 ## More Information
 
 For more details about chezmoi, see:
+
 - [Chezmoi Documentation](https://www.chezmoi.io/docs/)
 - [Chezmoi Quick Start](https://www.chezmoi.io/quick-start/)
