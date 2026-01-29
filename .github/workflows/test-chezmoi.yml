@@ -21,24 +21,26 @@ jobs:
       
       - name: Install chezmoi
         run: |
-          # Install latest chezmoi from GitHub releases
-          CHEZMOI_VERSION=$(curl -s https://api.github.com/repos/twpayne/chezmoi/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+          # Install latest chezmoi from GitHub releases using gh CLI
+          CHEZMOI_VERSION=$(gh api /repos/twpayne/chezmoi/releases/latest --jq '.tag_name' | sed 's/^v//')
           echo "Installing chezmoi version ${CHEZMOI_VERSION}"
           cd /tmp
           curl -sfL "https://github.com/twpayne/chezmoi/releases/download/v${CHEZMOI_VERSION}/chezmoi_${CHEZMOI_VERSION}_linux_amd64.tar.gz" | tar -xz
-          sudo mv chezmoi /usr/local/bin/
+          sudo install chezmoi /usr/local/bin/
           chezmoi --version
       
       - name: Install BATS
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt-get update
-          sudo apt-get install -y bats
+          sudo apt-get install -y --no-install-recommends bats
           bats --version
       
       - name: Initialize chezmoi with repository
         run: |
           # Initialize chezmoi with the current branch
-          echo "Initializing chezmoi with branch: ${GITHUB_REF_NAME}"
+          echo "Initializing chezmoi with ref: ${GITHUB_REF}"
           
           # For local testing, we'll use the checked out files directly
           # In a real scenario, this would use the GitHub URL
@@ -50,7 +52,7 @@ jobs:
             rm -rf ~/.local/share/chezmoi
             
             # Initialize with the repository and branch
-            chezmoi init --apply "${REPO_URL}" --branch "${GITHUB_REF_NAME}"
+            chezmoi init --apply "${REPO_URL}" --branch "${GITHUB_REF}"
           else
             # Local testing fallback
             echo "Running in local mode, using checked out files"
