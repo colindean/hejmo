@@ -1,11 +1,8 @@
 #!/bin/sh
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "${SCRIPT_DIR}/_helpers.sh"
 
-. _helpers.sh
-
-command_exists "brew"
-brew_exists=$?
-if [ $brew_exists -ne 0 ]; then
-  echo >&2 "brew isn't available, installing Homebrew."
+if ! command_exists "brew"; then
+  log_warning "brew isn't available, installing Homebrew."
   install_homebrew
 fi
-
