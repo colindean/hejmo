@@ -20,9 +20,11 @@ jobs:
           fetch-depth: 0  # Fetch full history for git mv tracking
       
       - name: Install chezmoi
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Install latest chezmoi from GitHub releases using gh CLI
-          CHEZMOI_VERSION=$(gh api /repos/twpayne/chezmoi/releases/latest --jq '.tag_name' | sed 's/^v//')
+          CHEZMOI_VERSION=$(gh api /repos/twpayne/chezmoi/releases/latest --jq '.tag_name | gsub("v"; "")')
           echo "Installing chezmoi version ${CHEZMOI_VERSION}"
           cd /tmp
           curl -sfL "https://github.com/twpayne/chezmoi/releases/download/v${CHEZMOI_VERSION}/chezmoi_${CHEZMOI_VERSION}_linux_amd64.tar.gz" | tar -xz
