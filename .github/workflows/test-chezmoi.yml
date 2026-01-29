@@ -39,7 +39,9 @@ jobs:
       - name: Initialize chezmoi with repository
         run: |
           # Initialize chezmoi with the current branch
-          echo "Initializing chezmoi with ref: ${GITHUB_REF_NAME}"
+          # Extract branch name from GITHUB_REF (refs/heads/branch-name)
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "Initializing chezmoi with branch: ${BRANCH_NAME}"
           
           # For local testing, we'll use the checked out files directly
           # In a real scenario, this would use the GitHub URL
@@ -51,7 +53,7 @@ jobs:
             rm -rf ~/.local/share/chezmoi
             
             # Initialize with the repository and branch
-            chezmoi init --apply "${REPO_URL}" --branch "${GITHUB_REF_NAME}"
+            chezmoi init --apply "${REPO_URL}" --branch "${BRANCH_NAME}"
           else
             # Local testing fallback
             echo "Running in local mode, using checked out files"

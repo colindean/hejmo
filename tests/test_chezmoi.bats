@@ -77,9 +77,10 @@ setup() {
 }
 
 @test ".vim directory symlink exists" {
-  [ -L "${HOME}/.vim" ]
-  target=$(readlink "${HOME}/.vim")
-  [[ "$target" =~ "chezmoi" ]]
+  # .vim is a directory with symlinked files inside
+  [ -d "${HOME}/.vim" ]
+  # Check that it's managed by chezmoi
+  chezmoi managed | grep -q "\.vim"
 }
 
 @test ".tmux.conf symlink exists" {
@@ -95,11 +96,13 @@ setup() {
 }
 
 @test "chezmoi source directory contains expected files" {
+  # The source directory is the repository clone with .chezmoiroot pointing to home/
   source_dir="${HOME}/.local/share/chezmoi"
-  [ -f "${source_dir}/dot_bash_profile" ]
-  [ -f "${source_dir}/dot_gitconfig" ]
-  [ -f "${source_dir}/dot_vimrc" ]
-  [ -f "${source_dir}/.chezmoi.toml.tmpl" ]
+  [ -f "${source_dir}/.chezmoiroot" ]
+  [ -f "${source_dir}/home/dot_bash_profile" ]
+  [ -f "${source_dir}/home/dot_gitconfig" ]
+  [ -f "${source_dir}/home/dot_vimrc" ]
+  [ -f "${source_dir}/home/.chezmoi.toml.tmpl" ]
 }
 
 @test "chezmoi config has symlink mode enabled" {
