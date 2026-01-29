@@ -1,0 +1,19 @@
+# configuration options available at https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+# This configuration implements every package-ecosystem entry with the following logic:
+# - run Sunday's at midnight at a timeframe that allows TII team members to benefit from dependabot runs
+# - only manage direct dependencies, as opposed to transient dependencies which are harder to maintain at scale
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "00:00"
+      timezone: "Asia/Kolkata"
+    cooldown:
+      default-days: 7
+    allow:
+      - dependency-type: "direct"
