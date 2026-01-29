@@ -36,11 +36,9 @@ jobs:
           bats --version
       
       - name: Initialize chezmoi with repository
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           # Initialize chezmoi with the current branch
-          echo "Initializing chezmoi with branch: ${BRANCH_NAME}"
+          echo "Initializing chezmoi with branch: ${GITHUB_REF_NAME}"
           
           # For local testing, we'll use the checked out files directly
           # In a real scenario, this would use the GitHub URL
@@ -52,7 +50,7 @@ jobs:
             rm -rf ~/.local/share/chezmoi
             
             # Initialize with the repository and branch
-            chezmoi init --apply "${REPO_URL}" --branch "${BRANCH_NAME}"
+            chezmoi init --apply "${REPO_URL}" --branch "${GITHUB_REF_NAME}"
           else
             # Local testing fallback
             echo "Running in local mode, using checked out files"
