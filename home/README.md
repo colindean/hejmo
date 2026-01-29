@@ -2,6 +2,8 @@
 
 This directory contains the chezmoi source files for managing dotfiles.
 
+The repository root contains a `.chezmoiroot` file that points to this `home/` directory, allowing chezmoi to know that the source files are in a subdirectory rather than at the repository root.
+
 ## File Naming Conventions
 
 Chezmoi uses special naming conventions for files:
