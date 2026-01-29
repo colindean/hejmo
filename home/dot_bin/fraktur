@@ -1,6 +1,0 @@
-#!/usr/bin/env python3
-
-import fraktur
-import sys
-
-print((fraktur.encode(str(" ".join(sys.argv[1:])))))

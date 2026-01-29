@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-ALL_ARGS=("${@}")
-
-echo "${ALL_ARGS[@]}" | tr -s ' ' '\n'

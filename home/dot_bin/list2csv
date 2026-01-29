@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-gsed -e 's/^\|$/"/g' | gpaste -sd, -

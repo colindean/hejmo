@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# https://tunnelblick.net/cKextLoadError.html
-sudo kextunload -b net.sf.tuntaposx.tap
-sudo kextunload -b net.sf.tuntaposx.tun
-

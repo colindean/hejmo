@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# awk here removes all preceding whitespace
-# nl -s separator
-#    -n ln = left justification
-#    -w width, use 1 to prevent significant space between number and text
-#    -b t = only show non-empty lines
-awk '{$1=$1};1' | nl -s ". " -n ln -w 1 -b t

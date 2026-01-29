@@ -1,7 +1,0 @@
-#!/bin/bash
-if [[ -z "$*" ]]; then
-  CONTENT=$(basename "$(pwd)")
-else
-  CONTENT=("$@")
-fi
-echo -ne "\033]0;${CONTENT}\007"

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-# Shows what user is used for docker login
-# currently only for macOS
-jq -r \
-	'if (.credsStore == "osxkeychain") then (.auths | keys) else [] end | .[]' \
-	"${HOME}/.docker/config.json" |
-	docker-credential-osxkeychain get |
-	jq '{"url": .ServerURL, "user": .Username}'

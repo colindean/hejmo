@@ -23,7 +23,7 @@ ls -la ~ | grep "^l" > ~/dotfiles-backup.txt
 
 ### 2. Remove Old Symlinks
 
-The old `link_dotfiles.sh` and `link_dotbin.sh` scripts created symlinks to the `dotfiles/` and `scripts/` directories. These need to be removed before setting up chezmoi:
+The old `link_dotfiles.sh` script created symlinks to the `dotfiles/` directory. These need to be removed before setting up chezmoi:
 
 ```bash
 cd ~/Source/Personal/hejmo  # or wherever you cloned hejmo
@@ -34,7 +34,8 @@ for f in dotfiles/*; do
   rm -f "$HOME/.${filename}"
 done
 
-# Remove bin symlinks
+# If you previously used link_dotbin.sh, you can remove ~/.bin symlinks
+# Note: Scripts are now accessed via PATH instead of symlinks
 rm -rf ~/.bin
 ```
 
@@ -48,17 +49,26 @@ bash setup-chezmoi.sh --apply
 This will:
 1. Install chezmoi if not already installed
 2. Link the `home/` directory to `~/.local/share/chezmoi`
-3. Create symlinks for all dotfiles and scripts
+3. Create symlinks for all dotfiles
+
+**Note**: Scripts are now accessed via `$PATH` (configured in `bash_profile/00_hejmo_scripts.sh`) instead of being symlinked.
 
 ### 4. Verify Setup
 
 Check that your dotfiles are now symlinks to the chezmoi source:
 
 ```bash
-ls -la ~/.bashrc ~/.gitconfig ~/.vimrc ~/.bin
+ls -la ~/.bashrc ~/.gitconfig ~/.vimrc
 ```
 
 You should see symlinks pointing to `~/.local/share/chezmoi/dot_*` files.
+
+Check that scripts are in your PATH:
+
+```bash
+which t  # or any other script from the scripts/ directory
+echo $PATH | grep -o "${HEJMO}/scripts"
+```
 
 ### 5. Test Your Shell
 
@@ -76,14 +86,14 @@ exec bash
 |-------------|-------------|-------------|
 | `dotfiles/bashrc` | `home/dot_bashrc` | `~/.bashrc` |
 | `dotfiles/gitconfig` | `home/dot_gitconfig` | `~/.gitconfig` |
-| `scripts/t` | `home/dot_bin/t` | `~/.bin/t` |
+| `scripts/t` | `scripts/t` | Available in `$PATH` |
 
 ### Setup Commands
 
 | Old Way | New Way |
 |---------|---------|
 | `bash link_dotfiles.sh` | `chezmoi apply` |
-| `bash link_dotbin.sh` | (included above) |
+| `bash link_dotbin.sh` | Scripts accessed via `$PATH` |
 
 ## Rollback
 

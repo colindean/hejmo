@@ -19,11 +19,12 @@ Chezmoi uses special naming conventions for files:
 home/
 ├── dot_ackrc           → ~/.ackrc
 ├── dot_bash_profile    → ~/.bash_profile
-├── dot_bin/            → ~/.bin/
 ├── dot_gitconfig       → ~/.gitconfig
 ├── dot_vimrc           → ~/.vimrc
 └── ...
 ```
+
+**Note**: Scripts from the `scripts/` directory are NOT managed by chezmoi. Instead, they are added to your `$PATH` via the bash profile configuration at `bash_profile/00_hejmo_scripts.sh`.
 
 ## Usage
 

@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-PKG="${1}"
-VERS="${2}"
-
-set -x
-curl -s -L "https://pypi.python.org/pypi/${PKG}/${VERS}/json" |
-	jq -r '.urls | select(map(.package_type == "sdist")) | map(.url) | .[]'

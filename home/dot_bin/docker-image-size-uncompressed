@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-docker inspect -f "{{ .Size }}" "${*}" | numfmt --to=iec-i

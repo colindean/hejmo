@@ -109,7 +109,7 @@ chezmoi edit ~/.bashrc
 cd ~/Source/Personal/hejmo && git pull
 ```
 
-The dotfiles are stored in the `home/` directory with chezmoi naming conventions (e.g., `dot_bashrc` → `~/.bashrc`).
+The dotfiles are stored in the `home/` directory with chezmoi naming conventions (e.g., `dot_bashrc` → `~/.bashrc`). Scripts from the `scripts/` directory are available in your `$PATH` automatically.
 
 ## Things to copy
 
