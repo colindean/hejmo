@@ -10,7 +10,7 @@ way.
 
 I usually put this into `mkdir ~/Source/Personal` on my work machine or into `mkdir ~/Source/` on a personal machine.
 
-```bash
+```shell
 mkdir -p ~/Source/Personal && cd ~/Source/Personal && \
 git clone https://github.com/colindean/hejmo.git && cd hejmo
 bash link_dotbin.sh && \
@@ -24,27 +24,32 @@ brew bundle --file=Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
 git remote set-url origin git@github.com:colindean/hejmo.git
 ```
 
-On Linux only:
+On Debian Linux only:
 
-```
-bash setup-debian-derivs.sh && bash setup-docker-linux.sh
+```shell
+bash setup-debian-derivs.sh && bash setup-docker-debian.sh
 ```
 
 On macOS only:
 
-```
+```shell
+# on work machine
+export DISABLE_HOSTNAME_CHANGE=1
+# set appropriately
+export INTENDED_HOSTNAME=lusankya
 bash setup-iterm.sh && bash setup-mac.sh
 ```
 
 Then handle some standard tooling updates:
 
-```
-plug install && plug update   # install vim plugins with plug helper
+```shell
+# install vim plugins with plug helper
+plug install && plug update
 ```
 
 And when I need them:
 
-```
+```shell
 bash setup-rust.sh && \
 bash setup-ruby.sh
 ```
