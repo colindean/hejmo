@@ -10,7 +10,7 @@ install_homebrew() {
 
   command_exists "curl"
   curl_exists=$?
-  if [[ $curl_exists -ne 0 ]]; then
+  if [[ ${curl_exists} -ne 0 ]]; then
     if [[ -n "$(command -v "apt")" ]]; then
         sudo apt install curl
     else
@@ -19,7 +19,7 @@ install_homebrew() {
     fi
   fi
 
-  bash -c "$(curl -fsSL ${homebrew_installer_url})"
+  bash -c "$(curl -fsSL "${homebrew_installer_url}")"
 }
 
 install_packages() {
@@ -29,12 +29,12 @@ install_packages() {
   IFS=$'\n'
 
   failed=()
-  for package in `cat ${listfile}`; do
-    local clean_package=$(echo ${package} | sed -e 's/\//\\\//g')
+  for package in $(cat "${listfile}"); do
+    local clean_package=$(echo "${package}" | sed -e 's/\//\\\//g')
     local cmd=$(echo "${cmd_template}" | sed -e "s/\%PACKAGE\%/${clean_package}/g")
-    eval $cmd
+    eval "${cmd}"
     if [[ $? -ne 0 ]]; then
-      failed+=("$package")
+      failed+=("${package}")
     fi
   done
   IFS="${oldifs}"
@@ -63,7 +63,7 @@ link_all_files_in_dir() {
   for f in $(ls "${from_dir}"); do
     TARGET="${from_dir}/${f}"
     LINK="${to_dir}/${prepend}${f}"
-    if [[ ! -z $rm ]]; then
+    if [[ ! -z ${rm} ]]; then
       echo "Removing ${LINK}"
       rm -f "${LINK}"
     fi
