@@ -11,7 +11,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0  # Fetch full history for git mv tracking
           persist-credentials: false
@@ -39,7 +39,7 @@ jobs:
       - name: Initialize chezmoi with repository
         run: |
           # Initialize chezmoi with the current branch
-          echo "Initializing chezmoi with ref: ${GITHUB_REF}"
+          echo "Initializing chezmoi with ref: ${GITHUB_REF_NAME}"
           
           # For local testing, we'll use the checked out files directly
           # In a real scenario, this would use the GitHub URL
@@ -51,7 +51,7 @@ jobs:
             rm -rf ~/.local/share/chezmoi
             
             # Initialize with the repository and branch
-            chezmoi init --apply "${REPO_URL}" --branch "${GITHUB_REF}"
+            chezmoi init --apply "${REPO_URL}" --branch "${GITHUB_REF_NAME}"
           else
             # Local testing fallback
             echo "Running in local mode, using checked out files"
