@@ -69,9 +69,9 @@ link_all_files_in_dir() {
     *) LN_OPTIONS="sf" ;;
   esac
 
-  # TODO: SC2045: Use a loop with globbing instead of ls
-  for f in $(ls "${from_dir}"); do
-    TARGET="${from_dir}/${f}"
+  for TARGET in "${from_dir}"/*; do
+    [ -e "${TARGET}" ] || continue
+    f=$(basename "${TARGET}")
     LINK="${to_dir}/${prepend}${f}"
     if [[ -n ${rm} ]]; then
       echo "Removing ${LINK}"
