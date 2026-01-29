@@ -32,12 +32,11 @@ install_homebrew() {
 install_packages() {
   local listfile="$1"
   local cmd_template="$2"
-  oldifs="${IFS}"
-  IFS=$'\n'
 
   failed=()
-  # TODO: SC2013: Pipe/redirect $listfile to a while read -r loop to avoid subshell issues
-  for package in $(cat "${listfile}"); do
+  while read -r package; do
+    # Skip empty lines
+    [[ -z "$package" ]] && continue
     local clean_package;
     clean_package=$(echo "${package}" | sed -e 's/\//\\\//g')
     local cmd;
@@ -45,8 +44,7 @@ install_packages() {
     if ! eval "${cmd}"; then
       failed+=("${package}")
     fi
-  done
-  IFS="${oldifs}"
+  done < "${listfile}"
   if [[ ${#failed[@]} -gt 0 ]]; then
     echo "These packages failed to install:"
     printf "\t%s\n" "${failed[@]}"
