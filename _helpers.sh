@@ -60,8 +60,9 @@ link_all_files_in_dir() {
     *) LN_OPTIONS="sf" ;;
   esac
 
-  for f in $(ls "${from_dir}"); do
-    TARGET="${from_dir}/${f}"
+  for TARGET in "${from_dir}"/*; do
+    [ -e "${TARGET}" ] || continue
+    f=$(basename "${TARGET}")
     LINK="${to_dir}/${prepend}${f}"
     if [[ ! -z $rm ]]; then
       echo "Removing ${LINK}"
