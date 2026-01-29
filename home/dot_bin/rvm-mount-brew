@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+BREW_RUBY_PATH=$(brew ruby -e "puts File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])")
+BREW_RUBY_VERSION=$(brew ruby -- --version | awk '{print $1 "-" $2}')
+
+set -x
+rvm mount "${BREW_RUBY_PATH}" -n "${BREW_RUBY_VERSION}-homebrew"

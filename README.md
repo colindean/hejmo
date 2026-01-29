@@ -10,6 +10,27 @@ way.
 
 I usually put this into `mkdir ~/Source/Personal` on my work machine or into `mkdir ~/Source/` on a personal machine.
 
+### Option 1: Using Chezmoi (Recommended)
+
+```shell
+# Clone the repository
+mkdir -p ~/Source/Personal && cd ~/Source/Personal && \
+git clone https://github.com/colindean/hejmo.git && cd hejmo
+
+# Setup chezmoi (installs chezmoi if needed and creates symlinks)
+bash setup-chezmoi.sh --apply
+
+# Setup Homebrew and install packages
+bash setup-homebrew.sh
+source ~/.bash_profile # or restart the terminal process
+
+brew bundle --file=Brewfile.all && \
+brew bundle --file=Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
+git remote set-url origin git@github.com:colindean/hejmo.git
+```
+
+### Option 2: Using Legacy Scripts
+
 ```shell
 mkdir -p ~/Source/Personal && cd ~/Source/Personal && \
 git clone https://github.com/colindean/hejmo.git && cd hejmo
@@ -58,6 +79,37 @@ You will see errors about:
 
 - `__git_ps1` until both `git` and `bash-completion` are installed (from apt or Homebrew)
 - `hub` until hub is install from Homebrew
+
+## About Chezmoi
+
+This repository now uses [Chezmoi](https://www.chezmoi.io/) for dotfile management. Chezmoi provides several benefits:
+
+- **Symlink Mode**: Changes to dotfiles are immediately reflected without needing to re-run setup scripts
+- **Cross-machine Management**: Easily manage dotfiles across multiple machines with different configurations
+- **Template Support**: Use templates to customize dotfiles per machine (hostname, OS, etc.)
+- **Security**: Built-in support for encrypted files (e.g., for secrets)
+- **Version Control**: All dotfiles are tracked in git and changes are immediately visible
+
+### Chezmoi Commands
+
+```shell
+# View what would change
+chezmoi diff --mode symlink
+
+# Apply changes (create/update symlinks)
+chezmoi apply --mode symlink
+
+# Add a new dotfile
+chezmoi add ~/.newfile
+
+# Edit a dotfile
+chezmoi edit ~/.bashrc
+
+# Update from repository
+cd ~/Source/Personal/hejmo && git pull
+```
+
+The dotfiles are stored in the `home/` directory with chezmoi naming conventions (e.g., `dot_bashrc` → `~/.bashrc`).
 
 ## Things to copy
 

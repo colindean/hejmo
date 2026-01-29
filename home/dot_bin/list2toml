@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tr ' ' "\n" | awk -v q='"' '{print q $1 q ","}'

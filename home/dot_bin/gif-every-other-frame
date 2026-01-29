@@ -1,0 +1,28 @@
+#!/bin/bash
+# from https://graphicdesign.stackexchange.com/questions/20908/how-to-remove-every-second-frame-from-an-animated-gif
+# modified by colindean
+#
+# This script will take an animated GIF and delete every other frame
+# Accepts two parameters: input file and output file
+# Usage: ./<scriptfilename> input.gif output.gif
+
+# Make a copy of the file
+cp "$1" "$2"
+
+# Get the number of frames
+# this had used `grep -o -P` but -P doesn't exist on BSD grep so it wouldn't work on macOS OOTB
+numframes="$(gifsicle "$1" -I | perl -nle'print $& while m{\d+ images}g' | perl -nle'print $& while m{\d+}g')"
+
+# Deletion
+(( i=0 ))
+while [[ $i -lt $numframes  ]]; do
+    rem=$(( i % 2 ))
+
+    if [ $rem -eq 0 ]
+    then
+        gifsicle "$2" --delete "#"$((i/2)) -o "$2"
+    fi
+
+    (( i=i+1 ))
+done
+

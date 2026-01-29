@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+import os
+import sys
+from time import sleep
+
+tones = {
+  '1': (697, 1209),
+  '2': (697, 1336),
+  '3': (697, 1477),
+  'A': (697, 1633),
+  '4': (770, 1209),
+  '5': (770, 1336),
+  '6': (770, 1477),
+  'B': (770, 1633),
+  '7': (852, 1209),
+  '8': (852, 1336),
+  '9': (852, 1477),
+  'C': (852, 1633),
+  '*': (941, 1209),
+  '0': (941, 1336),
+  '#': (941, 1477),
+  'D': (941, 1633),
+}
+
+def play_input(digit):
+  first, second = tones[digit]
+  print(f"{digit}: {first},{second}")
+  os.system(f"play -V1 -n synth 0.3 sin {first} sin {second} remix 1,2")
+
+def handle_input_char(ch):
+    if ch in tones:
+        play_input(ch)
+    elif ch == ',' or ch == 'P':
+        print(f"Pause")
+        sleep(2)
+
+if __name__ == '__main__':
+  [ handle_input_char(d) for d in sys.argv[1] ]
+

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Makes pasted commands execute when they're preceded with $
+warning_color="[33;1m"
+command_color="[36;22m"
+reset="[0m"
+indicator="⚠️  "
+if [[ -z "${NO_WARNING}" ]]; then
+  >&2 echo "${indicator}${warning_color}pasted command:${command_color}" "${@}" "${reset}"
+  >&2 echo "Running in 5 seconds..."
+  sleep 5
+fi
+"$@"

@@ -1,0 +1,5 @@
+#!/bin/sh
+# Gets the digest of a given image when it's already local
+if ! docker inspect -format='{{index .RepoDigests 0}}' "${@}"; then
+	regctl image digest "${@}"
+fi

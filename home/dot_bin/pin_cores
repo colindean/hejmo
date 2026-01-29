@@ -1,0 +1,226 @@
+#!/usr/bin/env swift
+// vim: ft=swift
+//
+// Based on runfg and runbg from https://github.com/alin23/mac-utils
+// Inspired by: https://eclecticlight.co/2021/09/14/how-to-run-commands-and-scripts-on-efficiency-cores/
+// Why? https://eclecticlight.co/2022/05/03/running-tasks-on-e-cores-can-use-a-third-of-the-energy-of-p-cores/
+//   TL;DR 33% more battery time; a processor-intensive test task took around
+//      ~0.7 seconds and drew ~10.3 J on P-cores
+//      ~4.7 seconds and drew  ~3.1 J on E-cores
+//
+// Run directly:
+//    chmod +x pin_cores
+//    ./pin_cores p|e command args…
+//
+// Compile to static binary:
+//    swiftc pin_cores -o pincores
+//    ./pincores p|e command args…
+//
+// Usage examples:
+//    Optimize all images on the desktop while on battery: pin_cores e imageoptim ~/Desktop
+//    Re-encode video with ffmpeg to squeeze more bytes: pin_cores p ffmpeg -i big-video.mp4 smaller-video.mp4
+//    Compile project in background: pin_cores e make -j 4
+
+import Foundation
+
+func printStderr(_ items: Any..., separator: String = " ", terminator: String = "\n") {
+    let output = items
+        .map { String(describing: $0) }
+        .joined(separator: separator) + terminator
+
+    FileHandle.standardError.write(output.data(using: .utf8)!)
+}
+
+func printUsage() {
+    printStderr(CommandLine.arguments[0], "p|e executable args...")
+}
+
+if CommandLine.arguments.count <= 2 {
+    printUsage()
+    exit(1)
+}
+
+let SHELL = ProcessInfo.processInfo.environment["SHELL"] ?? "/bin/zsh"
+let FM = FileManager()
+
+@discardableResult func asyncNow(timeout: TimeInterval, _ action: @escaping () -> Void) -> DispatchTimeoutResult {
+    let task = DispatchWorkItem { action() }
+    DispatchQueue.global().async(execute: task)
+
+    let result = task.wait(timeout: DispatchTime.now() + timeout)
+    if result == .timedOut {
+        task.cancel()
+    }
+
+    return result
+}
+
+// MARK: - ProcessStatus
+
+struct ProcessStatus {
+    var output: Data?
+    var error: Data?
+    var success: Bool
+
+    var o: String? {
+        output?.s?.trimmed
+    }
+
+    var e: String? {
+        error?.s?.trimmed
+    }
+}
+
+func stdout(of process: Process) -> Data? {
+    let stdout = process.standardOutput as! FileHandle
+    try? stdout.close()
+
+    guard let path = process.environment?["__swift_stdout"],
+          let stdoutFile = FileHandle(forReadingAtPath: path) else { return nil }
+    return try! stdoutFile.readToEnd()
+}
+
+func stderr(of process: Process) -> Data? {
+    let stderr = process.standardOutput as! FileHandle
+    try? stderr.close()
+
+    guard let path = process.environment?["__swift_stderr"],
+          let stderrFile = FileHandle(forReadingAtPath: path) else { return nil }
+    return try! stderrFile.readToEnd()
+}
+
+func shellProc(_ launchPath: String = "/bin/zsh", args: [String], env: [String: String]? = nil) -> Process? {
+    let outputDir = try! FM.url(
+        for: .itemReplacementDirectory,
+        in: .userDomainMask,
+        appropriateFor: FM.homeDirectoryForCurrentUser,
+        create: true
+    )
+
+    let stdoutFilePath = outputDir.appendingPathComponent("stdout").path
+    FM.createFile(atPath: stdoutFilePath, contents: nil, attributes: nil)
+
+    let stderrFilePath = outputDir.appendingPathComponent("stderr").path
+    FM.createFile(atPath: stderrFilePath, contents: nil, attributes: nil)
+
+    guard let stdoutFile = FileHandle(forWritingAtPath: stdoutFilePath),
+          let stderrFile = FileHandle(forWritingAtPath: stderrFilePath)
+    else {
+        return nil
+    }
+
+    let task = Process()
+    task.standardOutput = stdoutFile
+    task.standardError = stderrFile
+    task.launchPath = launchPath
+    task.arguments = args
+
+    var env = env ?? ProcessInfo.processInfo.environment
+    env["__swift_stdout"] = stdoutFilePath
+    env["__swift_stderr"] = stderrFilePath
+    task.environment = env
+
+    do {
+        try task.run()
+    } catch {
+        printStderr("Error running \(launchPath) \(args): \(error)")
+        return nil
+    }
+
+    return task
+}
+
+func shell(
+    _ launchPath: String = "/bin/zsh",
+    command: String,
+    timeout: TimeInterval? = nil,
+    env _: [String: String]? = nil
+) -> ProcessStatus {
+    shell(launchPath, args: ["-c", command], timeout: timeout)
+}
+
+func shell(
+    _ launchPath: String = "/bin/zsh",
+    args: [String],
+    timeout: TimeInterval? = nil,
+    env: [String: String]? = nil
+) -> ProcessStatus {
+    guard let task = shellProc(launchPath, args: args, env: env) else {
+        return ProcessStatus(output: nil, error: nil, success: false)
+    }
+
+    guard let timeout = timeout else {
+        task.waitUntilExit()
+        return ProcessStatus(
+            output: stdout(of: task),
+            error: stderr(of: task),
+            success: task.terminationStatus == 0
+        )
+    }
+
+    let result = asyncNow(timeout: timeout) {
+        task.waitUntilExit()
+    }
+    if result == .timedOut {
+        task.terminate()
+    }
+
+    return ProcessStatus(
+        output: stdout(of: task),
+        error: stderr(of: task),
+        success: task.terminationStatus == 0
+    )
+}
+
+extension String {
+    @inline(__always) var trimmed: String {
+        trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
+extension Data {
+    var s: String? { String(data: self, encoding: .utf8) }
+}
+
+var mode = CommandLine.arguments[1]
+if !(mode == "p" || mode == "e") {
+    printStderr("ERROR: Invalid mode '\(mode)'.")
+    printStderr("ERROR: Unsure which cores to use? Pass 'p' for performance and 'e' for efficiency.")
+    printUsage()
+    exit(3)
+}
+
+var executable = (CommandLine.arguments[2] as NSString).expandingTildeInPath
+if !FM.fileExists(atPath: executable) {
+    let which = shell(SHELL, command: "which '\(CommandLine.arguments[2])'")
+    guard which.success, let output = which.o else {
+        if let err = which.e {
+            printStderr(err)
+        }
+        printStderr("\(executable) not found")
+        exit(1)
+    }
+    executable = output
+}
+
+let p = Process()
+
+if mode == "p" {
+    printStderr("Running \(executable) using performance cores only")
+    p.qualityOfService = .userInteractive
+} else if mode == "e" {
+    printStderr("Running \(executable) using efficiency cores only")
+    p.qualityOfService = .background
+}
+p.executableURL = URL(fileURLWithPath: executable)
+p.arguments = CommandLine.arguments.suffix(from: 3).map { $0 }
+
+try! p.run()
+
+signal(SIGINT) { _ in p.terminate() }
+signal(SIGTERM) { _ in p.terminate() }
+signal(SIGKILL) { _ in p.terminate() }
+
+p.waitUntilExit()
+
+exit(p.terminationStatus)

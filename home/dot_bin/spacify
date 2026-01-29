@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+unless ARGV[0]
+  STDERR.puts <<~USAGEDOC
+    Usage:
+        #{__FILE__} WORD-TO-SPACIFY
+    Output:
+        W O R D - T O - S P A C I F Y
+  USAGEDOC
+  exit 1
+end
+
+puts ARGV[0].split('').join(" ")
+

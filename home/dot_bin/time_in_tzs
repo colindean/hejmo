@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+declare -A tz_map
+
+tz_map["P"]="America/Los_Angeles"
+tz_map["M"]="America/Denver"
+tz_map["C"]="America/Chicago"
+tz_map["E"]="America/New_York"
+tz_map["I"]="Asia/Kolkata"
+
+for key in "${!tz_map[@]}"; do
+	printf "%s@%s\n" "$(TZ=":${tz_map[${key}]}" date "+%H:%M")" "${key}"
+done | sort | tr '\n' ' '

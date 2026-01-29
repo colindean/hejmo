@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+PORT="${1}"
+if [ -z "${PORT}" ]; then
+  >&2 echo "No port provided."
+  >&2 echo "Usage: $0 port"
+fi
+
+echo "Killing process listening on port $PORT…"
+
+lsof -i ":${PORT}" | awk 'NR > 1 {print $2}' | xargs --no-run-if-empty kill
