@@ -94,10 +94,10 @@ This repository now uses [Chezmoi](https://www.chezmoi.io/) for dotfile manageme
 
 ```shell
 # View what would change
-chezmoi diff --mode symlink
+chezmoi diff
 
 # Apply changes (create/update symlinks)
-chezmoi apply --mode symlink
+chezmoi apply
 
 # Add a new dotfile
 chezmoi add ~/.newfile

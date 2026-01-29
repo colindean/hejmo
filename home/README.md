@@ -40,7 +40,7 @@ bash setup-chezmoi.sh
 To apply the chezmoi configuration and create symlinks:
 
 ```bash
-chezmoi apply --mode symlink
+chezmoi apply
 ```
 
 ### View Changes
@@ -48,7 +48,7 @@ chezmoi apply --mode symlink
 To see what would change without applying:
 
 ```bash
-chezmoi diff --mode symlink
+chezmoi diff
 ```
 
 ### Add New Files

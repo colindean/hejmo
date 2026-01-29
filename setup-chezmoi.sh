@@ -96,19 +96,23 @@ else
   mkdir -p "${HOME}/.local/share"
   ln -s "${CHEZMOI_SOURCE_DIR}" "${HOME}/.local/share/chezmoi"
   log_success "Linked ${CHEZMOI_SOURCE_DIR} to ~/.local/share/chezmoi"
+  
+  # Initialize chezmoi to generate the config file
+  log_info "Initializing chezmoi configuration..."
+  chezmoi init --force
 fi
 
 # Apply changes if requested
 if [[ "$1" == "--apply" ]]; then
-  log_info "Applying chezmoi configuration with symlink mode..."
-  chezmoi apply --mode symlink --verbose
+  log_info "Applying chezmoi configuration..."
+  chezmoi apply --verbose
   log_success "Chezmoi configuration applied"
 else
   log_info "To apply the configuration (create symlinks), run:"
-  log_info "  chezmoi apply --mode symlink"
+  log_info "  chezmoi apply"
   log_info ""
   log_info "To see what would be changed without applying:"
-  log_info "  chezmoi diff --mode symlink"
+  log_info "  chezmoi diff"
 fi
 
 log_success "Chezmoi setup complete!"
