@@ -110,3 +110,22 @@ setup() {
   [ -f "${config_file}" ]
   grep -q 'mode.*=.*"symlink"' "${config_file}"
 }
+
+@test "HEJMO scripts directory is in PATH" {
+  # Source the bash_profile to set up environment
+  source "${HOME}/.bash_profile"
+  
+  # Check that HEJMO/scripts is in PATH
+  [[ ":${PATH}:" == *":${HEJMO}/scripts:"* ]]
+}
+
+@test "scripts from HEJMO are executable via command" {
+  # Source the bash_profile to set up environment
+  source "${HOME}/.bash_profile"
+  
+  # Verify a script from the scripts directory is findable
+  # Using 'clipboard' as a test script
+  run command -v clipboard
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ "scripts/clipboard" ]]
+}
