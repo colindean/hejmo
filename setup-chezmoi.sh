@@ -16,17 +16,8 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-log_info() {
-  echo ">>> $*"
-}
-
-log_success() {
-  echo "✓ $*"
-}
-
-log_error() {
-  echo "ERROR: $*" >&2
-}
+# Source helper functions
+source "${SCRIPT_DIR}/_helpers.sh"
 
 # Check if chezmoi is installed
 if ! command -v chezmoi &> /dev/null; then
@@ -56,7 +47,7 @@ if ! command -v chezmoi &> /dev/null; then
       fi
       ;;
     *)
-      log_error "Unsupported operating system: $(uname -s)"
+      log_failure "Unsupported operating system: $(uname -s)"
       log_info "Please install chezmoi manually from: https://www.chezmoi.io/install/"
       exit 1
       ;;
@@ -74,7 +65,7 @@ fi
 
 # Verify chezmoi is now available
 if ! command -v chezmoi &> /dev/null; then
-  log_error "chezmoi installation failed or not in PATH"
+  log_failure "chezmoi installation failed or not in PATH"
   exit 1
 fi
 
