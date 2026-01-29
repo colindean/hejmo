@@ -3,6 +3,7 @@
 The contents of this directory are **no longer used** and are **probably irrelevant** to the current project.
 
 This directory serves as storage for:
+
 - Outdated code
 - Deprecated features
 - Old documentation
