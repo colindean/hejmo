@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Add Hejmo scripts directory to PATH
+#
+# This script is sourced by bash_profile after HEJMO is set.
+# Files in bash_profile/ are loaded alphabetically, and HEJMO is set
+# in the main bash_profile before these scripts are sourced.
 
-# HEJMO is set in bash_profile, which is loaded before these scripts
 if [[ -n "${HEJMO}" ]] && [[ -d "${HEJMO}/scripts" ]]; then
   export PATH="${HEJMO}/scripts:${PATH}"
 fi

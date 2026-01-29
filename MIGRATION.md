@@ -51,7 +51,7 @@ This will:
 2. Link the `home/` directory to `~/.local/share/chezmoi`
 3. Create symlinks for all dotfiles
 
-**Note**: Scripts are now accessed via `$PATH` (configured in `bash_profile/00_hejmo_scripts.sh`) instead of being symlinked.
+**Note**: Scripts are now accessed via `$PATH` (configured in the repository's `bash_profile/00_hejmo_scripts.sh`, which is NOT managed by chezmoi) instead of being symlinked.
 
 ### 4. Verify Setup
 

@@ -24,7 +24,7 @@ home/
 └── ...
 ```
 
-**Note**: Scripts from the `scripts/` directory are NOT managed by chezmoi. Instead, they are added to your `$PATH` via the bash profile configuration at `bash_profile/00_hejmo_scripts.sh`.
+**Note**: Scripts from the `scripts/` directory are NOT managed by chezmoi. Instead, they are added to your `$PATH` via the repository's bash profile configuration at `bash_profile/00_hejmo_scripts.sh` (this file is NOT in the chezmoi-managed `home/` directory).
 
 ## Usage
 
