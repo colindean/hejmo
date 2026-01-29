@@ -11,7 +11,7 @@ banner_text "Starting Debian deriv setup"
 
 # install netcat, or update and then install netcat
 sudo apt-get -qy install netcat || (sudo apt-get update && sudo apt-get -qy install netcat)
-bash setup-internal-proxy.sh
+bash setup-internal-proxy-for-apt.sh
 
 # update and install some basics
 
@@ -19,7 +19,7 @@ sudo apt-get update
 sudo apt-get -qy install software-properties-common
 
 # setup heroku
-sudo apt-get -qy install snapd && sudo snap install heroku --classic
+curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 # other essentials
 sudo apt-get -qy install \
