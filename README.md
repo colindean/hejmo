@@ -8,40 +8,20 @@ way.
 
 ## Quickstart on a new machine
 
-I usually put this into `mkdir ~/Source/Personal` on my work machine or into `mkdir ~/Source/` on a personal machine.
+```shell
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/colindean/hejmo.git
+```
 
 ### Option 1: Using Chezmoi (Recommended)
 
 ```shell
-# Clone the repository
-mkdir -p ~/Source/Personal && cd ~/Source/Personal && \
-git clone https://github.com/colindean/hejmo.git && cd hejmo
-
-# Setup chezmoi (installs chezmoi if needed and creates symlinks)
-bash setup-chezmoi.sh --apply
-
+# Load a new shell or run this to load up Hejmo's bash config:
+source ~/.bash_profile
 # Setup Homebrew and install packages
-bash setup-homebrew.sh
-source ~/.bash_profile # or restart the terminal process
+bash ${HEJMO}/setup-homebrew.sh
 
-brew bundle --file=Brewfile.all && \
-brew bundle --file=Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
-git remote set-url origin git@github.com:colindean/hejmo.git
-```
-
-### Option 2: Using Legacy Scripts
-
-```shell
-mkdir -p ~/Source/Personal && cd ~/Source/Personal && \
-git clone https://github.com/colindean/hejmo.git && cd hejmo
-bash link_dotbin.sh && \
-bash link_dotfiles.sh && \
-bash setup-homebrew.sh
-
-source ~/.bash_profile # or restart the terminal process
-
-brew bundle --file=Brewfile.all && \
-brew bundle --file=Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
+brew bundle --file=${HEJMO}/Brewfile.all && \
+brew bundle --file=${HEJMO}/Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
 git remote set-url origin git@github.com:colindean/hejmo.git
 ```
 
