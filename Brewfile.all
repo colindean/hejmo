@@ -14,9 +14,6 @@ brew 'git-delta'
 # gnu coreutils, mostly for GNU date
 brew 'coreutils'
 
-# Esperanto character conversion
-brew 'eoconv'
-
 # fuzzy finder
 brew 'fzf'
 
