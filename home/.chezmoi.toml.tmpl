@@ -1,0 +1,10 @@
+# Chezmoi configuration template
+# This file is used to generate the chezmoi configuration
+
+# Use symlink mode by default
+# This means chezmoi will create symlinks instead of copying files
+mode = "symlink"
+
+[data]
+    # Hostname can be set via environment variable or detected
+    hostname = {{ .chezmoi.hostname | quote }}
