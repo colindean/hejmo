@@ -1,12 +1,17 @@
 # vim: ft=ruby
 
-tap 'homebrew/cask-fonts'
-
+# good coding fonts
 cask 'font-fira-code'
 cask 'font-fira-code-nerd-font'
+
+# good general font with every character in Unicode
 cask 'font-noto-mono'
 cask 'font-noto-mono-for-powerline'
 cask 'font-noto-sans'
 cask 'font-noto-serif'
+
+# nice round font
 cask 'font-open-sans'
+
+# code and supply font
 cask 'font-libre-franklin'

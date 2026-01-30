@@ -1,10 +1,8 @@
 # vim: ft=ruby
-if OS.mac?
+return unless OS.mac?
+
 # better launcher, license key in Drive
 cask 'alfred'
-
-# text editor
-cask 'atom'
 
 # inhibit screensaver
 cask 'keepingyouawake'
@@ -17,12 +15,6 @@ cask 'hammerspoon'
 
 # pane management
 cask 'hyperswitch'
-
-# google play music
-cask 'marshallofsound-google-play-music-player'
-
-# network tunnels
-cask 'ngrok'
 
 # better screencast recording, also, streaming
 cask 'obs'

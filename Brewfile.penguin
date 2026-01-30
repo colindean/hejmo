@@ -1,19 +1,33 @@
 # Mobility workstation
-tap "homebrew/bundle"
-tap "homebrew/core"
+# universal retriever
 brew "curl"
+# modify lots of code fast
 brew "fastmod"
+# find files better
 brew "fd"
+# fuzzy finder, nice menus at the CLI
 brew "fzf"
+# VCS
 brew "git"
+# universal document converter
 brew "pandoc"
+# cross-references
 brew "pandoc-crossref"
-brew "pngcrush"
+# PNG compressor
+brew "oxipng"
+# git pre-commit hooks
 brew "pre-commit"
+# prevent secrets from getting committed
 brew "ripsecrets"
+# shell statistics
 brew "st"
+# SVG optimizer
 brew "svgo"
+# TeX renderer
 brew "tectonic"
+# TUI git client
 brew "tig"
+# webp image converter
 brew "webp"
+# fuzzy matching directory changer
 brew "zoxide"
