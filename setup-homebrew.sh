@@ -30,7 +30,7 @@ install_debian_prerequisites() {
 install_fedora_prerequisites() {
   log_info "Installing Homebrew prerequisites for Fedora…"
   if ! sudo dnf groupinstall -y 'Development Tools' 2>/dev/null && ! sudo dnf group install -y development-tools; then
-    log_failure "Failed to install Development Tools group"
+    log_failure "Failed to install development tools group (tried both 'Development Tools' and 'development-tools')"
     exit 1
   fi
   if ! sudo dnf install -y procps-ng curl file git; then
@@ -42,11 +42,22 @@ install_fedora_prerequisites() {
 # Install prerequisites for CentOS/RHEL
 install_centos_prerequisites() {
   log_info "Installing Homebrew prerequisites for CentOS/RHEL…"
-  if ! sudo dnf groupinstall -y 'Development Tools'; then
+  # Check if dnf is available, otherwise fall back to yum
+  local pkg_manager
+  if command_exists "dnf"; then
+    pkg_manager="dnf"
+  elif command_exists "yum"; then
+    pkg_manager="yum"
+  else
+    log_failure "Neither dnf nor yum package manager found"
+    exit 1
+  fi
+  
+  if ! sudo "${pkg_manager}" groupinstall -y 'Development Tools'; then
     log_failure "Failed to install Development Tools group"
     exit 1
   fi
-  if ! sudo dnf install -y procps-ng curl file git; then
+  if ! sudo "${pkg_manager}" install -y procps-ng curl file git; then
     log_failure "Failed to install Homebrew prerequisites"
     exit 1
   fi
@@ -118,7 +129,7 @@ install_homebrew() {
   cached_installer="${cache_path}/install_homebrew.sh"
   log_info "Downloading Homebrew installer to ${cached_installer}…"
 
-  log_info "Homebrew installer URL: [${homebrew_installer_url}]"
+  log_debug "Homebrew installer URL: [${homebrew_installer_url}]"
   curl -fsSL "${homebrew_installer_url}" > "${cached_installer}"
 
   log_info "Running Homebrew installer…"
