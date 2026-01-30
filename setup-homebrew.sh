@@ -16,37 +16,58 @@ detect_distribution() {
 # Install prerequisites for Debian/Ubuntu
 install_debian_prerequisites() {
   log_info "Installing Homebrew prerequisites for Debian/Ubuntu…"
-  sudo apt-get update
-  sudo apt-get install -y build-essential procps curl file git
+  if ! sudo apt-get update; then
+    log_failure "Failed to update apt package lists"
+    exit 1
+  fi
+  if ! sudo apt-get install -y build-essential procps curl file git; then
+    log_failure "Failed to install Homebrew prerequisites"
+    exit 1
+  fi
 }
 
 # Install prerequisites for Fedora
 install_fedora_prerequisites() {
   log_info "Installing Homebrew prerequisites for Fedora…"
-  sudo dnf groupinstall -y 'Development Tools' 2>/dev/null || sudo dnf group install -y development-tools
-  sudo dnf install -y procps-ng curl file git
+  if ! sudo dnf groupinstall -y 'Development Tools' 2>/dev/null && ! sudo dnf group install -y development-tools; then
+    log_failure "Failed to install Development Tools group"
+    exit 1
+  fi
+  if ! sudo dnf install -y procps-ng curl file git; then
+    log_failure "Failed to install Homebrew prerequisites"
+    exit 1
+  fi
 }
 
 # Install prerequisites for CentOS/RHEL
 install_centos_prerequisites() {
   log_info "Installing Homebrew prerequisites for CentOS/RHEL…"
-  sudo dnf groupinstall -y 'Development Tools'
-  sudo dnf install -y procps-ng curl file git
+  if ! sudo dnf groupinstall -y 'Development Tools'; then
+    log_failure "Failed to install Development Tools group"
+    exit 1
+  fi
+  if ! sudo dnf install -y procps-ng curl file git; then
+    log_failure "Failed to install Homebrew prerequisites"
+    exit 1
+  fi
 }
 
 # Install prerequisites for Arch Linux
 install_arch_prerequisites() {
   log_info "Installing Homebrew prerequisites for Arch Linux…"
-  sudo pacman -S --noconfirm --needed base-devel procps-ng curl file git
+  if ! sudo pacman -S --noconfirm --needed base-devel procps-ng curl file git; then
+    log_failure "Failed to install Homebrew prerequisites"
+    exit 1
+  fi
 }
 
 # Install prerequisites based on the detected distribution
 install_prerequisites() {
   local distro
   distro=$(detect_distribution)
-  
+
   log_info "Detected distribution: ${distro}"
-  
+
   case "${distro}" in
     ubuntu|debian|pop)
       install_debian_prerequisites
@@ -63,6 +84,15 @@ install_prerequisites() {
     *)
       log_warning "Unknown distribution: ${distro}. Skipping prerequisite installation."
       log_warning "Please ensure you have curl, git, and build tools installed."
+      # Verify critical dependencies
+      if ! command_exists "curl"; then
+        log_failure "curl is not installed. Please install it manually."
+        exit 1
+      fi
+      if ! command_exists "git"; then
+        log_failure "git is not installed. Please install it manually."
+        exit 1
+      fi
       ;;
   esac
 }
