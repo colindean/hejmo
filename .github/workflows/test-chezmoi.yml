@@ -1,0 +1,80 @@
+name: Test Chezmoi Integration
+
+on:
+  push:
+
+permissions: {}
+
+jobs:
+  test-chezmoi:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0  # Fetch full history for git mv tracking
+          persist-credentials: false
+      
+      - name: Install chezmoi
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Install latest chezmoi from GitHub releases using gh CLI
+          CHEZMOI_VERSION=$(gh api /repos/twpayne/chezmoi/releases/latest --jq '.tag_name | gsub("v"; "")')
+          echo "Installing chezmoi version ${CHEZMOI_VERSION}"
+          cd /tmp
+          curl -sfL "https://github.com/twpayne/chezmoi/releases/download/v${CHEZMOI_VERSION}/chezmoi_${CHEZMOI_VERSION}_linux_amd64.tar.gz" | tar -xz
+          sudo install chezmoi /usr/local/bin/
+          chezmoi --version
+      
+      - name: Install BATS
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends bats
+          bats --version
+      
+      - name: Initialize chezmoi with repository
+        run: |
+          # Initialize chezmoi with the current branch
+          # Extract branch name from GITHUB_REF (refs/heads/branch-name)
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "Initializing chezmoi with branch: ${BRANCH_NAME}"
+          
+          # For local testing, we'll use the checked out files directly
+          # In a real scenario, this would use the GitHub URL
+          if [ -n "${GITHUB_REPOSITORY}" ]; then
+            REPO_URL="https://github.com/${GITHUB_REPOSITORY}.git"
+            echo "Using repository URL: ${REPO_URL}"
+            
+            # Remove any existing chezmoi directory
+            rm -rf ~/.local/share/chezmoi
+            
+            # Initialize with the repository and branch
+            chezmoi init --apply "${REPO_URL}" --branch "${BRANCH_NAME}"
+          else
+            # Local testing fallback
+            echo "Running in local mode, using checked out files"
+            mkdir -p ~/.local/share
+            ln -s "${GITHUB_WORKSPACE}/home" ~/.local/share/chezmoi
+            chezmoi init --apply
+          fi
+      
+      - name: Run BATS tests
+        run: |
+          cd tests
+          bats test_chezmoi.bats
+      
+      - name: Display chezmoi status
+        if: always()
+        run: |
+          echo "=== Chezmoi Status ==="
+          chezmoi status || true
+          echo ""
+          echo "=== Managed Files ==="
+          chezmoi managed || true
+          echo ""
+          echo "=== Home Directory Files ==="
+          ls -la ~ | grep -E "^\." | head -20 || true

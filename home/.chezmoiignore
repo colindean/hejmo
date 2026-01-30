@@ -1,0 +1,12 @@
+# .chezmoiignore
+# Files and patterns that chezmoi should not manage
+
+# Don't manage the .git directory
+.git
+
+# Don't manage README files in the home directory
+README.md
+README*
+
+# Don't manage any dotfiles directories or metadata
+.chezmoi.*
