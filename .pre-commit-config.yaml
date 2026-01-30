@@ -20,7 +20,7 @@ repos:
     - mdformat-config
     # TODO: restore when it supports mdformat>=1.0.0
     # - mdformat-deflist
-    - mdformat-frontmatter
+    # - mdformat-frontmatter
     - mdformat-footnote
     - mdformat-gfm
     - mdformat-tables
