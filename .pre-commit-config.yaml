@@ -11,14 +11,15 @@ repos:
   rev: v0.11.0.1
   hooks:
     - id: shellcheck
-- repo: https://github.com/executablebooks/mdformat
+- repo: https://github.com/hukkin/mdformat
   rev: 1.0.0
   hooks:
   - id: mdformat
     additional_dependencies:
     - mdformat-black
     - mdformat-config
-    - mdformat-deflist
+    # TODO: restore when it supports mdformat>=1.0.0
+    # - mdformat-deflist
     - mdformat-frontmatter
     - mdformat-footnote
     - mdformat-gfm
