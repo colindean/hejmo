@@ -15,12 +15,12 @@ repos:
   rev: 1.0.0
   hooks:
   - id: mdformat
+    language_version: python3.10
     additional_dependencies:
-    - mdformat-black
+    - mdformat-ruff
     - mdformat-config
-    # TODO: restore when it supports mdformat>=1.0.0
-    # - mdformat-deflist
-    # - mdformat-frontmatter
+    - mdformat-deflist
+    - mdformat-frontmatter
     - mdformat-footnote
     - mdformat-gfm
     - mdformat-tables
