@@ -1,5 +1,11 @@
 # vim: ft=ruby
 
+# My very favorite font set (most of the time)
+cask "font-source-code-pro"
+cask "font-source-code-pro-for-powerline"
+cask "font-source-sans-3"
+cask "font-source-serif-4"
+
 # good coding fonts
 cask 'font-fira-code'
 cask 'font-fira-code-nerd-font'
@@ -15,3 +21,17 @@ cask 'font-open-sans'
 
 # code and supply font
 cask 'font-libre-franklin'
+
+# good alt coding fonts
+cask "font-input"
+cask "font-jetbrains-mono-nerd-font"
+
+# computer modern for the latex folk
+cask "font-new-computer-modern"
+
+# OCR-A for old style
+cask "font-ocr"
+
+# Apple's SF 
+cask "font-sf-mono"
+cask "font-sf-pro"
