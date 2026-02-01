@@ -91,6 +91,18 @@ clear_brew_prefix_cache(){
 }
 export BREW_PREFIX=cached_brew_prefix
 
+## Setup bkt for caching expensive commands
+## This reduces shell startup time by caching command outputs
+if command -v bkt &>/dev/null; then
+  bkt() { command bkt "$@"; }
+else
+  # If bkt isn't installed skip its arguments and just execute directly.
+  bkt() {
+    while [[ "$1" == --* ]]; do shift; done
+    "$@"
+  }
+fi
+
 ### BENCHMARKING:
 ### Run this command to reload with benchmarking output:
 ###     HEJMO_BENCH_BASH_PROFILE=1 rebash

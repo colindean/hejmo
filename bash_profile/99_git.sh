@@ -2,7 +2,8 @@
 # git functions and aliases
 
 if [ -n "$(command -v hub)" ]; then
-  eval "$(hub alias -s)"
+  # Cache for 1 day (86400 seconds) since hub alias rarely changes
+  eval "$(bkt --ttl=86400 -- hub alias -s)"
 fi
 
 alias g="git"

@@ -24,7 +24,8 @@ __determine_brew_path() {
 brew_path="$(__determine_brew_path)"
 
 # Setup Homebrew as early as possible
-eval "$("${brew_path}/bin/brew" shellenv)"
+# Cache for 1 hour (3600 seconds) since brew location rarely changes
+eval "$(bkt --ttl=3600 -- "${brew_path}/bin/brew" shellenv)"
 
 # Setup PATH
 MYPATH=()

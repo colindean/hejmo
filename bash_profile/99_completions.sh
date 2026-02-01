@@ -55,10 +55,12 @@ fi
 
 # autocomplete for pandoc
 if [ -n "$(command -v pandoc)" ]; then
-	eval "$(pandoc --bash-completion)"
+	# Cache for 1 day (86400 seconds) since pandoc completion rarely changes
+	eval "$(bkt --ttl=86400 -- pandoc --bash-completion)"
 fi
 
 # autocomplete for ngrok
 if [ -n "$(command -v ngrok)" ]; then
-	eval "$(ngrok completion)"
+	# Cache for 1 day (86400 seconds) since ngrok completion rarely changes
+	eval "$(bkt --ttl=86400 -- ngrok completion)"
 fi
