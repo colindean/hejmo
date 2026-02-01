@@ -5,10 +5,10 @@
 # Usage: serve [OPTIONS] [DIRECTORY]
 #
 # Options:
-#   --multithreaded    Only use multithreaded servers (excludes Python http.server, 
-#                      Ruby WEBrick, PHP built-in server, and busybox httpd)
-#   -p, --port PORT    Port to listen on (default: 8000)
-#   DIRECTORY          Directory to serve (default: current directory)
+#   -m, --multithreaded    Only use multithreaded servers (excludes Python http.server, 
+#                          Ruby WEBrick, PHP built-in server, and busybox httpd)
+#   -p, --port PORT        Port to listen on (default: 8000)
+#   DIRECTORY              Directory to serve (default: current directory)
 #
 # The script tries servers in order of preference (most performant first):
 #   1. miniserve (Rust, multithreaded)
@@ -34,7 +34,7 @@ ORIGINAL_ARGS="$*"
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --multithreaded)
+    -m|--multithreaded)
       REQUIRE_MULTITHREADED=true
       shift
       ;;
