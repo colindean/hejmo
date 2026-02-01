@@ -25,3 +25,5 @@ function urlencode() {
 function urldecode() {
 	perl -pe 's/\%(\w\w)/chr hex $1/ge'
 }
+
+alias qr="qrencode -t ANSI256UTF8"
