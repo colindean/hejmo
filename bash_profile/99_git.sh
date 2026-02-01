@@ -3,7 +3,7 @@
 
 if [ -n "$(command -v hub)" ]; then
   # Cache for 1 day (86400 seconds) since hub alias rarely changes
-  eval "$(bkt --ttl=86400 -- hub alias -s)"
+  eval "$(bkt_cache_daily hub alias -s)"
 fi
 
 alias g="git"

@@ -25,7 +25,7 @@ brew_path="$(__determine_brew_path)"
 
 # Setup Homebrew as early as possible
 # Cache for 1 hour (3600 seconds) since brew configuration may change during development
-eval "$(bkt --ttl=3600 -- "${brew_path}/bin/brew" shellenv)"
+eval "$(bkt_cache_hourly "${brew_path}/bin/brew" shellenv)"
 
 # Setup PATH
 MYPATH=()

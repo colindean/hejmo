@@ -103,6 +103,15 @@ else
   }
 fi
 
+## Convenience functions for common bkt cache durations
+bkt_cache_hourly() {
+  bkt --ttl=3600 -- "$@"
+}
+
+bkt_cache_daily() {
+  bkt --ttl=86400 -- "$@"
+}
+
 ### BENCHMARKING:
 ### Run this command to reload with benchmarking output:
 ###     HEJMO_BENCH_BASH_PROFILE=1 rebash
