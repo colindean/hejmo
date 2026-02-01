@@ -5,7 +5,8 @@ CONDA_BASE_PATH="${MINICONDA_PATH}/base"
 CONDA_BIN="${CONDA_BASE_PATH}/bin/conda"
 
 if [[ -x "${CONDA_BIN}" ]]; then
-    __conda_setup="$("${CONDA_BIN}" shell.bash hook 2> /dev/null)"
+    # Cache for 1 hour (3600 seconds) since conda configuration may change during development
+    __conda_setup="$(bkt_cache_hourly "${CONDA_BIN}" shell.bash hook 2> /dev/null)"
     # shellcheck disable=SC2181
     if [ $? -eq 0 ]; then
         eval "$__conda_setup"

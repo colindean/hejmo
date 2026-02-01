@@ -3,13 +3,14 @@
 THIS_SHELL="$(basename "${SHELL}")"
 
 if true && [ -n "$(command -v zoxide)" ]; then
+  # Cache for 1 day (86400 seconds) since zoxide init output rarely changes
   case "${THIS_SHELL}" in
     bash)
-      eval "$(zoxide init bash)";;
+      eval "$(bkt_cache_daily zoxide init bash)";;
     zsh)
-      eval "$(zoxide init zsh)";;
+      eval "$(bkt_cache_daily zoxide init zsh)";;
     *)
-      eval "$(zoxide init posix --hook prompt)";;
+      eval "$(bkt_cache_daily zoxide init posix --hook prompt)";;
   esac
 fi
 
