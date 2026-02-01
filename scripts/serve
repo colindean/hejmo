@@ -1,14 +1,112 @@
 #!/bin/sh
+# HTTP server script that tries multiple server options based on availability
+# Inspired by https://gist.github.com/willurd/5720255
+#
+# Usage: serve [OPTIONS] [DIRECTORY]
+#
+# Options:
+#   -m, --multithreaded    Only use multithreaded servers (excludes Python http.server, 
+#                          Ruby WEBrick, PHP built-in server, and busybox httpd)
+#   -p, --port PORT        Port to listen on (default: 8000)
+#   DIRECTORY              Directory to serve (default: current directory)
+#
+# The script tries servers in order of preference (most performant first):
+#   1. miniserve (Rust, multithreaded)
+#   2. caddy (Go, multithreaded)
+#   3. static-server (Go, multithreaded, if installed)
+#   4. go static-server (Go, multithreaded, compiles on-the-fly)
+#   5. http-server (Node.js, multithreaded, if installed via npm)
+#   6. busybox httpd (lightweight, single-threaded)
+#   7. node built-in http (Node.js, multithreaded)
+#   8. twist web (Python Twisted, multithreaded)
+#   9. python3 -m http.server (Python 3, single-threaded)
+#   10. ruby -run -e httpd (Ruby WEBrick, single-threaded)
+#   11. php -S (PHP built-in, single-threaded)
+#   12. python -m SimpleHTTPServer (Python 2, single-threaded)
 
-if command -v miniserve > /dev/null; then
-  miniserve "$@"
-elif command -v twist > /dev/null; then
-  twist web "$@"
-elif command -v go > /dev/null; then
-  # https://github.com/eliben/static-server
-  go run github.com/eliben/static-server@latest "$@"
-elif python -V | grep -q "Python 3"; then
-  python -m http.server "$@"
-elif python -V | grep -q "Python 2"; then
-  python -m SimpleHTTPServer "$@"
+# Parse flags
+REQUIRE_MULTITHREADED=false
+PORT="8000"
+DIR="."
+
+# Store original args for passing through to servers that support them
+ORIGINAL_ARGS="$*"
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -m|--multithreaded)
+      REQUIRE_MULTITHREADED=true
+      shift
+      ;;
+    -p|--port)
+      shift
+      PORT="$1"
+      shift
+      ;;
+    *)
+      # Keep track of directory if provided
+      if [ -d "$1" ]; then
+        DIR="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+# Function to try a server
+try_server() {
+  local name="$1"
+  local command="$2"
+  local is_multithreaded="$3"
+  
+  # Skip single-threaded servers if multithreaded is required
+  if [ "$REQUIRE_MULTITHREADED" = true ] && [ "$is_multithreaded" = false ]; then
+    echo "Skipping $name (single-threaded, --multithreaded flag set)" >&2
+    return 1
+  fi
+  
+  echo "Starting HTTP server with $name on port $PORT..." >&2
+  eval "$command"
+  return 0
+}
+
+# Try servers in order of preference (most performant first)
+# Multithreaded, high-performance servers
+
+if command -v miniserve > /dev/null && try_server "miniserve" "miniserve --port $PORT \"$DIR\"" true; then
+  true
+elif command -v caddy > /dev/null && try_server "caddy" "cd \"$DIR\" && caddy file-server --browse --listen :$PORT" true; then
+  true
+elif command -v static-server > /dev/null && try_server "static-server" "static-server -port $PORT \"$DIR\"" true; then
+  true
+elif command -v go > /dev/null && try_server "go static-server" "go run github.com/eliben/static-server@latest -port $PORT \"$DIR\"" true; then
+  true
+elif command -v http-server > /dev/null && try_server "http-server (Node.js)" "http-server \"$DIR\" -p $PORT" true; then
+  true
+elif command -v busybox > /dev/null && busybox httpd --help > /dev/null 2>&1 && try_server "busybox httpd" "cd \"$DIR\" && busybox httpd -f -p $PORT" false; then
+  true
+elif command -v node > /dev/null && try_server "Node.js http" "node -e \"const http = require('http'); const fs = require('fs'); const path = require('path'); const port = $PORT; const baseDir = path.resolve('$DIR'); http.createServer((req, res) => { const requestedPath = decodeURIComponent(req.url); const normalizedPath = path.normalize(requestedPath).replace(/^(\\.\\.\\/)+/, ''); const filePath = path.resolve(baseDir, normalizedPath === '/' ? 'index.html' : normalizedPath); if (!filePath.startsWith(baseDir + path.sep) && filePath !== baseDir) { res.writeHead(403); res.end('403 Forbidden'); return; } fs.readFile(filePath, (err, data) => { if (err) { res.writeHead(404); res.end('404 Not Found'); } else { res.writeHead(200); res.end(data); } }); }).listen(port, () => console.log('Server running at http://localhost:' + port + '/'));\"" true; then
+  true
+elif command -v twist > /dev/null && try_server "Twisted Web (Python)" "twist web --port $PORT --path \"$DIR\"" true; then
+  true
+
+# Single-threaded servers (only if multithreaded not required)
+
+elif python3 --version > /dev/null 2>&1 && try_server "Python 3 http.server" "cd \"$DIR\" && python3 -m http.server $PORT" false; then
+  true
+elif python --version 2>&1 | grep -q "Python 3" && try_server "Python 3 http.server" "cd \"$DIR\" && python -m http.server $PORT" false; then
+  true
+elif command -v ruby > /dev/null && try_server "Ruby WEBrick" "ruby -run -e httpd \"$DIR\" --port=$PORT" false; then
+  true
+elif command -v php > /dev/null && try_server "PHP built-in server" "cd \"$DIR\" && php -S localhost:$PORT" false; then
+  true
+elif python --version 2>&1 | grep -q "Python 2" && try_server "Python 2 SimpleHTTPServer" "cd \"$DIR\" && python -m SimpleHTTPServer $PORT" false; then
+  true
+else
+  echo "Error: No suitable HTTP server found." >&2
+  if [ "$REQUIRE_MULTITHREADED" = true ]; then
+    echo "Note: --multithreaded flag is set, excluding single-threaded servers." >&2
+  fi
+  echo "Install one of: miniserve, caddy, static-server, node, python3, ruby, php" >&2
+  exit 1
 fi
