@@ -6,7 +6,7 @@ require 'open3'
 require 'fileutils'
 
 # Set up cache directory using XDG_CACHE_HOME
-CACHE_DIR = File.join(ENV['XDG_CACHE_HOME'] || File.join(ENV['HOME'], '.cache'), '.t', 'analysis')
+CACHE_DIR = File.join(ENV['XDG_CACHE_HOME'] || File.join((ENV['HOME'] || Dir.home), '.cache'), '.t', 'analysis')
 FileUtils.mkdir_p(CACHE_DIR)
 
 # check for requirements
