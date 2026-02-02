@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-# Exit immediately if a command exits with a non-zero status
-set -e
-# Exit if an undefined variable is used
-set -u
-# Fail on pipe errors
-set -o pipefail
+set -eu -o pipefail
 
 FROM_BRANCH="${1:-master}"
 TO_BRANCH="${2:-main}"
