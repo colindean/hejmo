@@ -62,10 +62,9 @@ jobs:
             chezmoi init --apply
           fi
       
-      - name: Run BATS tests
+      - name: Run Chezmoi BATS tests
         run: |
-          cd tests
-          bats test_chezmoi.bats
+          bats tests/test_chezmoi.bats
       
       - name: Display chezmoi status
         if: always()
@@ -78,3 +77,7 @@ jobs:
           echo ""
           echo "=== Home Directory Files ==="
           ls -la ~ | grep -E "^\." | head -20 || true
+
+      - name: Run bash profile BATS tests
+        run: |
+          bats tests/test_bash_startup.bats
