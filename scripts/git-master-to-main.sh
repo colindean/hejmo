@@ -15,4 +15,6 @@ else
   >&2 echo "Remote branch ${REMOTE}/${TO_BRANCH} does not exist; skipping upstream configuration."
   >&2 echo "You can create it and set upstream with: git push -u ${REMOTE} ${TO_BRANCH}"
 fi
-git remote set-head "${REMOTE}" -a
+if git ls-remote --heads "${REMOTE}" "${TO_BRANCH}" >/dev/null 2>&1; then
+  git remote set-head "${REMOTE}" "${TO_BRANCH}"
+fi
