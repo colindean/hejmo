@@ -28,13 +28,9 @@ jobs:
           sudo install chezmoi /usr/local/bin/
           chezmoi --version
       
-      - name: Install BATS
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends bats
-          bats --version
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad507 # 3.0.1
       
       - name: Initialize chezmoi with repository
         run: |
@@ -61,11 +57,15 @@ jobs:
             ln -s "${GITHUB_WORKSPACE}/home" ~/.local/share/chezmoi
             chezmoi init --apply
           fi
-      
+
       - name: Run Chezmoi BATS tests
+        shell: bash
+        env:
+          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+          TERM: xterm
         run: |
           bats -p --print-output-on-failure tests/test_chezmoi.bats
-      
+
       - name: Display chezmoi status
         if: always()
         run: |
@@ -79,5 +79,9 @@ jobs:
           ls -la ~ | grep -E "^\." | head -20 || true
 
       - name: Run bash profile BATS tests
+        shell: bash
+        env:
+          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+          TERM: xterm
         run: |
           bats -p --print-output-on-failure tests/test_bash_startup.bats
