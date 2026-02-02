@@ -1,43 +1,21 @@
-# Chezmoi Integration Tests
-
-This directory contains tests for the Chezmoi integration in the Hejmo repository.
+# Tests
 
 ## Running Tests Locally
 
 ### Prerequisites
 
-1. Install BATS (Bash Automated Testing System):
+1. Install bats and chezmoi probably using one of the Brewfiles in the root directory, or:
 
    ```bash
-   # On macOS
-   brew install bats-core
-
-   # On Ubuntu/Debian
-   sudo apt-get install bats
-
-   # Or install from source
-   git clone https://github.com/bats-core/bats-core.git
-   cd bats-core
-   sudo ./install.sh /usr/local
-   ```
-
-1. Install chezmoi:
-
-   ```bash
-   # See https://www.chezmoi.io/install/
-   brew install chezmoi  # macOS
-   # or
-   sudo snap install chezmoi --classic  # Linux
+   # On macOS and Linux
+   brew install bats-core chezmoi
    ```
 
 ### Running the Tests
 
 ```bash
 # Run all tests
-bats tests/test_chezmoi.bats
-
-# Run with verbose output
-bats -p tests/test_chezmoi.bats
+bats -p tests/*
 
 # Run specific test
 bats -f "chezmoi is installed" tests/test_chezmoi.bats
@@ -45,7 +23,7 @@ bats -f "chezmoi is installed" tests/test_chezmoi.bats
 
 ## Test Structure
 
-The test suite verifies:
+The Chezmoi test suite verifies at least:
 
 1. **Installation**: Chezmoi is properly installed and working
 1. **Repository Structure**: `.chezmoiroot` file exists and points to `home/`
