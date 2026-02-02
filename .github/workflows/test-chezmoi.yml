@@ -64,7 +64,7 @@ jobs:
       
       - name: Run Chezmoi BATS tests
         run: |
-          bats tests/test_chezmoi.bats
+          bats -p --print-output-on-failure tests/test_chezmoi.bats
       
       - name: Display chezmoi status
         if: always()
@@ -80,4 +80,4 @@ jobs:
 
       - name: Run bash profile BATS tests
         run: |
-          bats tests/test_bash_startup.bats
+          bats -p --print-output-on-failure tests/test_bash_startup.bats
