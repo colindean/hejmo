@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eu -o pipefail
+
 FROM_BRANCH="${1:-master}"
 TO_BRANCH="${2:-main}"
 REMOTE="${3:-origin}"
