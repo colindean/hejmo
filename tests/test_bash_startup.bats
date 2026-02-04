@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+bats_require_minimum_version 1.5.0
 
 # Test suite for Bash startup
 # These tests verify that bash starts correctly with applied dotfiles
@@ -22,7 +23,7 @@ setup() {
   [ "$status" -eq 0 ]
   # HEJMO should be set to a non-empty path
   [ -n "$output" ]
-  [[ "$output" =~ "\\.local/share/chezmoi" ]]
+  [[ "$output" =~ "\.local\/share\/chezmoi" ]]
 }
 
 @test "bkt helper functions are available after bash startup" {
