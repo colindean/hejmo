@@ -22,7 +22,7 @@ setup() {
   [ "$status" -eq 0 ]
   # HEJMO should be set to a non-empty path
   [ -n "$output" ]
-  [[ "$output" =~ "hejmo" ]]
+  [[ "$output" =~ ".local/share/chezmoi" ]]
 }
 
 @test "bkt helper functions are available after bash startup" {
