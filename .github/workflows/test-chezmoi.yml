@@ -84,4 +84,4 @@ jobs:
           BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
           TERM: xterm
         run: |
-          bats -p --print-output-on-failure tests/test_bash_startup.bats
+          bats -p --print-output-on-failure --separate-stderr tests/test_bash_startup.bats
