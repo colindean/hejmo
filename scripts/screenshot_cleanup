@@ -38,26 +38,6 @@ get_screenshot_dir() {
   esac
 }
 
-# Get screenshot filename pattern based on OS
-get_screenshot_pattern() {
-  local os
-  os=$(uname -s)
-  
-  case "$os" in
-    Darwin)
-      # macOS pattern: "Screenshot 2024-01-15 at 10.30.45 AM.png"
-      echo "([0-9]{4}-[0-9]{2}-[0-9]{2}) at ([0-9]{1,2}\.[0-9]{2}\.[0-9]{2})(\ [AP]M)?"
-      ;;
-    Linux)
-      # GNOME pattern: "Screenshot from 2024-01-15 10-30-45.png"
-      echo "(from )?([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}-[0-9]{2}-[0-9]{2})"
-      ;;
-    *)
-      echo "([0-9]{4}-[0-9]{2}-[0-9]{2})"
-      ;;
-  esac
-}
-
 # Extract timestamp from filename
 extract_timestamp() {
   local filename="$1"
@@ -80,7 +60,7 @@ extract_timestamp() {
       ;;
     Linux)
       # GNOME: "Screenshot from 2024-01-15 10-30-45.png"
-      if [[ $basename_only =~ (from )?([0-9]{4}-[0-9]{2}-[0-9]{2})\ ([0-9]{2}-[0-9]{2}-[0-9]{2}) ]]; then
+      if [[ $basename_only =~ ([Ff]rom )?([0-9]{4}-[0-9]{2}-[0-9]{2})\ ([0-9]{2}-[0-9]{2}-[0-9]{2}) ]]; then
         local date="${BASH_REMATCH[2]}"
         local time="${BASH_REMATCH[3]//-/:}"
         echo "${date} ${time}"

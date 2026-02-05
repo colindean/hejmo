@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 bats_require_minimum_version 1.5.0
 
-# Test suite for screenshot_cleanup.sh
+# Test suite for screenshot_cleanup
 # These tests verify the screenshot cleanup script functions
 
 setup() {
@@ -11,7 +11,7 @@ setup() {
   export DRY_RUN=true
   
   # Source the script
-  source "${BATS_TEST_DIRNAME}/../scripts/screenshot_cleanup.sh"
+  source "${BATS_TEST_DIRNAME}/../scripts/screenshot_cleanup"
   
   # Create temporary test directory
   TEST_DIR="${BATS_TEST_TMPDIR}/screenshots"
@@ -50,26 +50,6 @@ teardown() {
   run get_screenshot_dir
   [ "$status" -eq 0 ]
   [ "$output" = "/Users/test/Desktop" ]
-}
-
-@test "get_screenshot_pattern returns macOS pattern" {
-  # Mock uname to return Darwin
-  uname() { echo "Darwin"; }
-  export -f uname
-  
-  run get_screenshot_pattern
-  [ "$status" -eq 0 ]
-  [[ "$output" =~ "at" ]]
-}
-
-@test "get_screenshot_pattern returns Linux pattern" {
-  # Mock uname to return Linux
-  uname() { echo "Linux"; }
-  export -f uname
-  
-  run get_screenshot_pattern
-  [ "$status" -eq 0 ]
-  [[ "$output" =~ "from" ]]
 }
 
 @test "extract_timestamp works for macOS screenshot filename" {
@@ -231,11 +211,11 @@ teardown() {
 }
 
 @test "script is executable" {
-  [ -x "${BATS_TEST_DIRNAME}/../scripts/screenshot_cleanup.sh" ]
+  [ -x "${BATS_TEST_DIRNAME}/../scripts/screenshot_cleanup" ]
 }
 
 @test "script can be sourced without errors" {
-  run bash -c "source ${BATS_TEST_DIRNAME}/../scripts/screenshot_cleanup.sh; echo 'sourced'"
+  run bash -c "source ${BATS_TEST_DIRNAME}/../scripts/screenshot_cleanup; echo 'sourced'"
   [ "$status" -eq 0 ]
   [[ "$output" =~ "sourced" ]]
 }

@@ -4,12 +4,12 @@ name: Test Screenshot Cleanup Script
 'on':
   push:
     paths:
-      - 'scripts/screenshot_cleanup.sh'
+      - 'scripts/screenshot_cleanup'
       - 'tests/test_screenshot_cleanup.bats'
       - '.github/workflows/test-screenshot-cleanup.yml'
   pull_request:
     paths:
-      - 'scripts/screenshot_cleanup.sh'
+      - 'scripts/screenshot_cleanup'
       - 'tests/test_screenshot_cleanup.bats'
       - '.github/workflows/test-screenshot-cleanup.yml'
 
@@ -23,8 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        # v6.0.2
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
@@ -47,7 +46,7 @@ jobs:
           DRY_RUN: true
         run: |
           # Test that the script can run without errors
-          ./scripts/screenshot_cleanup.sh
+          ./scripts/screenshot_cleanup
 
   test-ubuntu:
     name: Test on Ubuntu
@@ -55,21 +54,19 @@ jobs:
 
     steps:
       - name: Checkout repository
-        # v6.0.2
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
       - name: Setup Bats and bats libs
         id: setup-bats
-        # 3.0.1
-        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad507
+        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad507 # 3.0.1
 
       - name: Install dependencies
         run: |
           # Install trash-cli (Linux version of trash)
-          sudo apt-get update
-          sudo apt-get install -y trash-cli || true
+          sudo apt-get update --yes
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install --yes --no-install-recommends trash-cli || true
 
       - name: Run screenshot cleanup tests
         env:
@@ -83,4 +80,4 @@ jobs:
           DRY_RUN: true
         run: |
           # Test that the script can run without errors
-          ./scripts/screenshot_cleanup.sh
+          ./scripts/screenshot_cleanup
