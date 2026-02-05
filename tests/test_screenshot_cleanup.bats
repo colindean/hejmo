@@ -30,8 +30,8 @@ teardown() {
   
   run get_screenshot_dir
   [ "$status" -eq 0 ]
-  # Should return a path (either from gsettings or default)
-  [[ "$output" =~ ^/ ]] || [[ "$output" =~ ^\$ ]]
+  # Should return a path starting with / (absolute path)
+  [[ "$output" =~ ^/ ]]
 }
 
 @test "get_screenshot_dir returns a valid directory on macOS" {

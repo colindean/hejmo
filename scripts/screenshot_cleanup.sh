@@ -21,7 +21,7 @@ get_screenshot_dir() {
       if command -v gsettings &> /dev/null; then
         local gnome_dir
         gnome_dir=$(gsettings get org.gnome.gnome-screenshot auto-save-directory 2>/dev/null | tr -d "'")
-        if [[ -n "$gnome_dir" && "$gnome_dir" != "" ]]; then
+        if [[ -n "$gnome_dir" ]]; then
           # Expand ~ to $HOME if present
           gnome_dir="${gnome_dir/#\~/$HOME}"
           echo "$gnome_dir"
