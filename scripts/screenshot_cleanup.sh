@@ -1,0 +1,260 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Configuration
+DRY_RUN=${DRY_RUN:-false}
+SCREENSHOT_PREFIX="Screenshot"
+
+# Get screenshot directory based on OS
+get_screenshot_dir() {
+  local os
+  os=$(uname -s)
+  
+  case "$os" in
+    Darwin)
+      # macOS: Use defaults command to get screenshot location
+      defaults read com.apple.screencapture location 2>/dev/null || echo "$HOME/Desktop"
+      ;;
+    Linux)
+      # Linux/GNOME: Try to get from gsettings, fallback to default
+      if command -v gsettings &> /dev/null; then
+        local gnome_dir
+        gnome_dir=$(gsettings get org.gnome.gnome-screenshot auto-save-directory 2>/dev/null | tr -d "'")
+        if [[ -n "$gnome_dir" && "$gnome_dir" != "" ]]; then
+          # Expand ~ to $HOME if present
+          gnome_dir="${gnome_dir/#\~/$HOME}"
+          echo "$gnome_dir"
+        else
+          echo "$HOME/Pictures"
+        fi
+      else
+        echo "$HOME/Pictures"
+      fi
+      ;;
+    *)
+      echo "$HOME/Pictures"
+      ;;
+  esac
+}
+
+# Get screenshot filename pattern based on OS
+get_screenshot_pattern() {
+  local os
+  os=$(uname -s)
+  
+  case "$os" in
+    Darwin)
+      # macOS pattern: "Screenshot 2024-01-15 at 10.30.45 AM.png"
+      echo "([0-9]{4}-[0-9]{2}-[0-9]{2}) at ([0-9]{1,2}\.[0-9]{2}\.[0-9]{2})(\ [AP]M)?"
+      ;;
+    Linux)
+      # GNOME pattern: "Screenshot from 2024-01-15 10-30-45.png"
+      echo "(from )?([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}-[0-9]{2}-[0-9]{2})"
+      ;;
+    *)
+      echo "([0-9]{4}-[0-9]{2}-[0-9]{2})"
+      ;;
+  esac
+}
+
+# Extract timestamp from filename
+extract_timestamp() {
+  local filename="$1"
+  local basename_only
+  basename_only=$(basename "$filename")
+  local os
+  os=$(uname -s)
+  
+  case "$os" in
+    Darwin)
+      # macOS: "Screenshot 2024-01-15 at 10.30.45 AM.png"
+      if [[ $basename_only =~ ([0-9]{4}-[0-9]{2}-[0-9]{2})\ at\ ([0-9]{1,2}\.[0-9]{2}\.[0-9]{2})(\ [AP]M)? ]]; then
+        local date="${BASH_REMATCH[1]}"
+        local time="${BASH_REMATCH[2]//./:}"
+        echo "${date} ${time}"
+      else
+        echo "Error: Unable to extract timestamp from filename: $basename_only" >&2
+        return 1
+      fi
+      ;;
+    Linux)
+      # GNOME: "Screenshot from 2024-01-15 10-30-45.png"
+      if [[ $basename_only =~ (from )?([0-9]{4}-[0-9]{2}-[0-9]{2})\ ([0-9]{2}-[0-9]{2}-[0-9]{2}) ]]; then
+        local date="${BASH_REMATCH[2]}"
+        local time="${BASH_REMATCH[3]//-/:}"
+        echo "${date} ${time}"
+      else
+        echo "Error: Unable to extract timestamp from filename: $basename_only" >&2
+        return 1
+      fi
+      ;;
+    *)
+      echo "Error: Unsupported OS: $os" >&2
+      return 1
+      ;;
+  esac
+}
+
+# Calculate age in days
+age_in_days() {
+  local timestamp="$1"
+  local now
+  local file_time
+  local os
+  os=$(uname -s)
+  
+  now=$(date +%s)
+  
+  case "$os" in
+    Darwin)
+      # macOS: Use -j flag with BSD date
+      file_time=$(date -j -f "%Y-%m-%d %H:%M:%S" "$timestamp" +%s 2>/dev/null)
+      ;;
+    Linux)
+      # Linux: Use GNU date
+      file_time=$(date -d "$timestamp" +%s 2>/dev/null)
+      ;;
+    *)
+      echo "Error: Unsupported OS: $os" >&2
+      return 1
+      ;;
+  esac
+  
+  if [[ -z "$file_time" ]]; then
+    echo "Error: Unable to parse timestamp: $timestamp" >&2
+    return 1
+  fi
+  
+  echo $(( (now - file_time) / 86400 ))
+}
+
+# Trash a file
+trash() {
+  local file="$1"
+  echo "🗑 ⬅ $(basename "$file")"
+  if [[ "$DRY_RUN" != "true" ]]; then
+    if command -v trash &> /dev/null; then
+      command trash "$file"
+    else
+      echo "Warning: trash command not found, using rm instead" >&2
+      rm "$file"
+    fi
+  fi
+}
+
+# Archive a file
+archive() {
+  local file="$1"
+  local archive_dir="$2"
+  echo "🗄 ⬅ $(basename "$file")"
+  if [[ ! -d "$archive_dir" ]]; then
+    echo "Creating $archive_dir"
+    if [[ "$DRY_RUN" != "true" ]]; then
+      mkdir -p "$archive_dir"
+    fi
+  fi
+  local new_name="${archive_dir}/$(basename "$file")"
+  if [[ "$DRY_RUN" != "true" ]]; then
+    mv "$file" "$new_name"
+  fi
+}
+
+# Process archive files
+process_archive() {
+  local archive_dir="$1"
+  local max_age="${2:-15}"
+  
+  echo "Looking in $archive_dir for deletion…"
+  
+  if [[ ! -d "$archive_dir" ]]; then
+    echo "Archive directory does not exist: $archive_dir"
+    return 0
+  fi
+  
+  find "$archive_dir" -type f -name "${SCREENSHOT_PREFIX}*" 2>/dev/null | while read -r file; do
+    local timestamp
+    local age
+    
+    if timestamp=$(extract_timestamp "$file" 2>/dev/null); then
+      if age=$(age_in_days "$timestamp" 2>/dev/null); then
+        if (( age > max_age )); then
+          trash "$file"
+        else
+          echo "🗄 ⬇ $(basename "$file")"
+        fi
+      else
+        echo "Warning: Could not calculate age for: $(basename "$file")" >&2
+      fi
+    else
+      echo "Warning: Could not extract timestamp from: $(basename "$file")" >&2
+    fi
+  done
+}
+
+# Process screenshot files
+process_screenshots() {
+  local screenshot_dir="$1"
+  local archive_dir="$2"
+  local max_age="${3:-7}"
+  
+  echo "Looking in $screenshot_dir for archival…"
+  
+  if [[ ! -d "$screenshot_dir" ]]; then
+    echo "Screenshot directory does not exist: $screenshot_dir"
+    return 0
+  fi
+  
+  find "$screenshot_dir" -maxdepth 1 -type f -name "${SCREENSHOT_PREFIX}*" 2>/dev/null | while read -r file; do
+    local timestamp
+    local age
+    
+    if timestamp=$(extract_timestamp "$file" 2>/dev/null); then
+      if age=$(age_in_days "$timestamp" 2>/dev/null); then
+        if (( age > max_age )); then
+          archive "$file" "$archive_dir"
+        else
+          echo "📂 ⬇ $(basename "$file")"
+        fi
+      else
+        echo "Warning: Could not calculate age for: $(basename "$file")" >&2
+      fi
+    else
+      echo "Warning: Could not extract timestamp from: $(basename "$file")" >&2
+    fi
+  done
+}
+
+# Main function
+main() {
+  local screenshot_dir
+  local archive_dir
+  
+  # Get screenshot directory based on OS
+  screenshot_dir=$(get_screenshot_dir)
+  
+  # Allow override via environment variable
+  screenshot_dir="${SCREENSHOT_DIR:-$screenshot_dir}"
+  
+  # Set archive directory
+  archive_dir="${screenshot_dir}/Screenshot Archive"
+  archive_dir="${ARCHIVE_DIR:-$archive_dir}"
+  
+  echo "Screenshot directory: $screenshot_dir"
+  echo "Archive directory: $archive_dir"
+  echo "Dry run: $DRY_RUN"
+  echo ""
+  
+  # Process archived screenshots (delete after 15 days)
+  process_archive "$archive_dir" 15
+  
+  echo ""
+  
+  # Process screenshots (archive after 7 days)
+  process_screenshots "$screenshot_dir" "$archive_dir" 7
+}
+
+# Run main function if script is executed (not sourced)
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  main "$@"
+fi

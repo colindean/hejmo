@@ -1,0 +1,82 @@
+name: Test Screenshot Cleanup Script
+
+on:
+  push:
+    paths:
+      - 'scripts/screenshot_cleanup.sh'
+      - 'tests/test_screenshot_cleanup.bats'
+      - '.github/workflows/test-screenshot-cleanup.yml'
+  pull_request:
+    paths:
+      - 'scripts/screenshot_cleanup.sh'
+      - 'tests/test_screenshot_cleanup.bats'
+      - '.github/workflows/test-screenshot-cleanup.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test-macos:
+    name: Test on macOS
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      
+      - name: Install dependencies
+        run: |
+          # Install bats-core
+          brew install bats-core
+          
+          # Install trash (optional but recommended)
+          brew install trash || true
+      
+      - name: Run screenshot cleanup tests
+        env:
+          TERM: xterm
+        run: |
+          bats -p --print-output-on-failure tests/test_screenshot_cleanup.bats
+      
+      - name: Test script execution
+        env:
+          DRY_RUN: true
+        run: |
+          # Test that the script can run without errors
+          ./scripts/screenshot_cleanup.sh
+
+  test-ubuntu:
+    name: Test on Ubuntu
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad507 # 3.0.1
+      
+      - name: Install dependencies
+        run: |
+          # Install trash-cli (Linux version of trash)
+          sudo apt-get update
+          sudo apt-get install -y trash-cli || true
+      
+      - name: Run screenshot cleanup tests
+        env:
+          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+          TERM: xterm
+        run: |
+          bats -p --print-output-on-failure tests/test_screenshot_cleanup.bats
+      
+      - name: Test script execution
+        env:
+          DRY_RUN: true
+        run: |
+          # Test that the script can run without errors
+          ./scripts/screenshot_cleanup.sh
