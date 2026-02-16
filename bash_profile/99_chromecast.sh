@@ -9,7 +9,7 @@ function ccyt {
 }
 
 function ytsearch() {
-  curl -s "https://www.youtube.com/results?search_query=$@" | \
+  curl -s "https://www.youtube.com/results?search_query=$*" | \
     grep -o 'watch?v=[^"]*"[^>]*title="[^"]*' | \
     sed -e 's/^watch\?v=\([^"]*\)".*title="\(.*\)/\1 \2/g'
 }

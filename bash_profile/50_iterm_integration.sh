@@ -15,7 +15,7 @@ fi
 disable-iterm-integration() {
   local OUTPUT=""
   IFS=';' read -ra CMDS <<< "${PROMPT_COMMAND}"
-  for i in "${CMD[@]}"; do
+  for i in "${CMDS[@]}"; do
     if [[ ! "${i}" =~ "__bp" ]]; then
       OUTPUT="${OUTPUT};${i}"
     fi

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-echo "$@" | sed -e 's/\ /\ 👏\ \ /g'
+echo "${@// / 👏  }"

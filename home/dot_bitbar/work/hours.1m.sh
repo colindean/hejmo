@@ -22,7 +22,7 @@ fi
 
 OUTPUT="$("${T}" hours)"
 
-if [ 0 -ne $? ]; then
+if ! "${T}" hours > /dev/null 2>&1; then
   echo "❌ t"
   echo "---"
   echo "Bad problem running ${T}. Write some debugging code."
@@ -37,7 +37,7 @@ fi
 
 PREFIX="t:"
 
-if [[ ! -z "${HOURS}" ]]; then
+if [[ -n "${HOURS}" ]]; then
   TIME_HEADLINE="${PREFIX} ${HOURS}"
 else
   TIME_HEADLINE="㏒ ⏳"
@@ -47,7 +47,7 @@ CURRENT_TASK="$("${T}" cur)"
 
 echo "${TIME_HEADLINE}"
 
-if [[ ! -z "${CURRENT_TASK}" ]]; then
+if [[ -n "${CURRENT_TASK}" ]]; then
   echo "${CURRENT_TASK}"
 fi
 
