@@ -26,5 +26,4 @@ repos:
 ci:
   skip:
     - ripsecrets-system
-    - shellcheck
     - shfmt
