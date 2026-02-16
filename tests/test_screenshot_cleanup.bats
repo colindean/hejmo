@@ -97,9 +97,15 @@ teardown() {
   uname() { echo "Linux"; }
   export -f uname
   
-  # Calculate a timestamp from 10 days ago
+  # Calculate a timestamp from 10 days ago (use OS-specific date command)
   local ten_days_ago
-  ten_days_ago=$(date -d "10 days ago" "+%Y-%m-%d %H:%M:%S")
+  if [[ "$(uname -s 2>/dev/null || echo Linux)" == "Darwin" ]]; then
+    # macOS: Use BSD date
+    ten_days_ago=$(command date -v-10d "+%Y-%m-%d %H:%M:%S")
+  else
+    # Linux: Use GNU date
+    ten_days_ago=$(command date -d "10 days ago" "+%Y-%m-%d %H:%M:%S")
+  fi
   
   run age_in_days "$ten_days_ago"
   [ "$status" -eq 0 ]
@@ -112,9 +118,9 @@ teardown() {
   uname() { echo "Linux"; }
   export -f uname
   
-  # Current timestamp
+  # Current timestamp (use command to bypass mocked uname in date call)
   local now
-  now=$(date "+%Y-%m-%d %H:%M:%S")
+  now=$(command date "+%Y-%m-%d %H:%M:%S")
   
   run age_in_days "$now"
   [ "$status" -eq 0 ]
@@ -179,14 +185,20 @@ teardown() {
   export -f uname
   export DRY_RUN=true
   
-  # Create test files with valid Linux screenshot names
+  # Create test files with valid Linux screenshot names (use OS-specific date command)
   local old_date
-  old_date=$(date -d "10 days ago" "+%Y-%m-%d")
+  if [[ "$(uname -s 2>/dev/null || echo Linux)" == "Darwin" ]]; then
+    # macOS: Use BSD date
+    old_date=$(command date -v-10d "+%Y-%m-%d")
+  else
+    # Linux: Use GNU date
+    old_date=$(command date -d "10 days ago" "+%Y-%m-%d")
+  fi
   local old_time="10-30-45"
   touch "$TEST_DIR/Screenshot from ${old_date} ${old_time}.png"
   
   local recent_date
-  recent_date=$(date "+%Y-%m-%d")
+  recent_date=$(command date "+%Y-%m-%d")
   local recent_time="10-30-45"
   touch "$TEST_DIR/Screenshot from ${recent_date} ${recent_time}.png"
   
