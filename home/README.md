@@ -35,7 +35,7 @@ home/
 Run the setup script from the repository root:
 
 ```bash
-bash setup-chezmoi.sh
+hejmo-setup-chezmoi.sh
 ```
 
 ### Apply Configuration
