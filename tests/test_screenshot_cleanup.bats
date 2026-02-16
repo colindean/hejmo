@@ -181,8 +181,6 @@ teardown() {
 
 @test "process_screenshots finds and processes files" {
   # Mock uname to return Linux for easier testing
-  uname() { echo "Linux"; }
-  export -f uname
   export DRY_RUN=true
   
   # Create test files with valid Linux screenshot names (use OS-specific date command)
