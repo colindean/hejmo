@@ -11,7 +11,7 @@ fi
 
 if ! command -v rustc; then
     echo "Setting up Rust..."
-    bash setup-rust.sh
+    bash ../scripts/hejmo-setup-rust.sh
 fi
 
 if command -v apt; then

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-. _helpers.sh
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 banner_text "Starting Debian deriv setup"
 
@@ -11,7 +11,7 @@ banner_text "Starting Debian deriv setup"
 
 # install netcat, or update and then install netcat
 sudo apt-get -qy install netcat || (sudo apt-get update && sudo apt-get -qy install netcat)
-bash setup-internal-proxy-for-apt.sh
+bash "${SCRIPT_DIR}/hejmo-setup-internal-proxy-for-apt.sh"
 
 # update and install some basics
 

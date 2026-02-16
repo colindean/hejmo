@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-. _helpers.sh
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 banner_text "Starting Docker for Linux setup"
 echo "This script only works for Debian derivatives!"

@@ -6,7 +6,7 @@
 # then initializes it with the hejmo repository using symlink mode.
 #
 # Usage:
-#   bash setup-chezmoi.sh [--apply]
+#   bash scripts/hejmo-setup-chezmoi.sh [--apply]
 #
 # Options:
 #   --apply    Apply the changes immediately (create symlinks)
@@ -17,7 +17,7 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Source helper functions
-source "${SCRIPT_DIR}/_helpers.sh"
+source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 # Check if chezmoi is installed
 if ! command -v chezmoi &> /dev/null; then
