@@ -8,21 +8,30 @@ way.
 
 ## Quickstart on a new machine
 
+**Long-lived machines:**
+
 ```shell
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/colindean/hejmo.git
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply colindean/hejmo
 ```
 
-### Option 1: Using Chezmoi (Recommended)
+**Short-lived development containers:**
+
+```shell
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --one-shot colindean/hejmo
+```
+
+### Next steps for new long-lived machines
 
 ```shell
 # Load a new shell or run this to load up Hejmo's bash config:
 source ~/.bash_profile
 # Setup Homebrew and install packages
 hejmo-setup-homebrew.sh
+# Install Brewfile-tracked software
+hejmo-setup-homebrew-brewfiles.sh
 
-brew bundle --file=${HEJMO}/Brewfile.all && \
-brew bundle --file=${HEJMO}/Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
-git remote set-url origin git@github.com:colindean/hejmo.git
+# Optionally switch to SSH for chezmoi. Do this after SSH is set up.
+chezmoi git remote set-url origin git@github.com:colindean/hejmo.git
 ```
 
 On Debian Linux only:
