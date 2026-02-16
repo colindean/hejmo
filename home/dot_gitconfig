@@ -79,7 +79,7 @@
   	semtag = !git tag -a $(semver tag) -m \"tagging $(semver tag)\"
 
 	# Pushing
-	pupr = !git push -u origin HEAD && hub pull-request -o
+	pupr = !git push -u origin HEAD && gh pr create
 	fpush = !git push --force-with-lease
 	puoh = !git push -u origin HEAD
 
@@ -165,8 +165,8 @@
 	directory = /vela/mosaic-ml-models-extended-service-plan
 [branch]
 	sort = -committerdate
-[credential "https://github.com"]
-	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+#[credential "https://github.com"]
+#	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+#[credential "https://gist.github.com"]
+#	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
 
