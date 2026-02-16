@@ -13,7 +13,6 @@ bb_install(){
   log_info "Installing from ${brewfile}…"
   if ! brew bundle install --file="${brewfile}" --verbose; then
     log_failure "Failed to install packages from ${brewfile}"
-    exit 1
   fi
 }
 
