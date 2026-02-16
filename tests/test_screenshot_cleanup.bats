@@ -93,10 +93,6 @@ teardown() {
 }
 
 @test "age_in_days calculates age correctly on Linux" {
-  # Mock uname to return Linux
-  uname() { echo "Linux"; }
-  export -f uname
-  
   # Calculate a timestamp from 10 days ago (use OS-specific date command)
   local ten_days_ago
   if [[ "$(uname -s 2>/dev/null || echo Linux)" == "Darwin" ]]; then
@@ -114,10 +110,6 @@ teardown() {
 }
 
 @test "age_in_days calculates zero days for current timestamp on Linux" {
-  # Mock uname to return Linux
-  uname() { echo "Linux"; }
-  export -f uname
-  
   # Current timestamp (use command to bypass mocked uname in date call)
   local now
   now=$(command date "+%Y-%m-%d %H:%M:%S")
@@ -207,9 +199,6 @@ teardown() {
 }
 
 @test "main function can be called without errors" {
-  # Mock uname to return Linux
-  uname() { echo "Linux"; }
-  export -f uname
   export DRY_RUN=true
   export SCREENSHOT_DIR="$TEST_DIR"
   export ARCHIVE_DIR="$TEST_DIR/archive"
