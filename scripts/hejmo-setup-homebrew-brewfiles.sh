@@ -17,7 +17,7 @@ OS="$(uname -s)"
 OS_NAME="${OS_MAP[${OS}]}"
 
 if [[ -z "${OS_NAME}" ]]; then
-  log_warning "Unsupported OS: ${OS}. Using raw OS name for Brewfile lookup."
+  log_warning "Unrecognized OS: ${OS}. Using raw OS name for Brewfile lookup."
   OS_NAME="${OS}"
 fi
 
