@@ -18,14 +18,23 @@ bb_install(){
 
 bb_install "${HEJMO}/Brewfile.all"
 
-declare OS
+# Map uname output to Brewfile naming convention
+declare -A OS_MAP=( [Darwin]=macos [Linux]=linux )
+declare OS OS_NAME
 OS="$(uname -s)"
-OS_BREWFILE="${HEJMO}/Brewfile.${OS}"
+OS_NAME="${OS_MAP[${OS}]}"
+
+if [[ -z "${OS_NAME}" ]]; then
+  log_warning "Unrecognized OS: ${OS}. Using raw OS name for Brewfile lookup."
+  OS_NAME="${OS}"
+fi
+
+OS_BREWFILE="${HEJMO}/Brewfile.${OS_NAME}"
 
 if [[ -f "${OS_BREWFILE}" ]]; then
   bb_install "${OS_BREWFILE}"
 else
-  log_warning "No Brewfile for ${OS}. Create one in ${OS_BREWFILE}."
+  log_warning "No Brewfile for ${OS_NAME}. Create one in ${OS_BREWFILE}."
 fi
 
 HOST="${INTENDED_HOSTNAME:-$(hostname)}"
