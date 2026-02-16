@@ -11,20 +11,15 @@ bb_install(){
 bb_install "${HEJMO}/Brewfile.all"
 
 # Map uname output to Brewfile naming convention
+declare -A OS_MAP=( [Darwin]=macos [Linux]=linux )
 declare OS OS_NAME
 OS="$(uname -s)"
-case "${OS}" in
-  Darwin)
-    OS_NAME="macos"
-    ;;
-  Linux)
-    OS_NAME="linux"
-    ;;
-  *)
-    log_warning "Unsupported OS: ${OS}. Using raw OS name for Brewfile lookup."
-    OS_NAME="${OS}"
-    ;;
-esac
+OS_NAME="${OS_MAP[${OS}]}"
+
+if [[ -z "${OS_NAME}" ]]; then
+  log_warning "Unsupported OS: ${OS}. Using raw OS name for Brewfile lookup."
+  OS_NAME="${OS}"
+fi
 
 OS_BREWFILE="${HEJMO}/Brewfile.${OS_NAME}"
 
