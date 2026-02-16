@@ -44,7 +44,7 @@ rm -rf ~/.bin
 
 ```bash
 cd ~/Source/Personal/hejmo
-bash scripts/hejmo-setup-chezmoi.sh --apply
+hejmo-setup-chezmoi.sh --apply
 ```
 
 This will:

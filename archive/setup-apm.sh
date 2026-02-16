@@ -1,6 +1,5 @@
 #!/bin/sh
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source "${SCRIPT_DIR}/../scripts/_hejmo_stdlib_helpers.sh"
+source _helpers.sh
 command_exists "apm"
 apm_exists=$?
 if [[ $apm_exists -ne 0 ]]; then

@@ -6,7 +6,7 @@
 # then initializes it with the hejmo repository using symlink mode.
 #
 # Usage:
-#   bash scripts/hejmo-setup-chezmoi.sh [--apply]
+#   hejmo-setup-chezmoi.sh [--apply]
 #
 # Options:
 #   --apply    Apply the changes immediately (create symlinks)

@@ -18,7 +18,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/colindea
 # Load a new shell or run this to load up Hejmo's bash config:
 source ~/.bash_profile
 # Setup Homebrew and install packages
-bash ${HEJMO}/scripts/hejmo-setup-homebrew.sh
+hejmo-setup-homebrew.sh
 
 brew bundle --file=${HEJMO}/Brewfile.all && \
 brew bundle --file=${HEJMO}/Brewfile.${INTENDED_HOSTNAME:-$(hostname)} && \
@@ -28,7 +28,7 @@ git remote set-url origin git@github.com:colindean/hejmo.git
 On Debian Linux only:
 
 ```shell
-bash ${HEJMO}/scripts/hejmo-setup-debian-derivs.sh && bash ${HEJMO}/scripts/hejmo-setup-docker-debian.sh
+hejmo-setup-debian-derivs.sh && hejmo-setup-docker-debian.sh
 ```
 
 On macOS only:
@@ -38,7 +38,7 @@ On macOS only:
 export DISABLE_HOSTNAME_CHANGE=1
 # set appropriately
 export INTENDED_HOSTNAME=lusankya
-bash ${HEJMO}/scripts/hejmo-setup-mac.sh
+hejmo-setup-mac.sh
 ```
 
 Then handle some standard tooling updates:
@@ -51,7 +51,7 @@ plug install && plug update
 And when I need them:
 
 ```shell
-bash ${HEJMO}/scripts/hejmo-setup-ruby.sh
+hejmo-setup-ruby.sh
 ```
 
 You will see errors about:
