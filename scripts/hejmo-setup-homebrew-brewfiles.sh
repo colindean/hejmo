@@ -2,10 +2,19 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
+# Check if brew is available before proceeding
+if ! command_exists brew; then
+  log_failure "Homebrew (brew) is not installed or not in PATH. Please install Homebrew first."
+  exit 1
+fi
+
 bb_install(){
   local brewfile="${1}"
   log_info "Installing from ${brewfile}…"
-  brew bundle install --file="${brewfile}" --verbose
+  if ! brew bundle install --file="${brewfile}" --verbose; then
+    log_failure "Failed to install packages from ${brewfile}"
+    exit 1
+  fi
 }
 
 bb_install "${HEJMO}/Brewfile.all"
