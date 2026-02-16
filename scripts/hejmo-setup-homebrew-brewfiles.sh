@@ -21,6 +21,7 @@ case "${OS}" in
     OS_NAME="linux"
     ;;
   *)
+    log_warning "Unsupported OS: ${OS}. Using raw OS name for Brewfile lookup."
     OS_NAME="${OS}"
     ;;
 esac
