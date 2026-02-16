@@ -171,26 +171,52 @@ teardown() {
   [[ "$output" =~ "does not exist" ]]
 }
 
-@test "process_screenshots finds and processes files" {
-  # Mock uname to return Linux for easier testing
+@test "process_screenshots finds and processes files on Linux" {
+  # Skip if not on Linux
+  if [[ "$(uname -s)" != "Linux" ]]; then
+    skip "This test only runs on Linux"
+  fi
+  
   export DRY_RUN=true
   
-  # Create test files with valid Linux screenshot names (use OS-specific date command)
+  # Create test files with valid Linux screenshot names
   local old_date
-  if [[ "$(uname -s 2>/dev/null || echo Linux)" == "Darwin" ]]; then
-    # macOS: Use BSD date
-    old_date=$(command date -v-10d "+%Y-%m-%d")
-  else
-    # Linux: Use GNU date
-    old_date=$(command date -d "10 days ago" "+%Y-%m-%d")
-  fi
+  old_date=$(date -d "10 days ago" "+%Y-%m-%d")
   local old_time="10-30-45"
   touch "$TEST_DIR/Screenshot from ${old_date} ${old_time}.png"
   
   local recent_date
-  recent_date=$(command date "+%Y-%m-%d")
+  recent_date=$(date "+%Y-%m-%d")
   local recent_time="10-30-45"
   touch "$TEST_DIR/Screenshot from ${recent_date} ${recent_time}.png"
+  
+  run process_screenshots "$TEST_DIR" "$TEST_DIR/archive" 7
+  [ "$status" -eq 0 ]
+  # Should show archival message for old file and keep message for recent file
+  [[ "$output" =~ "🗄 ⬅" ]] || [[ "$output" =~ "📂 ⬇" ]]
+}
+
+@test "process_screenshots finds and processes files on macOS" {
+  # Skip if not on macOS
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    skip "This test only runs on macOS"
+  fi
+  
+  export DRY_RUN=true
+  
+  # Create test files with valid macOS screenshot names
+  local old_date
+  local old_time
+  # macOS: Use BSD date to create a timestamp from 10 days ago
+  old_date=$(date -v-10d "+%Y-%m-%d")
+  old_time=$(date -v-10d "+%-I.%M.%S %p")
+  touch "$TEST_DIR/Screenshot ${old_date} at ${old_time}.png"
+  
+  local recent_date
+  local recent_time
+  recent_date=$(date "+%Y-%m-%d")
+  recent_time=$(date "+%-I.%M.%S %p")
+  touch "$TEST_DIR/Screenshot ${recent_date} at ${recent_time}.png"
   
   run process_screenshots "$TEST_DIR" "$TEST_DIR/archive" 7
   [ "$status" -eq 0 ]
