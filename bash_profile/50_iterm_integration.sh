@@ -8,7 +8,7 @@ fi
 ITERM_INTEGRATION_SCRIPT="${HOME}/.iterm2_shell_integration.bash"
 
 if [ -z "${NO_ITERM}" ] && [ -f "${ITERM_INTEGRATION_SCRIPT}" ] ; then
-  # shellcheck source=~/.iterm2_shell_integration.bash
+  # shellcheck source=/dev/null
   . "${ITERM_INTEGRATION_SCRIPT}"
 fi
 

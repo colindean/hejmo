@@ -8,7 +8,7 @@ DOCKER_NAME="neuron-zettelkasten"
 printf "Starting Neuron in %s " "${ZETTELKASTEN_DIR}" >&2
 
 declare -a CMD
-CMD=${@}
+CMD=("$@")
 
 if [ "${1}" = "serve" ]; then
   CMD=("rib -ws 0.0.0.0:${LISTEN_PORT}")
@@ -22,13 +22,13 @@ fi
 
 if [ -x "${LOCAL_INSTALL}" ]; then
   printf "using %s\n" "${LOCAL_INSTALL}" >&2
-  "${LOCAL_INSTALL}" ${CMD[*]}
+  "${LOCAL_INSTALL}" "${CMD[@]}"
 elif [ -n "$(command -v docker)" ]; then
   printf "using docker\n" >&2
   docker run --rm --tty --interactive ${EXTRA_DOCKER_CMDS} \
     --publish ${LISTEN_PORT}:${LISTEN_PORT} \
     --volume "${ZETTELKASTEN_DIR}:/notes" \
     sridca/neuron \
-    neuron ${CMD[*]}
+    neuron "${CMD[@]}"
 fi
 
