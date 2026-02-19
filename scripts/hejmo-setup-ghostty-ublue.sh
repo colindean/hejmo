@@ -7,6 +7,7 @@ set -eux -o pipefail
 
 repo_file="/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:scottames:ghostty.repo"
 
+# shellcheck source=/dev/null
 . /etc/os-release
 
 if [[ -z "${ID_LIKE}" ]]; then

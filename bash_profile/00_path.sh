@@ -91,6 +91,9 @@ if [[ -z "${COURSIER_BIN_DIR}" ]]; then
 	Linux)
 		[[ -d "${COURSIER_BIN_LINUX}" ]] && COURSIER_BIN_DIR="${COURSIER_BIN_LINUX}"
 		;;
+	*)
+		# Unknown OS, skip coursier bin setup
+		;;
 	esac
 fi
 if [[ -n "${COURSIER_BIN_DIR}" ]]; then

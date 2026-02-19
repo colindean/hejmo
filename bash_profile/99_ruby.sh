@@ -8,6 +8,7 @@ if [[ -z ${NO_RVM} ]]; then
     if ! groups | grep rvm > /dev/null; then
       >&2  echo "${USER} is not in group 'rvm', sourcing /etc/profile.d/rvm.sh may not work as intended."
     fi
+    # shellcheck source=/dev/null
     . "/etc/profile.d/rvm.sh"  # Load RVM installed at system level
   fi
 fi
