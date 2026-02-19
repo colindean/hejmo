@@ -15,10 +15,10 @@ numframes="$(gifsicle "$1" -I | perl -nle'print $& while m{\d+ images}g' | perl 
 
 # Deletion
 (( i=0 ))
-while [[ $i -lt $numframes  ]]; do
+while [[ ${i} -lt ${numframes}  ]]; do
     rem=$(( i % 2 ))
 
-    if [ $rem -eq 0 ]
+    if [[ "${rem}" -eq 0 ]]
     then
         gifsicle "$2" --delete "#"$((i/2)) -o "$2"
     fi

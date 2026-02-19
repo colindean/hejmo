@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # kitty terminal specific things
-if [ -z "${KITTY_PID}" ]; then
+if [[ -z "${KITTY_PID}" ]]; then
 	# not in kitty
 	return 0
 fi

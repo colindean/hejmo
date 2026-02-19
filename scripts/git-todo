@@ -14,7 +14,7 @@ main() {
 }
 
 todo_list() {
-  git grep -In "$NEEDLE"
+  git grep -In "${NEEDLE}"
   #grep -InR "$NEEDLE" ./* \
   # --exclude-dir=node_modules \
   # --exclude-dir=public \
@@ -24,23 +24,23 @@ todo_list() {
 }
 
 line_author() {
-  LINE=$(line_number "$todo")
-  FILE=$(file_path "$todo")
+  LINE=$(line_number "${todo}")
+  FILE=$(file_path "${todo}")
   tput setaf 6
-  printf "%s" "$(git log --pretty=format:"%cN" -s -L "$LINE","$LINE":"$FILE" | head -n 1)"
+  printf "%s" "$(git log --pretty=format:"%cN" -s -L "${LINE}","${LINE}":"${FILE}" | head -n 1)"
   tput sgr0
 }
 
 file_path() {
-  printf "%s" "$todo" | cut -d':' -f 1
+  printf "%s" "${todo}" | cut -d':' -f 1
 }
 
 line_number() {
-  printf "%s" "$todo" | cut -d':' -f 2
+  printf "%s" "${todo}" | cut -d':' -f 2
 }
 
 message() {
-  printf "%s" "$todo" | cut -d':' -f 3-
+  printf "%s" "${todo}" | cut -d':' -f 3-
   #printf "%s" "$todo" | cut -d':' -f 3- | xargs
 }
 

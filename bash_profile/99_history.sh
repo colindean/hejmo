@@ -2,7 +2,7 @@
 # history management
 
 #prevent jrnl from appearing in history
-export HISTIGNORE="$HISTIGNORE:jrnl *"
+export HISTIGNORE="${HISTIGNORE}:jrnl *"
 # load the last N into memory
 export HISTSIZE=5000
 # keep the last N on disk
@@ -17,7 +17,7 @@ HISTORY_CMDS="history -a; history -c; history -r"
 #    this is expensive, because it must be appended, cleared, and re-read for
 #    every command executed.
 #    TODO: introduce something that can disable this for a session
-case "$PROMPT_COMMAND" in
+case "${PROMPT_COMMAND}" in
     *history*) ;;
     *) PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND};}${HISTORY_CMDS}" ;;
 esac

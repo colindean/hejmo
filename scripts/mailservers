@@ -5,7 +5,7 @@
 
 DOMAIN="${1}"
 
-if [ -z "${DOMAIN}" ]; then
+if [[ -z "${DOMAIN}" ]]; then
   >&2 echo -e "Usage:\n\t$(basename "$0") domain.tld"
   exit 1
 fi

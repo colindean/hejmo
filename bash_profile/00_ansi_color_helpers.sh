@@ -4,7 +4,7 @@
 export HEJMO_USE_ANSI="${HEJMO_USE_ANSI}"
 
 ansi_escape(){
-  if [[ $HEJMO_USE_ANSI -eq 1 ]]; then
+  if [[ ${HEJMO_USE_ANSI} -eq 1 ]]; then
     echo -en "[${*}"
   fi
 }

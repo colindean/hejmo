@@ -10,9 +10,9 @@
 #Unfortunately, t requires basically everything.
 
 export TERM=mac
-PATH=/usr/local/bin:$PATH
-[[ -s "$HOME/.env.local" ]] && source "$HOME/.env.local"
-T="$HOME/.bin/t"
+PATH=/usr/local/bin:${PATH}
+[[ -s "${HOME}/.env.local" ]] && source "${HOME}/.env.local"
+T="${HOME}/.bin/t"
 
 
 if [[ ! -f "${T}" ]]; then

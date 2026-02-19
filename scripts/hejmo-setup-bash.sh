@@ -16,11 +16,11 @@ if [ ! -x "${BASH}" ]; then
 	exit 1
 fi
 
-echo "Adding $BASH to shells as superuser…"
-echo "$BASH" | sudo tee -a /etc/shells >/dev/null
+echo "Adding ${BASH} to shells as superuser…"
+echo "${BASH}" | sudo tee -a /etc/shells >/dev/null
 
-echo "Setting $BASH as shell for $(whoami)…"
-chsh -s "$BASH"
+echo "Setting ${BASH} as shell for $(whoami)…"
+chsh -s "${BASH}"
 
 echo "Now, reopen the terminal or try 'rebash' to reload using the newer bash."
 echo "New shell will be ${BASH} ($(${BASH} --version | head -n 1))."

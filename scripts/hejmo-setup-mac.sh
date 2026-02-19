@@ -2,7 +2,7 @@
 
 # Set computer name (as done via System Preferences → Sharing)
 # set INTENDED_HOSTNAME in ~/.env.local
-if [ -z ${DISABLE_HOSTNAME_CHANGE+x} ]; then
+if [[ -z ${DISABLE_HOSTNAME_CHANGE+x} ]]; then
   NEW_HOSTNAME="${INTENDED_HOSTNAME:-$(hostname)}"
   >&2 echo "Changing hostname to ${NEW_HOSTNAME}"
   sudo scutil --set ComputerName "${NEW_HOSTNAME}"
