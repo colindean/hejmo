@@ -1,6 +1,6 @@
 #!/bin/bash
 PORT=2222
-if [ "${VAGPORT}" ]; then
+if [[ -n "${VAGPORT}" ]]; then
   PORT=${VAGPORT}
 fi
 VAGRANT_GEM="$(dirname "$(gem which vagrant)")/.."

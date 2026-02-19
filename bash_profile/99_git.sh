@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # git functions and aliases
 
-if [ -n "$(command -v hub)" ]; then
+if [[ -n "$(command -v hub)" ]]; then
   # Cache for 1 day (86400 seconds) since hub alias rarely changes
   eval "$(bkt_cache_daily hub alias -s)"
 fi

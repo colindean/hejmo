@@ -36,7 +36,7 @@ install_packages() {
   failed=()
   while read -r package; do
     # Skip empty lines
-    [[ -z "$package" ]] && continue
+    [[ -z "${package}" ]] && continue
     local clean_package;
     clean_package=$(echo "${package}" | sed -e 's/\//\\\//g')
     local cmd;
@@ -68,7 +68,7 @@ link_all_files_in_dir() {
   esac
 
   for TARGET in "${from_dir}"/*; do
-    [ -e "${TARGET}" ] || continue
+    [[ -e "${TARGET}" ]] || continue
     f=$(basename "${TARGET}")
     LINK="${to_dir}/${prepend}${f}"
     if [[ -n ${rm} ]]; then

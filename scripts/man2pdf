@@ -29,9 +29,9 @@ fi
 # shellcheck disable=SC2034  # MANPAGE_PATH is used for validation
 MANPAGE_PATH="$("${MAN_PATH}" --path "${MAN_ARGS[@]}")"
 manpath_path_exit=$?
-if [[ $manpath_path_exit -ne 0 ]]; then
+if [[ ${manpath_path_exit} -ne 0 ]]; then
   #>&2 echo "No manpage available for '${MAN_ARGS}'."
-  exit $manpath_path_exit
+  exit "${manpath_path_exit}"
 fi
 
 # -t outputs postscript using groff, see `man man` for details.

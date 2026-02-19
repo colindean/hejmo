@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -z "${1}" ]; then
+if [[ -z "${1}" ]]; then
 	echo "You must specify a size in megabytes."
   exit 1
 fi

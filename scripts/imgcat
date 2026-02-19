@@ -4,7 +4,7 @@
 # <sequence> ST, and for all ESCs in <sequence> to be replaced with ESC ESC. It
 # only accepts ESC backslash for ST.
 function print_osc() {
-    if [[ $TERM == screen* ]] ; then
+    if [[ ${TERM} == screen* ]] ; then
         printf "\033Ptmux;\033\033]"
     else
         printf "\033]"
@@ -13,7 +13,7 @@ function print_osc() {
 
 # More of the tmux workaround described above.
 function print_st() {
-    if [[ $TERM == screen* ]] ; then
+    if [[ ${TERM} == screen* ]] ; then
         printf "\a\033\\"
     else
         printf "\a"
@@ -36,7 +36,7 @@ function print_image() {
     else
       BASE64ARG=-D
     fi
-    echo -n "$3" | base64 $BASE64ARG | wc -c | awk '{printf "size=%d",$1}'
+    echo -n "$3" | base64 "${BASE64ARG}" | wc -c | awk '{printf "size=%d",$1}'
     printf ';inline=%s' "$2"
     printf ":"
     echo -n "$3"
@@ -55,20 +55,20 @@ function show_help() {
 
 ## Main
 
-if [ -t 0 ]; then
+if [[ -t 0 ]]; then
     has_stdin=f
 else
     has_stdin=t
 fi
 
 # Show help if no arguments and no stdin.
-if [ "$has_stdin" = f ] && [ $# -eq 0 ]; then
+if [[ "${has_stdin}" = f ]] && [[ $# -eq 0 ]]; then
     show_help
     exit
 fi
 
 # Look for command line flags.
-while [ $# -gt 0 ]; do
+while [[ $# -gt 0 ]]; do
     case "$1" in
     -h|--h|--help)
         show_help
@@ -80,7 +80,7 @@ while [ $# -gt 0 ]; do
         exit 1
       ;;
     *)
-        if [ -r "$1" ] ; then
+        if [[ -r "$1" ]] ; then
             print_image "$1" 1 "$(base64 < "$1")"
         else
             error "imgcat: $1: No such file or directory"
@@ -92,7 +92,7 @@ while [ $# -gt 0 ]; do
 done
 
 # Read and print stdin
-if [ $has_stdin = t ]; then
+if [[ "${has_stdin}" = t ]]; then
     print_image "" 1 "$(cat | base64)"
 fi
 

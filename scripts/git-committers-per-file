@@ -6,7 +6,7 @@ for file in $(git ls-files); do
 
   FILE_COMMITTERS=$(git log --format="%aE" "${file}" | tr "[:upper:]" "[:lower:]" | sort | uniq | wc -l | tr -d ' ')
 
-if [ "$1" == "json" ]; then
+if [[ "$1" == "json" ]]; then
   jq --null-input --compact-output \
     --arg file "${file}" \
     --argjson fc "${FILE_COMMITTERS}" \

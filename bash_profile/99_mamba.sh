@@ -6,11 +6,11 @@ MAMBA_EXE="$(${BREW_PREFIX} micromamba)/bin/micromamba"
 export MAMBA_EXE
 export MAMBA_ROOT_PREFIX="${HOME}/.cache/micromamba"
 # Cache for 1 hour (3600 seconds) since mamba configuration may change during development
-if __mamba_setup="$(bkt_cache_hourly "$MAMBA_EXE" shell hook --shell bash --prefix "$MAMBA_ROOT_PREFIX" 2>/dev/null)"; then
+if __mamba_setup="$(bkt_cache_hourly "${MAMBA_EXE}" shell hook --shell bash --prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
 	#if [ $? -eq 0 ]; then
-	eval "$__mamba_setup"
+	eval "${__mamba_setup}"
 else
-	if [ -f "${MAMBA_ROOT_PREFIX}/etc/profile.d/micromamba.sh" ]; then
+	if [[ -f "${MAMBA_ROOT_PREFIX}/etc/profile.d/micromamba.sh" ]]; then
 		# shellcheck source=/dev/null
 		. "${MAMBA_ROOT_PREFIX}/etc/profile.d/micromamba.sh"
 	else

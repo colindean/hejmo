@@ -1,7 +1,7 @@
 #!/bin/bash
 OSA=$(command -v osascript)
 
-if [[ -z $OSA ]]; then
+if [[ -z ${OSA} ]]; then
   echo "osascript not found. Are you on a Mac?"; exit 1
 fi
 

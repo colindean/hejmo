@@ -3,7 +3,7 @@
 # setup zoxide
 THIS_SHELL="$(basename "${SHELL}")"
 
-if true && [ -n "$(command -v zoxide)" ]; then
+if true && [[ -n "$(command -v zoxide)" ]]; then
   # Cache for 1 day (86400 seconds) since zoxide init output rarely changes
   case "${THIS_SHELL}" in
     bash)

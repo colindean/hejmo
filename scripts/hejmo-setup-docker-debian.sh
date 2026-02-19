@@ -58,8 +58,8 @@ fi
 
 banner_text "Fixing .docker permissions if it exists..,"
 DOT_DOCKER="${HOME}/.docker"
-if [ -f "${DOT_DOCKER}" ]; then
-  sudo chown -R "$USER":"$USER" "${DOT_DOCKER}"
+if [[ -f "${DOT_DOCKER}" ]]; then
+  sudo chown -R "${USER}":"${USER}" "${DOT_DOCKER}"
   sudo chmod -R g+rwx "${DOT_DOCKER}"
 else
   echo "${DOT_DOCKER} didn't exist, which may be weird."
@@ -68,7 +68,7 @@ fi
 # if we have homebrew, install docker-compose through that
 # because it's guaranteed to be out of date in the OS repo
 # and it's not in Docker's repo added above.
-if [[ $(command -v brew) ]]; then 
+if [[ -n $(command -v brew) ]]; then 
   brew install docker-compose
 fi
 

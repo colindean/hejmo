@@ -54,8 +54,8 @@ if ! command -v chezmoi &> /dev/null; then
   esac
   
   # Add ~/.local/bin to PATH if not already there
-  if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-    export PATH="$HOME/.local/bin:$PATH"
+  if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
   fi
   
   log_success "chezmoi installed"
@@ -79,7 +79,7 @@ log_info "Initializing chezmoi with hejmo..."
 CHEZMOI_SOURCE_DIR="${SCRIPT_DIR}/home"
 
 # Check if already initialized
-if [ -d "${HOME}/.local/share/chezmoi" ] || [ -L "${HOME}/.local/share/chezmoi" ]; then
+if [[ -d "${HOME}/.local/share/chezmoi" ]] || [[ -L "${HOME}/.local/share/chezmoi" ]]; then
   log_info "Chezmoi already initialized at ~/.local/share/chezmoi"
   log_info "To reinitialize, remove ~/.local/share/chezmoi first"
 else
