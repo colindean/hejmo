@@ -2,6 +2,7 @@
 
 export NVM_DIR="${HOME}/.cache/nvm"
 
+# shellcheck disable=SC2154
 NVM_PREFIX="$(${BREW_PREFIX} nvm)"
 NVM_BASE="${NVM_PREFIX}/nvm.sh"
 NVM_COMP="${NVM_PREFIX}/etc/bash_completion.d/nvm"

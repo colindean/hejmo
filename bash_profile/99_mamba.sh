@@ -2,6 +2,7 @@
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
+# shellcheck disable=SC2154
 MAMBA_EXE="$(${BREW_PREFIX} micromamba)/bin/micromamba"
 export MAMBA_EXE
 export MAMBA_ROOT_PREFIX="${HOME}/.cache/micromamba"

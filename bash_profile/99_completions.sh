@@ -17,6 +17,7 @@ if command -v brew > /dev/null; then
 	fi
 
 	# completions
+	# shellcheck disable=SC2154
 	HOMEBREW_PREFIX="$(${BREW_PREFIX})"
 	export HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
 	export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_COMPLETIONS_DIR}"

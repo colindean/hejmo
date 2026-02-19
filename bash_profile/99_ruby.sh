@@ -13,6 +13,7 @@ if [[ -z ${NO_RVM} ]]; then
 fi
 
 if [[ -z ${NO_CHRUBY} ]]; then
+  # shellcheck disable=SC2154
   chruby_share="$(${BREW_PREFIX} chruby)/share/chruby"
   if [[ -s "${chruby_share}/chruby.sh" ]]; then
     . "${chruby_share}/chruby.sh"

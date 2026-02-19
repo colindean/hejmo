@@ -6,6 +6,7 @@ OS_TYPE="$(uname -s)"
 
 default_fzf_location=/opt/homebrew/opt/fzf
 if command -v brew > /dev/null; then
+  # shellcheck disable=SC2154
   BREW_FZF="$(${BREW_PREFIX} fzf)"
 fi
 FZF_SHELL="${BREW_FZF:-${default_fzf_location}}/shell"
