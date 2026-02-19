@@ -8,6 +8,7 @@ detect_distribution() {
   if [[ -f /etc/os-release ]]; then
     # shellcheck source=/dev/null
     . /etc/os-release
+    # Return 'unknown' if ID is not set - non-fatal since this is for detection only
     if [[ -z "${ID}" ]]; then
       echo "unknown"
     else
