@@ -24,4 +24,4 @@ curl https://sh.rustup.rs -sSf | sh
 
 echo "Installing rustup completions in "
 sleepFor 2
-rustup completions bash > "$(brew --prefix)/etc/bash_completion.d/rustup.bash-completion"
+rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
