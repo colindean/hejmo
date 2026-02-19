@@ -16,6 +16,9 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# Determine OS type once for reuse
+OS_TYPE="$(uname -s)"
+
 # Source helper functions
 source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
@@ -23,7 +26,7 @@ source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 if ! command -v chezmoi &> /dev/null; then
   log_info "Installing chezmoi..."
   
-  case "$(uname -s)" in
+  case "${OS_TYPE}" in
     Darwin)
       # On macOS, use Homebrew if available
       if command -v brew &> /dev/null; then
@@ -47,7 +50,7 @@ if ! command -v chezmoi &> /dev/null; then
       fi
       ;;
     *)
-      log_failure "Unsupported operating system: $(uname -s)"
+      log_failure "Unsupported operating system: ${OS_TYPE}"
       log_info "Please install chezmoi manually from: https://www.chezmoi.io/install/"
       exit 1
       ;;

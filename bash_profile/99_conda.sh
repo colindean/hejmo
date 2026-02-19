@@ -6,6 +6,7 @@ CONDA_BIN="${CONDA_BASE_PATH}/bin/conda"
 
 if [[ -x "${CONDA_BIN}" ]]; then
     # Cache for 1 hour (3600 seconds) since conda configuration may change during development
+    # shellcheck disable=SC2312
     __conda_setup="$(bkt_cache_hourly "${CONDA_BIN}" shell.bash hook 2> /dev/null)"
     # shellcheck disable=SC2181
     if [[ $? -eq 0 ]]; then

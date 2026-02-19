@@ -48,6 +48,7 @@ function prompt
   local GIT_B="${RED}\$(if [ ! -z \"\`command -v __git_ps1\`\" ]; then _GITPS1=\"\`__git_ps1\`\"; if [ ! -z \"\${_GITPS1}\" ]; then echo -n \"±\${_GITPS1}\"; echo -n ' '; fi; fi)"
   local DEPTH="\$(if [ \$SHLVL -gt 1 ]; then echo \"⇟\$SHLVL\"; fi)"
   local HOST="${INTENDED_HOSTNAME:-\H}"
+  local RUBY="${RUBY:-}"
   export PS1="${WHITE}[${YELLOW}\t ${GREEN}\u@${HOST} ${CYAN}\w ${RUBY}${WHITE}]\n${GIT_B}${GRAY}${DEPTH}\$ "
 }
 prompt

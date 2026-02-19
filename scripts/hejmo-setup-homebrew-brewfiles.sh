@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck source=scripts/_hejmo_stdlib_helpers.sh
 source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 # Check if brew is available before proceeding
@@ -16,12 +17,20 @@ bb_install(){
   fi
 }
 
+if [[ -z "${HEJMO}" ]]; then
+	echo >&2 "ERROR: HEJMO is not set"
+	exit 1
+fi
 bb_install "${HEJMO}/Brewfile.all"
 
 # Map uname output to Brewfile naming convention
 declare -A OS_MAP=( [Darwin]=macos [Linux]=linux )
 declare OS OS_NAME
-OS="$(uname -s)"
+if [[ -z "${OS_TYPE}" ]]; then
+	echo >&2 "ERROR: OS_TYPE is not set (should be set by _hejmo_stdlib_helpers.sh)"
+	exit 1
+fi
+OS="${OS_TYPE}"
 OS_NAME="${OS_MAP[${OS}]}"
 
 if [[ -z "${OS_NAME}" ]]; then

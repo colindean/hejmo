@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 # mostly copied from https://github.com/tednaleid/shared-zshrc/blob/master/zshrc_base#L265-L279
 
+# Determine OS type once for reuse
+OS_TYPE="$(uname -s)"
+
 default_fzf_location=/opt/homebrew/opt/fzf
-if [[ -n "$(command -v brew)" ]]; then
+if command -v brew > /dev/null; then
+  # shellcheck disable=SC2154
   BREW_FZF="$(${BREW_PREFIX} fzf)"
 fi
 FZF_SHELL="${BREW_FZF:-${default_fzf_location}}/shell"
 
 XARGS="xargs"
-if [[ "$(uname -s)" == "Darwin" ]]; then
+if [[ "${OS_TYPE}" == "Darwin" ]]; then
   if command -v gxargs > /dev/null; then
     XARGS="gxargs"
   else

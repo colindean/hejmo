@@ -2,10 +2,12 @@
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
+# shellcheck disable=SC2154
 MAMBA_EXE="$(${BREW_PREFIX} micromamba)/bin/micromamba"
 export MAMBA_EXE
 export MAMBA_ROOT_PREFIX="${HOME}/.cache/micromamba"
 # Cache for 1 hour (3600 seconds) since mamba configuration may change during development
+# shellcheck disable=SC2312
 if __mamba_setup="$(bkt_cache_hourly "${MAMBA_EXE}" shell hook --shell bash --prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
 	#if [ $? -eq 0 ]; then
 	eval "${__mamba_setup}"

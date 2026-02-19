@@ -7,7 +7,18 @@ set -eux -o pipefail
 
 repo_file="/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:scottames:ghostty.repo"
 
+# shellcheck source=/dev/null
 . /etc/os-release
+
+if [[ -z "${ID_LIKE}" ]]; then
+  echo "ID_LIKE is not set in /etc/os-release"
+  exit 1
+fi
+
+if [[ -z "${VERSION_ID}" ]]; then
+  echo "VERSION_ID is not set in /etc/os-release"
+  exit 1
+fi
 
 if [[ "${ID_LIKE}" != fedora ]] || ! command -v rpm-ostree; then
   echo "This is meant for Universal Blue, which has ID_LIKE=fedora, you've got ${ID_LIKE}, or you're missing rpm-ostree."

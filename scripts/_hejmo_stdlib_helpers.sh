@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Determine OS type once for reuse
+OS_TYPE="$(uname -s)"
+
 command_exists() {
   local cmd="$1"
   command -v "${cmd}" >/dev/null 2>&1
@@ -60,7 +63,7 @@ link_all_files_in_dir() {
   rm="$3"
   prepend="$4"
 
-  case "$(uname -s)" in
+  case "${OS_TYPE}" in
     Darwin) LN_OPTIONS="sFf" ;;
     Linux) LN_OPTIONS="sf" ;;
     # TODO: determine safe defaults for OSes I never use

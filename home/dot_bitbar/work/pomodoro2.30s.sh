@@ -129,6 +129,10 @@ stale_record() {
     "long_break")
       local interval="${LONG_BREAK}"
       ;;
+    *)
+      echo >&2 "ERROR: Unknown activity type: ${activity}"
+      exit 1
+      ;;
   esac
   if ((tdiff < 0)) || ((tdiff > (interval + MAX_UPDATE_INTERVAL + 1) )); then
     status_reset
@@ -227,6 +231,10 @@ pause_resume() {
         "long_break")
           tstamp="$((now - (LONG_BREAK - togo) ))"
           ;;
+        *)
+          echo >&2 "ERROR: Unknown activity type: ${activity}"
+          exit 1
+          ;;
       esac
       state="RUN"
       status_write
@@ -288,6 +296,10 @@ print_menu() {
           echo "${LONG_BREAK_ICON} $(print_remaining_minutes)"
           local caption="Long break: "
           ;;
+        *)
+          echo >&2 "ERROR: Unknown activity type: ${activity}"
+          exit 1
+          ;;
       esac
       echo "---"
       echo "${caption}$(print_remaining_time) | refresh=true"
@@ -307,10 +319,18 @@ print_menu() {
         "long_break")
           local caption="Long break"
           ;;
+        *)
+          echo >&2 "ERROR: Unknown activity type: ${activity}"
+          exit 1
+          ;;
       esac
       echo "${caption}: $(print_remaining_time) | refresh=true"
       echo "${PAUSE_ICON} resume | bash=\"$0\" param1=pause terminal=false refresh=true"
       echo "${STOP_ICON} stop | bash=\"$0\" param1=stop terminal=false refresh=true"
+      ;;
+    *)
+      echo >&2 "ERROR: Unknown state: ${state}"
+      exit 1
       ;;
   esac
 
