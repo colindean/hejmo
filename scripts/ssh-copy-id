@@ -19,16 +19,16 @@ if [ "-i" = "$1" ]; then
     shift         # and this should leave $1 as the target name
   fi
 else
-  if [ x$SSH_AUTH_SOCK != x ] && ssh-add -L >/dev/null 2>&1; then
+  if [ -n "$SSH_AUTH_SOCK" ] && ssh-add -L >/dev/null 2>&1; then
     GET_ID="$GET_ID ssh-add -L"
   fi
 fi
 
-if [ -z "`eval $GET_ID`" ] && [ -r "${ID_FILE}" ] ; then
+if [ -z "$(eval "$GET_ID")" ] && [ -r "${ID_FILE}" ] ; then
   GET_ID="cat \"${ID_FILE}\""
 fi
 
-if [ -z "`eval $GET_ID`" ]; then
+if [ -z "$(eval "$GET_ID")" ]; then
   echo "$0: ERROR: No identities found" >&2
   exit 1
 fi
@@ -39,9 +39,9 @@ if [ "$#" -lt 1 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 fi
 
 # strip any trailing colon
-host=`echo $1 | sed 's/:$//'`
+host=$(echo "$1" | sed 's/:$//')
 
-{ eval "$GET_ID" ; } | ssh $host "umask 077; test -d ~/.ssh || mkdir ~/.ssh ; cat >> ~/.ssh/authorized_keys" || exit 1
+{ eval "$GET_ID" ; } | ssh "$host" "umask 077; test -d ~/.ssh || mkdir ~/.ssh ; cat >> ~/.ssh/authorized_keys" || exit 1
 
 cat <<EOF
 Now try logging into the machine, with "ssh '$host'", and check in:
