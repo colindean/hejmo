@@ -13,7 +13,9 @@ repos:
   rev: v0.11.0.1
   hooks:
   - id: shellcheck
-    entry: bash -c 'shellcheck -f diff --enable=all $@ | git apply' --
+    # run shellcheck in autofix mode, but then run it again
+    # but in regular output format mode to show anything not autofixed
+    entry: bash -c '(shellcheck -f diff --enable=all $@ | git apply) || shellcheck --enable=all $@' --
 - repo: https://github.com/hukkin/mdformat
   rev: 1.0.0
   hooks:
