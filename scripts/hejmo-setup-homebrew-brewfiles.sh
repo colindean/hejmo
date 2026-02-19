@@ -26,6 +26,10 @@ bb_install "${HEJMO}/Brewfile.all"
 # Map uname output to Brewfile naming convention
 declare -A OS_MAP=( [Darwin]=macos [Linux]=linux )
 declare OS OS_NAME
+if [[ -z "${OS_TYPE}" ]]; then
+	echo >&2 "ERROR: OS_TYPE is not set (should be set by _hejmo_stdlib_helpers.sh)"
+	exit 1
+fi
 OS="${OS_TYPE}"
 OS_NAME="${OS_MAP[${OS}]}"
 

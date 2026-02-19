@@ -117,6 +117,10 @@ install_homebrew() {
   local homebrew_installer_url="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
   # Detect OS type
+  if [[ -z "${OS_TYPE}" ]]; then
+    echo >&2 "ERROR: OS_TYPE is not set (should be set by _hejmo_stdlib_helpers.sh)"
+    exit 1
+  fi
   case "${OS_TYPE}" in
     Darwin)
       log_info "macOS detected. No prerequisites needed."
