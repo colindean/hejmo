@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck source=scripts/_hejmo_stdlib_helpers.sh
 source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 # Detect the Linux distribution
