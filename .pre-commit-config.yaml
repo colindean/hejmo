@@ -1,4 +1,4 @@
-exclude: '^archive$'
+exclude: '^.*/?archive/.*$'
 
 repos:
 - repo: https://github.com/sirwart/ripsecrets.git
