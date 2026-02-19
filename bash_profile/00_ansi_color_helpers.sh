@@ -1,4 +1,7 @@
 #!/bin/bash
+# shellcheck disable=SC2312
+
+# disabled SC2312 because of extensive use of function calls for interpolation
 
 # TODO: metaprogram this so that it's all generated at execution/sourcing
 export HEJMO_USE_ANSI="${HEJMO_USE_ANSI}"
