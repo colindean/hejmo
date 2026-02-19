@@ -1,3 +1,5 @@
+exclude: '^archive$'
+
 repos:
 - repo: https://github.com/sirwart/ripsecrets.git
   rev: v0.1.11
