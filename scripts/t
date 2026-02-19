@@ -4,8 +4,7 @@
 # GNU date responds to --version and BSD date does not.
 # TODO: make this work on BSD where GNU date may not be available.
 date="date"
-ugh=$($date --version 2>&1 )
-if [[ $? -ne 0 ]]; then
+if ! $date --version >/dev/null 2>&1; then
   date="gdate";
   if [[ -z "$(command -v $date)" ]]; then
     >&2 echo "No date command with --date support found."
@@ -36,12 +35,12 @@ _t_do() {
 # Clock in to the last project if no project is given
 _t_in() {
   [ ! "$1" ] && set -- "$@" "$(_t_last)"
-  echo i `$date '+%Y-%m-%d %H:%M:%S'` $* >> "$timelog"
+  echo i "$($date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$timelog"
 }
 
 # Clock out
 _t_out() {
-  echo o `$date '+%Y-%m-%d %H:%M:%S'` $* >> "$timelog"
+  echo o "$($date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$timelog"
 }
 
 # switch projects
@@ -53,7 +52,7 @@ _t_sw() {
     SWITCH_TS="$($date '+%Y-%m-%d %H:%M:%S')"
   fi
   echo o "${SWITCH_TS}" >> "$timelog"
-  echo i "${SWITCH_TS}" $* >> "$timelog"
+  echo i "${SWITCH_TS}" "$*" >> "$timelog"
 }
 
 # Show the currently clocked-in project
@@ -67,11 +66,12 @@ _t_last() {
 }
 
 _t_start() {
-  if [[ ! -z "$(_t_cur)" ]]; then
-    echo "Cannot add an entry when one is checked out. Run '$(basename $0) out' to check out first."
+  if [[ -n "$(_t_cur)" ]]; then
+    echo "Cannot add an entry when one is checked out. Run '$(basename "$0") out' to check out first."
     exit 1
   fi
-  local start_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+  local start_date
+  start_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
   if [[ -z "${start_date}" ]]; then
     exit 1 #rely on date to have shown the error
   fi
@@ -124,7 +124,7 @@ _t_log() {
 _t_sheet() {
   default_start="last Monday"
   start_when="${1:-$default_start}"
-  for i in `seq 0 6`; do
+  for i in $(seq 0 6); do
     PERIOD="$($date -d "${start_when} + ${i} days" +%Y-%m-%d )";
     _t_ledger -p "${PERIOD}" reg --days-of-week --start-of-week Monday;
     echo '';

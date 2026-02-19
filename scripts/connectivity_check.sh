@@ -5,7 +5,8 @@
 is_online() {
     local url="$1"
     local timeout=${2:-1}
-    local response=$(
+    local response
+    response=$(
         curl \
         --output /dev/null \
         --write-out "%{http_code}" \

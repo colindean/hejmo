@@ -28,16 +28,16 @@ function print_image() {
     print_osc
     printf '1337;File='
     if [[ -n "$1" ]]; then
-      printf 'name='`echo -n "$1" | base64`";"
+      printf 'name=%s;' "$(echo -n "$1" | base64)"
     fi
-    if $(base64 --version 2>&1 | egrep 'fourmilab|GNU' > /dev/null)
+    if base64 --version 2>&1 | grep -E 'fourmilab|GNU' > /dev/null
     then
       BASE64ARG=-d
     else
       BASE64ARG=-D
     fi
     echo -n "$3" | base64 $BASE64ARG | wc -c | awk '{printf "size=%d",$1}'
-    printf ";inline=$2"
+    printf ';inline=%s' "$2"
     printf ":"
     echo -n "$3"
     print_st
@@ -62,7 +62,7 @@ else
 fi
 
 # Show help if no arguments and no stdin.
-if [ $has_stdin = f -a $# -eq 0 ]; then
+if [ "$has_stdin" = f ] && [ $# -eq 0 ]; then
     show_help
     exit
 fi

@@ -219,6 +219,6 @@ if [[ -z "${HEJMO_USE_ANSI}" ]]; then
   fi
 fi
 
-if [[ "$BASH_SOURCE" == "$0" ]]; then
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     ansi_demo
 fi

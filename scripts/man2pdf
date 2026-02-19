@@ -2,7 +2,8 @@
 
 #man -t ledger | ps2pdf - /tmp/man-ledger.pdf && open /tmp/man-ledger.pdf
 MAN_ARGS=("$@")
-IDENTIFIER="$(echo "${MAN_ARGS[@]}" | sed -e 's/ //g')"
+IDENTIFIER="${MAN_ARGS[*]}"
+IDENTIFIER="${IDENTIFIER// /}"
 
 PDF_FILENAME="man-${IDENTIFIER}.pdf"
 PDF_TARGET="${TMPDIR}${PDF_FILENAME}"
@@ -25,7 +26,8 @@ if [[ -z "${PS2PDF_PATH}" ]]; then
 fi
 
 # ensure it exists first
-MANPAGE_PATH="$("${MAN_PATH}" --path ${MAN_ARGS})"
+# shellcheck disable=SC2034  # MANPAGE_PATH is used for validation
+MANPAGE_PATH="$("${MAN_PATH}" --path "${MAN_ARGS[@]}")"
 manpath_path_exit=$?
 if [[ $manpath_path_exit -ne 0 ]]; then
   #>&2 echo "No manpage available for '${MAN_ARGS}'."

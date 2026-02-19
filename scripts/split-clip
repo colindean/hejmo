@@ -22,7 +22,7 @@ DURATION_HMS=$(ffmpeg -i "$IN_FILE" 2>&1 | grep Duration | cut -f 4 -d ' ')
 DURATION_H=$(echo "$DURATION_HMS" | cut -d ':' -f 1)
 DURATION_M=$(echo "$DURATION_HMS" | cut -d ':' -f 2)
 DURATION_S=$(echo "$DURATION_HMS" | cut -d ':' -f 3 | cut -d '.' -f 1)
-let "DURATION = ( DURATION_H * 60 + DURATION_M ) * 60 + DURATION_S"
+(( DURATION = ( DURATION_H * 60 + DURATION_M ) * 60 + DURATION_S ))
  
 if [ "$DURATION" = '0' ] ; then
         echo "Invalid input video"
@@ -37,20 +37,21 @@ if [ "$CHUNK_LEN" = "0" ] ; then
 fi
  
 if [ -z "$OUT_FILE_FORMAT" ] ; then
-        FILE_EXT=$(echo "$IN_FILE" | sed 's/^.*\.\([a-zA-Z0-9]\+\)$/\1/')
-        FILE_NAME=$(echo "$IN_FILE" | sed 's/^\(.*\)\.[a-zA-Z0-9]\+$/\1/')
+        FILE_EXT="${IN_FILE##*.}"
+        FILE_NAME="${IN_FILE%.*}"
         OUT_FILE_FORMAT="${FILE_NAME}-%03d.${FILE_EXT}"
         echo "Using default output file format : $OUT_FILE_FORMAT"
 fi
  
 N='1'
 OFFSET='0'
-let 'N_FILES = DURATION / CHUNK_LEN + 1'
+(( N_FILES = DURATION / CHUNK_LEN + 1 ))
  
 while [[ "$OFFSET" -lt "$DURATION" ]] ; do
+        # shellcheck disable=SC2059  # OUT_FILE_FORMAT is a user-provided format string
         OUT_FILE=$(printf "$OUT_FILE_FORMAT" "$N")
         echo "writing $OUT_FILE ($N/$N_FILES)..."
         ffmpeg -i "$IN_FILE" -vcodec copy -acodec copy -ss "$OFFSET" -t "$CHUNK_LEN" "$OUT_FILE"
-        let "N = N + 1"
-        let "OFFSET = OFFSET + CHUNK_LEN"
+        (( N = N + 1 ))
+        (( OFFSET = OFFSET + CHUNK_LEN ))
 done
