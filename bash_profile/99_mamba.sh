@@ -2,10 +2,6 @@
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
-if [[ -z "${BREW_PREFIX}" ]]; then
-	echo >&2 "ERROR: BREW_PREFIX is not set"
-	exit 1
-fi
 MAMBA_EXE="$(${BREW_PREFIX} micromamba)/bin/micromamba"
 export MAMBA_EXE
 export MAMBA_ROOT_PREFIX="${HOME}/.cache/micromamba"

@@ -8,8 +8,7 @@ if command -v hub > /dev/null; then
 fi
 
 alias g="git"
-if [[ -n "${INTERNAL_GITHUB}" ]]; then
-  alias igist="GITHUB_URL=\${INTERNAL_GITHUB} gist"
-fi
+# shellcheck disable=SC2154
+alias igist="GITHUB_URL=\${INTERNAL_GITHUB} gist"
 
 alias debug_git="GIT_TRACE=true GIT_CURL_VERBOSE=true GIT_SSH_COMMAND='ssh -vvv' git"

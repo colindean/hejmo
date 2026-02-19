@@ -13,10 +13,6 @@ if [[ -z ${NO_RVM} ]]; then
 fi
 
 if [[ -z ${NO_CHRUBY} ]]; then
-  if [[ -z "${BREW_PREFIX}" ]]; then
-    echo >&2 "ERROR: BREW_PREFIX is not set"
-    exit 1
-  fi
   chruby_share="$(${BREW_PREFIX} chruby)/share/chruby"
   if [[ -s "${chruby_share}/chruby.sh" ]]; then
     . "${chruby_share}/chruby.sh"

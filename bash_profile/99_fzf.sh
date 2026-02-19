@@ -6,10 +6,6 @@ OS_TYPE="$(uname -s)"
 
 default_fzf_location=/opt/homebrew/opt/fzf
 if command -v brew > /dev/null; then
-  if [[ -z "${BREW_PREFIX}" ]]; then
-    echo >&2 "ERROR: BREW_PREFIX is not set"
-    exit 1
-  fi
   BREW_FZF="$(${BREW_PREFIX} fzf)"
 fi
 FZF_SHELL="${BREW_FZF:-${default_fzf_location}}/shell"
