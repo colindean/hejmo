@@ -2,7 +2,7 @@
 
 INSTALL_GUIDE_URL="https://github.com/alacritty/alacritty/blob/master/INSTALL.md"
 
-if [ "$(uname -s)" == "Darwin" ]; then
+if [ "$(uname -s)" == "Darwin" ];
     brew install alacritty
     exit 0
 fi

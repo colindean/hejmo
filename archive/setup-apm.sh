@@ -1,8 +1,8 @@
-#!/bin/bash
-. _helpers.sh
+#!/bin/sh
+source _helpers.sh
 command_exists "apm"
 apm_exists=$?
-if [ "$apm_exists" -ne 0 ]; then
+if [[ $apm_exists -ne 0 ]]; then
   echo >&2 "apm isn't installed. Has Atom been installed?"
   exit 1
 fi
