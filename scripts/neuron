@@ -25,6 +25,7 @@ if [ -x "${LOCAL_INSTALL}" ]; then
   "${LOCAL_INSTALL}" "${CMD[@]}"
 elif [ -n "$(command -v docker)" ]; then
   printf "using docker\n" >&2
+  # shellcheck disable=SC2086  # EXTRA_DOCKER_CMDS needs word splitting
   docker run --rm --tty --interactive ${EXTRA_DOCKER_CMDS} \
     --publish ${LISTEN_PORT}:${LISTEN_PORT} \
     --volume "${ZETTELKASTEN_DIR}:/notes" \
