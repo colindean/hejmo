@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if [[ -z "${HEJMO}" ]]; then
-  2&> echo "HEJMO is unset, so this script cannot determine the directory to which it should point iTerm2 for its configuration."
-  2&> echo "Setup Hejmo, eh?"
+  echo >&2 "HEJMO is unset, so this script cannot determine the directory to which it should point iTerm2 for its configuration."
+  echo >&2 "Setup Hejmo, eh?"
   exit 1
 fi
 
