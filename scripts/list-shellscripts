@@ -7,7 +7,7 @@ SHEBANGS=(
   '#!bash'
 )
 LIST=""
-for shebang in ${SHEBANGS[*]}; do
+for shebang in "${SHEBANGS[@]}"; do
   LIST+=$(grep -lr --exclude-dir "\\.git" "${shebang}" .)
   LIST+="\n"
 done

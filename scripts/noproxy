@@ -1,10 +1,10 @@
 #!/bin/sh
 
-NO_PROXY=""
-FTP_PROXY=""
-RSYNC_PROXY=""
-HTTPS_PROXY=""
-HTTP_PROXY=""
-ALL_PROXY=""
+export NO_PROXY=""
+export FTP_PROXY=""
+export RSYNC_PROXY=""
+export HTTPS_PROXY=""
+export HTTP_PROXY=""
+export ALL_PROXY=""
 
-${@}
+"$@"

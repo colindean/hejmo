@@ -22,6 +22,7 @@
 #
 # There's no limitation on what can be used as the indicator.
 
+# shellcheck disable=SC2034  # OLDIFS saved for potential IFS restoration
 OLDIFS="$IFS"
 IFS=$'\n'
 
@@ -33,25 +34,25 @@ function trim() {
 
 function load_genderfile() {
   while read -r -d $'\t' -a author; do
-    GENDERMAP[$author[1]] = $author[0]
-  done < (~/.git/Genderfile)
+    GENDERMAP[${author[1]}]=${author[0]}
+  done < "$HOME/.git/Genderfile"
 }
 
 function genderLookup() {
-  $GENDERMAP[$1]
+  echo "${GENDERMAP[$1]}"
 }
 
 COUNT_TO_AUTHOR=$(git log --format='%aN' | sort | uniq -c)
 TOTAL_COMMITS=$(git rev-list HEAD --count)
 
 for author in $COUNT_TO_AUTHOR; do
-  count_raw=$(echo $author | awk '{print $1}')
-  author_raw=$(echo $author | awk '{$1=""; print $0}')
-  count=$(trim $count_raw)
-  author=$(trim $author_raw)
+  count_raw=$(echo "$author" | awk '{print $1}')
+  author_raw=$(echo "$author" | awk '{$1=""; print $0}')
+  count=$(trim "$count_raw")
+  author=$(trim "$author_raw")
 
   gender=$(genderLookup "$author")
   echo "$author is $gender and has $count commits."
 done
 
-echo $total_commits total commits
+echo "$TOTAL_COMMITS total commits"

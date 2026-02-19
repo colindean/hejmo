@@ -73,7 +73,7 @@ DEBCONF
         sudo apt-get update
 
         # install flatpak
-        sudo apt install flatpak/$(lsb_release --codename --short)-backports
+        sudo apt install "flatpak/$(lsb_release --codename --short)-backports"
         flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
         # install some flatpak packages

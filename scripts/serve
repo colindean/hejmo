@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # HTTP server script that tries multiple server options based on availability
 # Inspired by https://gist.github.com/willurd/5720255
 #
@@ -28,9 +28,6 @@
 REQUIRE_MULTITHREADED=false
 PORT="8000"
 DIR="."
-
-# Store original args for passing through to servers that support them
-ORIGINAL_ARGS="$*"
 
 while [ $# -gt 0 ]; do
   case "$1" in

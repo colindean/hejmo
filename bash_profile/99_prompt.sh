@@ -38,7 +38,9 @@ function prompt
   local GREEN="\[\033[0;32m\]"
   local CYAN="\[\033[0;36m\]"
   local GRAY="\[\033[0;37m\]"
+  # shellcheck disable=SC2034
   local BLUE="\[\033[0;34m\]"
+  # shellcheck disable=SC2034
   local LIGHT_BLUE="\[\033[1;34m\]"
   local YELLOW="\[\033[1;33m\]"
   local RED="\[\033[1;31m\]"

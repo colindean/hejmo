@@ -27,7 +27,7 @@ banner_text "Adding repo for ${CODENAME}"
 
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   "${CODENAME}" \
+   ${CODENAME} \
    stable"
 
 banner_text "Installing Docker dependencies from Docker repos"
@@ -44,7 +44,7 @@ sudo docker run hello-world
 banner_text "Enabling Docker startup in systemd"
 sudo systemctl enable docker
 banner_text "Checking docker group sanity"
-if [[ ! $(groups "${USER}" | grep -q docker) ]]; then
+if ! groups "${USER}" | grep -q docker; then
   echo "Adding Docker user group with ${USER} in it"  
   sudo usermod -aG docker "${USER}"
   echo "Using newgrp to check operation..."  

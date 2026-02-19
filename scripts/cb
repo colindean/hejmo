@@ -29,9 +29,12 @@ _basename() {
     esac
 
     if [ -n "${_basename__suffix}" ] && [ "${#_basename__name}" -gt "${#2}" ]; then
-        if [ X"$(printf "%s\\n" "${_basename__name}" | cut -c"$((${#_basename__name} - ${#_basename__suffix} + 1))"-"${#_basename__name}")" \
-           = X"$(printf "%s\\n" "${_basename__suffix}")" ]; then
-            _basename__name="$(printf "%s\\n" "${_basename__name}" | cut -c1-"$((${#_basename__name} - ${#_basename__suffix}))")"
+        start_pos=$((${#_basename__name} - ${#_basename__suffix} + 1))
+        end_pos=${#_basename__name}
+        if [ "$(printf "%s\\n" "${_basename__name}" | cut -c "${start_pos}-${end_pos}")" \
+           = "$(printf "%s\\n" "${_basename__suffix}")" ]; then
+            trim_pos=$((${#_basename__name} - ${#_basename__suffix}))
+            _basename__name="$(printf "%s\\n" "${_basename__name}" | cut -c1-"${trim_pos}")"
         fi
     fi
 
@@ -87,10 +90,10 @@ _update() {
                 return 1
             fi
         fi
-        printf "%s %s\\n" "${PROGNAME} is up-to-date (${_u__update_version_long})"
+        printf "%s\\n" "${PROGNAME} is up-to-date (${_u__update_version_long})"
         return 0
     fi
-    printf "%s %s\\n" "${PROGNAME} is up-to-date (${_u__current_version_long})"
+    printf "%s\\n" "${PROGNAME} is up-to-date (${_u__current_version_long})"
     rm -rf "${_u__tmpfile}"
 }
 
@@ -150,6 +153,7 @@ PROGNAME="$(_basename "${0}")"
 [ -t 0          ] && stdin_is_tty="1"
 [ -t 1          ] && stdout_is_tty="1"
 
+# shellcheck disable=SC2034  # ignore_interrupts is used for future functionality
 for arg in "${@}"; do #parse options
     case "${arg}" in
         -h|--help) _usage; exit "${?}" ;;
@@ -161,7 +165,7 @@ for arg in "${@}"; do #parse options
     esac
 done
 
-if [ -n "${stdin_is_pipe}" ] || [ ! -n "${stdin_is_tty}" ] ; then #stdin is pipe-ish
+if [ -n "${stdin_is_pipe}" ] || [ -z "${stdin_is_tty}" ] ; then #stdin is pipe-ish
     _cb_copy  #send stdin to the clipboard
     #if [ ! -n "${stdout_is_tty}" ]; then #also, stdout is either a pipe or a redirection
         #_cb_paste #send clipboard content to that pipe/redirection, enables chaining `man tee`
