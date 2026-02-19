@@ -16,12 +16,16 @@ bb_install(){
   fi
 }
 
+if [[ -z "${HEJMO}" ]]; then
+	echo >&2 "ERROR: HEJMO is not set"
+	exit 1
+fi
 bb_install "${HEJMO}/Brewfile.all"
 
 # Map uname output to Brewfile naming convention
 declare -A OS_MAP=( [Darwin]=macos [Linux]=linux )
 declare OS OS_NAME
-OS="$(uname -s)"
+OS="${OS_TYPE}"
 OS_NAME="${OS_MAP[${OS}]}"
 
 if [[ -z "${OS_NAME}" ]]; then

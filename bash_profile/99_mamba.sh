@@ -2,10 +2,15 @@
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
+if [[ -z "${BREW_PREFIX}" ]]; then
+	echo >&2 "ERROR: BREW_PREFIX is not set"
+	exit 1
+fi
 MAMBA_EXE="$(${BREW_PREFIX} micromamba)/bin/micromamba"
 export MAMBA_EXE
 export MAMBA_ROOT_PREFIX="${HOME}/.cache/micromamba"
 # Cache for 1 hour (3600 seconds) since mamba configuration may change during development
+# shellcheck disable=SC2312
 if __mamba_setup="$(bkt_cache_hourly "${MAMBA_EXE}" shell hook --shell bash --prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
 	#if [ $? -eq 0 ]; then
 	eval "${__mamba_setup}"

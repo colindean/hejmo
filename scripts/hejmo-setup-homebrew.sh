@@ -7,7 +7,11 @@ detect_distribution() {
   if [[ -f /etc/os-release ]]; then
     # shellcheck source=/dev/null
     . /etc/os-release
-    echo "${ID}"
+    if [[ -z "${ID}" ]]; then
+      echo "unknown"
+    else
+      echo "${ID}"
+    fi
   else
     echo "unknown"
   fi
@@ -112,7 +116,7 @@ install_homebrew() {
   local homebrew_installer_url="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
   # Detect OS type
-  case "$(uname -s)" in
+  case "${OS_TYPE}" in
     Darwin)
       log_info "macOS detected. No prerequisites needed."
       ;;

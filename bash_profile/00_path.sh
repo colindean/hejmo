@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# Determine OS type once for reuse
+OS_TYPE="$(uname -s)"
+
 function join {
 	local IFS="$1"
 	shift
@@ -25,6 +29,7 @@ brew_path="$(__determine_brew_path)"
 
 # Setup Homebrew as early as possible
 # Cache for 1 hour (3600 seconds) since brew configuration may change during development
+# shellcheck disable=SC2312
 eval "$(bkt_cache_hourly "${brew_path}/bin/brew" shellenv)"
 
 # Setup PATH
@@ -47,17 +52,18 @@ MYPATH+=("$(__brew_keg_only_path curl)")
 MYPATH+=("$(__brew_keg_only_path llvm)")
 
 ## java
-if [[ "Linux" == "$(uname -s)" ]] && [[ -f /bin/update-alternatives ]]; then
+if [[ "Linux" == "${OS_TYPE}" ]] && [[ -f /bin/update-alternatives ]]; then
 	# update-alternatives gives ${JAVA_HOME}/jre/bin/java, so we gotta safely traverse upward
 	if java_ua_output="$(/bin/update-alternatives --query java 2>/dev/null)"; then
+		# shellcheck disable=SC2312
 		JAVA_HOME="$(dirname "$(dirname "$(dirname "$(echo "${java_ua_output}" | grep "^Value" | cut -f 2 -d ' ')")")")"
 		export JAVA_HOME
 	fi
-elif [[ "Darwin" == "$(uname -s)" ]]; then
+elif [[ "Darwin" == "${OS_TYPE}" ]]; then
 	# macOS manages Java smartly
 	export JAVA_HOME=/Library/Java/Home
 else
-	echo "Could not determine JAVA_HOME for $(uname -s) $( (command -v lsb_release >/dev/null && lsb_release -sd) || true) "
+	echo "Could not determine JAVA_HOME for ${OS_TYPE} $( (command -v lsb_release >/dev/null && lsb_release -sd) || true) "
 fi
 if [[ -n "${JAVA_HOME}" ]]; then
 	MYPATH+=("${JAVA_HOME}/bin")
@@ -78,7 +84,7 @@ MYPATH+=("${GOPATH}/bin")
 COURSIER_BIN_MAC="${HOME}/Library/Application Support/Coursier/bin"
 COURSIER_BIN_LINUX="${HOME}/.local/share/coursier/bin"
 if [[ -z "${COURSIER_BIN_DIR}" ]]; then
-	case "$(uname -s)" in
+	case "${OS_TYPE}" in
 	Darwin)
 		[[ -d "${COURSIER_BIN_MAC}" ]] && COURSIER_BIN_DIR="${COURSIER_BIN_MAC}"
 		;;

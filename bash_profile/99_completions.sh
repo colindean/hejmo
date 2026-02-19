@@ -11,12 +11,16 @@ fi
 
 # Completions from Homebrew
 
-if [[ -n "$(command -v brew)" ]]; then
+if command -v brew > /dev/null; then
 	if [[ -n "${HEJMO_DEBUG_COMPLETIONS}" ]]; then
 		set -x
 	fi
 
 	# completions
+	if [[ -z "${BREW_PREFIX}" ]]; then
+		echo >&2 "ERROR: BREW_PREFIX is not set"
+		exit 1
+	fi
 	HOMEBREW_PREFIX="$(${BREW_PREFIX})"
 	export HOMEBREW_COMPLETIONS_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
 	export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_COMPLETIONS_DIR}"
@@ -47,20 +51,22 @@ fi
 
 #autocomplete for t
 # shellcheck source=../scripts/_t_completion
-if [[ -n "$(command -v t)" ]]; then
-	if [[ -n "$(command -v _t_completion)" ]]; then
+if command -v t > /dev/null; then
+	if command -v _t_completion > /dev/null; then
 		source "$(command -v _t_completion)"
 	fi
 fi
 
 # autocomplete for pandoc
-if [[ -n "$(command -v pandoc)" ]]; then
+if command -v pandoc > /dev/null; then
 	# Cache for 1 day (86400 seconds) since pandoc completion rarely changes
+	# shellcheck disable=SC2312
 	eval "$(bkt_cache_daily pandoc --bash-completion)"
 fi
 
 # autocomplete for ngrok
-if [[ -n "$(command -v ngrok)" ]]; then
+if command -v ngrok > /dev/null; then
 	# Cache for 1 day (86400 seconds) since ngrok completion rarely changes
+	# shellcheck disable=SC2312
 	eval "$(bkt_cache_daily ngrok completion)"
 fi
