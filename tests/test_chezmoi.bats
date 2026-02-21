@@ -15,6 +15,7 @@ setup() {
 }
 
 @test ".chezmoiroot file exists in repository" {
+  [[ -n "${GITHUB_WORKSPACE}" ]] || { echo "GITHUB_WORKSPACE is not set" >&2; return 1; }
   [[ -f "${GITHUB_WORKSPACE}/.chezmoiroot" ]]
   content=$(cat "${GITHUB_WORKSPACE}/.chezmoiroot")
   [[ "${content}" = "home" ]]
@@ -59,9 +60,9 @@ setup() {
 @test "chezmoi managed files includes dotfiles" {
   run chezmoi managed
   [[ "${status}" -eq 0 ]]
-  [[ "${output}" =~ ".bash_profile" ]]
-  [[ "${output}" =~ ".gitconfig" ]]
-  [[ "${output}" =~ ".vimrc" ]]
+  [[ "${output}" =~ .bash_profile ]]
+  [[ "${output}" =~ .gitconfig ]]
+  [[ "${output}" =~ .vimrc ]]
 }
 
 @test "chezmoi status shows no changes" {
@@ -80,6 +81,7 @@ setup() {
   # .vim is a directory with symlinked files inside
   [[ -d "${HOME}/.vim" ]]
   # Check that it's managed by chezmoi
+  # shellcheck disable=SC2312
   chezmoi managed | grep -q "\.vim"
 }
 
@@ -113,14 +115,17 @@ setup() {
 
 @test "HEJMO scripts directory is in PATH" {
   # Source the bash_profile to set up environment
+  # shellcheck source=/dev/null
   source "${HOME}/.bash_profile"
   
   # Check that HEJMO/scripts is in PATH
+  [[ -n "${HEJMO}" ]] || { echo "HEJMO is not set" >&2; return 1; }
   [[ ":${PATH}:" == *":${HEJMO}/scripts:"* ]]
 }
 
 @test "scripts from HEJMO are executable via command" {
   # Source the bash_profile to set up environment
+  # shellcheck source=/dev/null
   source "${HOME}/.bash_profile"
   
   # Verify a script from the scripts directory is findable
