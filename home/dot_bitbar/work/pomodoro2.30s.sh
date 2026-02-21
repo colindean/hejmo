@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2312
 
 # <xbar.title>Pomodoro Timer</xbar.title>
 # <xbar.version>v1.1</xbar.version>
