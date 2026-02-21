@@ -13,7 +13,7 @@ fi
 
 # Completions from Homebrew
 
-if command -v brew > /dev/null; then
+if command -v brew >/dev/null; then
 	if [[ -n "${HEJMO_DEBUG_COMPLETIONS}" ]]; then
 		set -x
 	fi
@@ -49,22 +49,22 @@ fi
 #fi
 
 #autocomplete for t
-if command -v t > /dev/null; then
-	if command -v _t_completion > /dev/null; then
+if command -v t >/dev/null; then
+	if command -v _t_completion >/dev/null; then
 		# shellcheck source=/dev/null disable=SC2312
 		source "$(command -v _t_completion)"
 	fi
 fi
 
 # autocomplete for pandoc
-if command -v pandoc > /dev/null; then
+if command -v pandoc >/dev/null; then
 	# Cache for 1 day (86400 seconds) since pandoc completion rarely changes
 	# shellcheck disable=SC2312
 	eval "$(bkt_cache_daily pandoc --bash-completion)"
 fi
 
 # autocomplete for ngrok
-if command -v ngrok > /dev/null; then
+if command -v ngrok >/dev/null; then
 	# Cache for 1 day (86400 seconds) since ngrok completion rarely changes
 	# shellcheck disable=SC2312
 	eval "$(bkt_cache_daily ngrok completion)"

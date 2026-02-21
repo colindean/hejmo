@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [[ -z "$1" ]]; then
-  pbpaste
+	pbpaste
 else
-  pbcopy < "${1}"
+	pbcopy <"${1}"
 fi

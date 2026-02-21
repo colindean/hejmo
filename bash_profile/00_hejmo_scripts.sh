@@ -6,5 +6,5 @@
 # in the main bash_profile before these scripts are sourced.
 
 if [[ -n "${HEJMO}" ]] && [[ -d "${HEJMO}/scripts" ]]; then
-  export PATH="${HEJMO}/scripts:${PATH}"
+	export PATH="${HEJMO}/scripts:${PATH}"
 fi

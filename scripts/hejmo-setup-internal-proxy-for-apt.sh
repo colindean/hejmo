@@ -4,7 +4,7 @@ PROXY_DETECTION_SCRIPT_PATH=/usr/local/bin/cadcx-proxy-detect
 PROXY_DETECTION_APT_CONF_PATH=/etc/apt/apt.conf.d/99cadcx-proxy-detect
 # quotes around the keyword makes bash not substitute inside the HEREDOC
 # inside _must_ be tabs for <<- to remove them when writing
-sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" > /dev/null <<- "SCRIPT"
+sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" >/dev/null <<-"SCRIPT"
 	#!/bin/bash
 	HOST=proxy
 	PORT=3128
@@ -38,7 +38,7 @@ sudo tee "${PROXY_DETECTION_SCRIPT_PATH}" > /dev/null <<- "SCRIPT"
 	fi
 SCRIPT
 sudo chmod +x "${PROXY_DETECTION_SCRIPT_PATH}"
-sudo tee "${PROXY_DETECTION_APT_CONF_PATH}" > /dev/null << APTCONF
+sudo tee "${PROXY_DETECTION_APT_CONF_PATH}" >/dev/null <<APTCONF
     Acquire::http::Proxy-Auto-Detect "${PROXY_DETECTION_SCRIPT_PATH}";
     Acquire::https::Proxy-Auto-Detect "${PROXY_DETECTION_SCRIPT_PATH}";
 APTCONF

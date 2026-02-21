@@ -2,17 +2,18 @@
 SHORT_FORMAT="${1:-"hms"}"
 
 case "${SHORT_FORMAT}" in
-  hm)
-    FORMAT="+%H:%M"
-    ;;
-  hms)
-    FORMAT="+%H:%M:%S"
-    ;;
-  ymd)
-    FORMAT="+%Y-%m-%d"
-    ;;
-  *)
-    exit 1
+hm)
+	FORMAT="+%H:%M"
+	;;
+hms)
+	FORMAT="+%H:%M:%S"
+	;;
+ymd)
+	FORMAT="+%Y-%m-%d"
+	;;
+*)
+	exit 1
+	;;
 esac
 
 date "${FORMAT}"

@@ -4,8 +4,8 @@ INPUT="${1}"
 OUTPUT="${2}"
 
 if [ -z "${OUTPUT}" ] || [ -z "${INPUT}" ]; then
-  >&2 echo "Usage: ${0} input output"
-  exit 1
+	>&2 echo "Usage: ${0} input output"
+	exit 1
 fi
 
 ffmpeg -i "${INPUT}" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${OUTPUT}"

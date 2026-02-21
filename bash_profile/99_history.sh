@@ -18,7 +18,7 @@ HISTORY_CMDS="history -a; history -c; history -r"
 #    every command executed.
 #    TODO: introduce something that can disable this for a session
 case "${PROMPT_COMMAND}" in
-    *history*) ;;
-    *) PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND};}${HISTORY_CMDS}" ;;
+*history*) ;;
+*) PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND};}${HISTORY_CMDS}" ;;
 esac
 export PROMPT_COMMAND
