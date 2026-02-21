@@ -20,7 +20,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 OS_TYPE="$(uname -s)"
 
 # Source helper functions
-# shellcheck source=/dev/null
+# shellcheck source=scripts/_hejmo_stdlib_helpers.sh
 source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 # Check if chezmoi is installed

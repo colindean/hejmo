@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# shellcheck source=/dev/null
+# shellcheck source=scripts/_hejmo_stdlib_helpers.sh
 . "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 banner_text "Starting Docker for Linux setup"
