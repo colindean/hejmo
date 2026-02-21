@@ -7,11 +7,13 @@ usage() {
   >&2 echo "${USAGE}"
 }
 
+# shellcheck source=/dev/null disable=SC2312
 . "$(git --exec-path)/git-sh-setup"
 args=$(git rev-parse --sq "$@")
 [[ -n "${args}" ]] || usage
 cmd="diff-tree -r"
 [[ ${args} =~ "--cached" ]] && cmd="diff-index"
+# shellcheck disable=SC2312
 eval "git ${cmd} ${args}" | {
   total=0
   while read -r A B C D M P

@@ -13,6 +13,7 @@ name="${2:-ramdisk}"
 
 echo "Creating a ${size} MB (${realsize}) ramdisk at /Volumes/${name}..."
 
+# shellcheck disable=SC2312
 volume=$(hdiutil attach -nomount "ram://${realsize}" | tr -d '[:space:]')
 echo "Ramdisk attached at ${volume}"
 

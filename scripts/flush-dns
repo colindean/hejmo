@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-case "$(uname -s)" in
+OS_TYPE="$(uname -s)"
+case "${OS_TYPE}" in
   "Darwin")
     sudo dscacheutil -flushcache && \
       sudo killall -HUP mDNSResponder
     ;;
   *)
-    echo "$(uname -s) not yet supported in $0"
+    echo "${OS_TYPE} not yet supported in $0"
     ;;
 esac

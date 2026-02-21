@@ -26,11 +26,13 @@ _basename() {
     [ -z "${2}" ] || _basename__suffix="${2}"
     case "${_basename__name}" in
         /*|*/*) _basename__name="$(expr "${_basename__name}" : '.*/\([^/]*\)')" ;;
+        *) ;;
     esac
 
     if [ -n "${_basename__suffix}" ] && [ "${#_basename__name}" -gt "${#2}" ]; then
         start_pos=$((${#_basename__name} - ${#_basename__suffix} + 1))
         end_pos=${#_basename__name}
+        # shellcheck disable=SC2312
         if [ "$(printf "%s\\n" "${_basename__name}" | cut -c "${start_pos}-${end_pos}")" \
            = "$(printf "%s\\n" "${_basename__suffix}")" ]; then
             trim_pos=$((${#_basename__name} - ${#_basename__suffix}))
@@ -162,6 +164,7 @@ for arg in "${@}"; do #parse options
         -a|--append) append="1"; shift ;;
         -i|--ignore-interrupts) ignore_interrupts="1"; shift ;;
         -*) _die "${PROGNAME}: unrecognized option '${arg}'" ;;
+        *) ;;
     esac
 done
 

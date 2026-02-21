@@ -38,4 +38,5 @@ if [[ -n "${DEBUG}" ]]; then
 fi
 
 log "Candidates:"
+# shellcheck disable=SC2312
 "${GREP}" "${REGEX}" /usr/share/dict/words | "${GREP}" "${INCLUDE:-}"

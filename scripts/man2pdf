@@ -36,6 +36,7 @@ fi
 
 # -t outputs postscript using groff, see `man man` for details.
 # ps2pdf - - means convert stdin to pdf and output on stdout
+# shellcheck disable=SC2312
 "${MAN_PATH}" -t "${MAN_ARGS[@]}" | "${PS2PDF_PATH}" - - > "${PDF_TARGET}"
 
 if [[ -f "${PDF_TARGET}" ]]; then

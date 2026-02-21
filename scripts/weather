@@ -2,4 +2,5 @@
 # Source: https://github.com/Pinjasaur/dotfiles/blob/193df781b46e1f7e7a556f386172b76f067adcd9/.functions#L35
 # If no $1, use the zip code from our IP
 # If no $2, use "q0n" as URL params
+# shellcheck disable=SC2312
 curl -s -H "Accept-Language: ${LANG%_*}" "http://wttr.in/${1:-$(curl -s http://ipinfo.io/postal)}?${2:-q0n}"

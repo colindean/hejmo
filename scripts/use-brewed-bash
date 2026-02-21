@@ -4,10 +4,11 @@ set -eu -o pipefail
 SHELLS="/etc/shells"
 
 check_for_brew() {
-  [[ -n "$(command -v brew)" ]]
+  command -v brew > /dev/null
 }
 
 brew_bash_path() {
+  # shellcheck disable=SC2312
   echo "$(brew --prefix)/bin/bash"
 }
 
@@ -40,13 +41,16 @@ shell_version() {
   "${SHELL_PATH}" --version | head -n 1 | cut -d ' ' -f 4
 }
 
+# shellcheck disable=SC2310
 check_for_brew || (echo "No brew? Install it." && exit 1)
 
 SHELL_PATH="${1:-"$(brew_bash_path)"}"
 
+# shellcheck disable=SC2310
 (check_etc_shells "${SHELL_PATH}" || write_etc_shells "${SHELL_PATH}") && \
   (check_shell "${SHELL_PATH}" || change_shell "${SHELL_PATH}")
 
 
 
+# shellcheck disable=SC2312
 >&2 echo "Shell should now be ${SHELL_PATH}. Open a new terminal and verify the version (\$BASH_VERSION?) is $(shell_version)."

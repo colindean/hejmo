@@ -6,9 +6,10 @@ BUILD_PLUGINS_SBT="project/plugins.sbt"
 META_BUILD_PLUGINS_SBT="project/project/plugins.sbt"
 
 if [[ -z "${SBT_VERSION}" ]]; then
-  if [[ -z "$(command -v coursier)" ]]; then
+  if ! command -v coursier > /dev/null; then
     SBT_VERSION=${SBT_VERSION_FALLBACK}
   else
+    # shellcheck disable=SC2312
     SBT_VERSION="$(coursier --help | head -n 1 | cut -d ' ' -f 2)"
   fi
 fi

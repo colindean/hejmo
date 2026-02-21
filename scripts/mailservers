@@ -26,11 +26,17 @@ mx() {
 }
 
 
+# shellcheck disable=SC2312
 IMAP_RESULT="$(srv "${IMAP}" | head -n 1)"
+# shellcheck disable=SC2312
 IMAPS_RESULT="$(srv "${IMAPS}" | head -n 1)"
+# shellcheck disable=SC2312
 POP3_RESULT="$(srv "${POP3}" | head -n 1)"
+# shellcheck disable=SC2312
 POP3S_RESULT="$(srv "${POP3S}" | head -n 1)"
+# shellcheck disable=SC2312
 SMTP_RESULT="$(srv "${SMTP}" | head -n 1)"
+# shellcheck disable=SC2312
 MX_RESULT="$(mx "${MX}" | head -n 1)"
 
 

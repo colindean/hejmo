@@ -24,10 +24,12 @@ else
   fi
 fi
 
+# shellcheck disable=SC2312
 if [ -z "$(eval "${GET_ID}")" ] && [ -r "${ID_FILE}" ] ; then
   GET_ID="cat \"${ID_FILE}\""
 fi
 
+# shellcheck disable=SC2312
 if [ -z "$(eval "${GET_ID}")" ]; then
   echo "$0: ERROR: No identities found" >&2
   exit 1

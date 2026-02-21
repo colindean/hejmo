@@ -6,7 +6,8 @@ if [[ -z "${NEW}" ]]; then
   exit 1
 fi
 
-if [[ "Darwin" == "$(uname -s)" ]]; then
+OS_TYPE="$(uname -s)"
+if [[ "Darwin" == "${OS_TYPE}" ]]; then
   sudo scutil --set ComputerName "${NEW}"
   sudo scutil --set HostName "${NEW}"
   sudo scutil --set LocalHostName "${NEW}"

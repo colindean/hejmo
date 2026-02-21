@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2312
 # HTTP server script that tries multiple server options based on availability
 # Inspired by https://gist.github.com/willurd/5720255
 #

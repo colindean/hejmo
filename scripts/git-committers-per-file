@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2312
 TOTAL_COMMITTERS="$(git log --format="%aE" | tr "[:upper:]" "[:lower:]" | sort | uniq | wc -l | tr -d ' ')"
 
 for file in $(git ls-files); do
 
+  # shellcheck disable=SC2312
   FILE_COMMITTERS=$(git log --format="%aE" "${file}" | tr "[:upper:]" "[:lower:]" | sort | uniq | wc -l | tr -d ' ')
 
 if [[ "$1" == "json" ]]; then

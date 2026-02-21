@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2311,SC2312
 
 set -e
 if [[ -z "$1" ]]; then
