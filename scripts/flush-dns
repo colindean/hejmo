@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-case "$(uname -s)" in
+# TODO: add Linux support (e.g. `sudo systemd-resolve --flush-caches` or `sudo resolvectl flush-caches`)
+
+OS_TYPE="$(uname -s)"
+case "${OS_TYPE}" in
   "Darwin")
     sudo dscacheutil -flushcache && \
       sudo killall -HUP mDNSResponder
     ;;
   *)
-    echo "$(uname -s) not yet supported in $0"
+    echo "${OS_TYPE} not yet supported in $0"
     ;;
 esac

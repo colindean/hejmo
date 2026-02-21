@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # the MAC prefixes Raspberry Pi Foundation uses
-arp -na | \
-  grep \
-    -e "b8:27:eb" \
-    -e "dc:a6:32" \
-    -e "e4:5f:01"
-
+# shellcheck disable=SC2312
+arp -na |
+	grep \
+		-e "b8:27:eb" \
+		-e "dc:a6:32" \
+		-e "e4:5f:01"

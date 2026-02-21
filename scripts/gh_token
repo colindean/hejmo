@@ -3,7 +3,6 @@
 : "${GITHUB_TOKEN:=}"
 : "${SKIP_GH:=}"
 : "${SKIP_GH_CONFIG:=}"
-: "${SKIP_HUB_CONFIG:=}"
 : "${DEBUG:=}"
 
 set -eu -o pipefail
@@ -22,11 +21,10 @@ if [[ -n "${GITHUB_TOKEN}" ]]; then
 	exit 0
 fi
 
-HUB_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/hub"
 GH_CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}/gh/hosts.yml"
 
 declare -a config_files
-config_files=("${HUB_CONFIG}" "${GH_CONFIG}")
+config_files=("${GH_CONFIG}")
 
 need_cmd() {
 	local cmd="${1}"
@@ -54,16 +52,6 @@ if [[ -z "${SKIP_GH_CONFIG}" ]] && [[ -r "${GH_CONFIG}" ]]; then
 
 	yaml2json "${GH_CONFIG}" |
 		jq -r --arg site "${SITE}" '.[$site].oauth_token'
-
-	exit $?
-fi
-
-if [[ -z "${SKIP_HUB_CONFIG}" ]] && [[ -r "${HUB_CONFIG}" ]]; then
-	require_yaml2json_and_jq
-	log "Reading GitHub token from 'hub' config file ${HUB_CONFIG}..."
-
-	yaml2json "${HUB_CONFIG}" |
-		jq -r --arg site "${SITE}" '.[$site] | first | .oauth_token'
 
 	exit $?
 fi

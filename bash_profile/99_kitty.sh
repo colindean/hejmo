@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # kitty terminal specific things
-if [ -z "${KITTY_PID}" ]; then
+if [[ -z "${KITTY_PID}" ]]; then
 	# not in kitty
 	return 0
 fi
@@ -10,6 +10,7 @@ alias icat="kitten icat"
 alias imgcat="kitten icat"
 
 iplot() {
+	# shellcheck disable=SC2312
 	cat <<EOF | gnuplot
     set terminal pngcairo enhanced font 'Fira Sans,10'
     set autoscale

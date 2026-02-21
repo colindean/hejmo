@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2312
 
 # dig +short _submission._tcp.cad.cx srv
 # 0 1 587 smtp.fastmail.com.
 
 DOMAIN="${1}"
 
-if [ -z ${DOMAIN} ]; then
-  >&2 echo -e "Usage:\n\t$(basename $0) domain.tld"
-  exit 1
+if [[ -z "${DOMAIN}" ]]; then
+	>&2 echo -e "Usage:\n\t$(basename "$0") domain.tld"
+	exit 1
 fi
 
 IMAP="_imap._tcp.${DOMAIN}"
@@ -18,21 +19,19 @@ SMTP="_submission._tcp.${DOMAIN}"
 MX="${DOMAIN}"
 
 srv() {
-  dig +short "${1}" srv
+	dig +short "${1}" srv
 }
 
 mx() {
-  dig +short "${1}" mx
+	dig +short "${1}" mx
 }
 
-
-IMAP_RESULT="$(srv ${IMAP} | head -n 1)"
-IMAPS_RESULT="$(srv ${IMAPS} | head -n 1)"
-POP3_RESULT="$(srv ${POP3} | head -n 1)"
-POP3S_RESULT="$(srv ${POP3S} | head -n 1)"
-SMTP_RESULT="$(srv ${SMTP} | head -n 1)"
-MX_RESULT="$(mx ${MX} | head -n 1)"
-
+IMAP_RESULT="$(srv "${IMAP}" | head -n 1)"
+IMAPS_RESULT="$(srv "${IMAPS}" | head -n 1)"
+POP3_RESULT="$(srv "${POP3}" | head -n 1)"
+POP3S_RESULT="$(srv "${POP3S}" | head -n 1)"
+SMTP_RESULT="$(srv "${SMTP}" | head -n 1)"
+MX_RESULT="$(mx "${MX}" | head -n 1)"
 
 column -t -s "~" <<MSG
 Domain~${DOMAIN}

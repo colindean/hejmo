@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ -z "${1}" ]; then
+if [[ -z "${1}" ]]; then
 	echo "You must specify a size in megabytes."
-  exit 1
+	exit 1
 fi
 size=$1
 # multiply by 2048 because the size we need to pass is based on
@@ -13,6 +13,7 @@ name="${2:-ramdisk}"
 
 echo "Creating a ${size} MB (${realsize}) ramdisk at /Volumes/${name}..."
 
+# shellcheck disable=SC2312
 volume=$(hdiutil attach -nomount "ram://${realsize}" | tr -d '[:space:]')
 echo "Ramdisk attached at ${volume}"
 

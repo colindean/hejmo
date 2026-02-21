@@ -5,7 +5,7 @@
 set -eu -o pipefail
 
 checkfor() {
-  command -v "${1}" > /dev/null || (echo "need ${1}" && exit 1);
+	command -v "${1}" >/dev/null || (echo "need ${1}" && exit 1)
 }
 
 checkfor curl
@@ -13,7 +13,7 @@ checkfor xmlstarlet
 checkfor awk
 checkfor column
 
-curl -sL https://lobste.rs/rss | \
-  xmlstarlet sel -T -t -m "/rss/channel/item" -v title  -o "%%" -v link -n | \
-  awk -F "%%" '{print "\033[31;1m" $1 "\033[39;22m" "∑" $2 "\033[0m" }' | \
-  column -t -s '∑'
+curl -sL https://lobste.rs/rss |
+	xmlstarlet sel -T -t -m "/rss/channel/item" -v title -o "%%" -v link -n |
+	awk -F "%%" '{print "\033[31;1m" $1 "\033[39;22m" "∑" $2 "\033[0m" }' |
+	column -t -s '∑'

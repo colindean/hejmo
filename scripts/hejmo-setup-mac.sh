@@ -2,15 +2,16 @@
 
 # Set computer name (as done via System Preferences → Sharing)
 # set INTENDED_HOSTNAME in ~/.env.local
-if [ -z ${DISABLE_HOSTNAME_CHANGE+x} ]; then
-  NEW_HOSTNAME="${INTENDED_HOSTNAME:-$(hostname)}"
-  >&2 echo "Changing hostname to ${NEW_HOSTNAME}"
-  sudo scutil --set ComputerName "${NEW_HOSTNAME}"
-  sudo scutil --set HostName "${NEW_HOSTNAME}"
-  sudo scutil --set LocalHostName "${NEW_HOSTNAME}"
-  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${NEW_HOSTNAME}"
+if [[ -z ${DISABLE_HOSTNAME_CHANGE+x} ]]; then
+	NEW_HOSTNAME="${INTENDED_HOSTNAME:-$(hostname)}"
+	>&2 echo "Changing hostname to ${NEW_HOSTNAME}"
+	sudo scutil --set ComputerName "${NEW_HOSTNAME}"
+	sudo scutil --set HostName "${NEW_HOSTNAME}"
+	sudo scutil --set LocalHostName "${NEW_HOSTNAME}"
+	sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${NEW_HOSTNAME}"
 else
-  >&2 echo "Not changing hostname from $(hostname) because DISABLE_HOSTNAME_CHANGE is set."
+	# shellcheck disable=SC2312
+	>&2 echo "Not changing hostname from $(hostname) because DISABLE_HOSTNAME_CHANGE is set."
 fi
 
 # enable sshd
@@ -60,7 +61,6 @@ defaults write com.apple.screencapture location -string "${HOME}/Desktop"
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
-
 
 # Enable subpixel font rendering on non-Apple LCDs
 # Reference: https://github.com/kevinSuttle/macOS-Defaults/issues/17#issuecomment-266633501
@@ -122,5 +122,3 @@ defaults write com.apple.finder ShowMountedServersOnDesktop -bool true && killal
 
 # TextEdit should always start in plain text mode
 defaults write com.apple.TextEdit RichText -int 0
-
-

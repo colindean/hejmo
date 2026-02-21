@@ -13,6 +13,10 @@ up() {
 }
 
 hejmo() {
+	if [[ -z "${HEJMO}" ]]; then
+		echo >&2 "ERROR: HEJMO is not set"
+		return 1
+	fi
 	cd "${HEJMO}" || exit
-	[[ -n "$(command -v tabname)" ]] && tabname
+	command -v tabname >/dev/null && tabname
 }

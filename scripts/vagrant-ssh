@@ -1,8 +1,9 @@
 #!/bin/bash
 PORT=2222
-if [ "${VAGPORT}" ]; then
-  PORT=${VAGPORT}
+if [[ -n "${VAGPORT}" ]]; then
+	PORT=${VAGPORT}
 fi
+# shellcheck disable=SC2312
 VAGRANT_GEM="$(dirname "$(gem which vagrant)")/.."
 VAGRANT_KEY=${VAGRANT_GEM}/keys/vagrant
 chmod 600 "${VAGRANT_KEY}"

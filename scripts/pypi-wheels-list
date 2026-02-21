@@ -7,6 +7,7 @@ usage() {
 
 get_latest_version() {
 	local package="${1}"
+	# shellcheck disable=SC2312
 	curl -s -L "https://pypi.python.org/pypi/${package}/json" | jq -r '.releases | keys | .[]' | sort -V | tail -n 1
 }
 
@@ -34,4 +35,5 @@ version="${2:-$(get_latest_version "${package}")}"
 
 printf " v%s\n" "${version}" >&2
 
+# shellcheck disable=SC2312
 curl -s -L "https://pypi.python.org/pypi/${package}/json" | jq -r --arg release "${version}" '.releases[$release].[].filename' | sort -V

@@ -5,18 +5,16 @@ LEFT="${2}"
 RIGHT="${3}"
 
 case "${ACTION}" in
-  "only-left")
-    comm -23 "${LEFT}" "${RIGHT}"
-    ;;
-  "only-right")
-    comm -13 "${LEFT}" "${RIGHT}"
-    ;;
-  "both")
-    comm -12 "${LEFT}" "${RIGHT}"
-    ;;
-  *)
-    >&2 echo "Unknown action. Try one of only-left, only-right, both."
-    ;;
+"only-left")
+	comm -23 "${LEFT}" "${RIGHT}"
+	;;
+"only-right")
+	comm -13 "${LEFT}" "${RIGHT}"
+	;;
+"both")
+	comm -12 "${LEFT}" "${RIGHT}"
+	;;
+*)
+	>&2 echo "Unknown action. Try one of only-left, only-right, both."
+	;;
 esac
-
-

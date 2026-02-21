@@ -4,49 +4,51 @@ set -eu -o pipefail
 SHELLS="/etc/shells"
 
 check_for_brew() {
-  [[ -n "$(command -v brew)" ]]
+	command -v brew >/dev/null
 }
 
 brew_bash_path() {
-  echo "$(brew --prefix)/bin/bash"
+	# shellcheck disable=SC2312
+	echo "$(brew --prefix)/bin/bash"
 }
 
 check_etc_shells() {
-  local SHELL_PATH="${1}"
-  >&2 echo "Looking for ${SHELL_PATH} in ${SHELLS}…"
-  grep -q "${SHELL_PATH}" "${SHELLS}"
+	local SHELL_PATH="${1}"
+	>&2 echo "Looking for ${SHELL_PATH} in ${SHELLS}…"
+	grep -q "${SHELL_PATH}" "${SHELLS}"
 }
 
 write_etc_shells() {
-  local SHELL_PATH="${1}"
-  >&2 echo "Writing ${SHELL_PATH} to ${SHELLS}…"
-  printf "\n%s" "${SHELL_PATH}" | sudo tee -a "${SHELLS}" > /dev/null
+	local SHELL_PATH="${1}"
+	>&2 echo "Writing ${SHELL_PATH} to ${SHELLS}…"
+	printf "\n%s" "${SHELL_PATH}" | sudo tee -a "${SHELLS}" >/dev/null
 }
 
 check_shell() {
-  local SHELL_PATH="${1}"
-  >&2 echo "Checking if \$SHELL (which is ${SHELL}) is ${SHELL_PATH}…"
-  [[ "${SHELL}" == "${SHELL_PATH}" ]]
+	local SHELL_PATH="${1}"
+	>&2 echo "Checking if \$SHELL (which is ${SHELL}) is ${SHELL_PATH}…"
+	[[ "${SHELL}" == "${SHELL_PATH}" ]]
 }
 
 change_shell() {
-  local SHELL_PATH="${1}"
-  >&2 echo "Setting \$SHELL to ${SHELL_PATH}…"
-  chsh -s "${SHELL_PATH}"
+	local SHELL_PATH="${1}"
+	>&2 echo "Setting \$SHELL to ${SHELL_PATH}…"
+	chsh -s "${SHELL_PATH}"
 }
 
 shell_version() {
-  # assumes bash, safe for now?
-  "${SHELL_PATH}" --version | head -n 1 | cut -d ' ' -f 4
+	# assumes bash, safe for now?
+	"${SHELL_PATH}" --version | head -n 1 | cut -d ' ' -f 4
 }
 
+# shellcheck disable=SC2310
 check_for_brew || (echo "No brew? Install it." && exit 1)
 
 SHELL_PATH="${1:-"$(brew_bash_path)"}"
 
-(check_etc_shells "${SHELL_PATH}" || write_etc_shells "${SHELL_PATH}") && \
-  (check_shell "${SHELL_PATH}" || change_shell "${SHELL_PATH}")
+# shellcheck disable=SC2310
+(check_etc_shells "${SHELL_PATH}" || write_etc_shells "${SHELL_PATH}") &&
+	(check_shell "${SHELL_PATH}" || change_shell "${SHELL_PATH}")
 
-
-
+# shellcheck disable=SC2312
 >&2 echo "Shell should now be ${SHELL_PATH}. Open a new terminal and verify the version (\$BASH_VERSION?) is $(shell_version)."

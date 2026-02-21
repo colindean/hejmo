@@ -1,148 +1,151 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2312
 
 # figure out which version of date to use
 # GNU date responds to --version and BSD date does not.
 # TODO: make this work on BSD where GNU date may not be available.
 date="date"
-ugh=$($date --version 2>&1 )
-if [[ $? -ne 0 ]]; then
-  date="gdate";
-  if [[ -z "$(command -v $date)" ]]; then
-    >&2 echo "No date command with --date support found."
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-      >&2 echo "Try installing GNU Coreutils with 'brew install coreutils' to get GNU date, which supports relative dates."
-    fi
-    exit 1
-  fi
+if ! ${date} --version >/dev/null 2>&1; then
+	date="gdate"
+	if ! command -v "${date}" >/dev/null; then
+		>&2 echo "No date command with --date support found."
+		OS_TYPE="$(uname -s)"
+		if [[ "${OS_TYPE}" == "Darwin" ]]; then
+			>&2 echo "Try installing GNU Coreutils with 'brew install coreutils' to get GNU date, which supports relative dates."
+		fi
+		exit 1
+	fi
 fi
 
 # Show current timelog
 _t_timelog() {
-  echo "$timelog"
+	echo "${timelog}"
 }
 
 # Run a ledger command on the timelog
 _t_ledger() {
-  ledger -f "$timelog" "$@"
+	ledger -f "${timelog}" "$@"
 }
 
 # do something in unix with the timelog
 _t_do() {
-    action=$1; shift
-    ${action} "$@" "${timelog}"
+	action=$1
+	shift
+	${action} "$@" "${timelog}"
 }
 
 # Clock in to the given project
 # Clock in to the last project if no project is given
 _t_in() {
-  [ ! "$1" ] && set -- "$@" "$(_t_last)"
-  echo i `$date '+%Y-%m-%d %H:%M:%S'` $* >> "$timelog"
+	[[ -z "$1" ]] && set -- "$@" "$(_t_last)"
+	echo i "$(${date} '+%Y-%m-%d %H:%M:%S')" "$*" >>"${timelog}"
 }
 
 # Clock out
 _t_out() {
-  echo o `$date '+%Y-%m-%d %H:%M:%S'` $* >> "$timelog"
+	echo o "$(${date} '+%Y-%m-%d %H:%M:%S')" "$*" >>"${timelog}"
 }
 
 # switch projects
 _t_sw() {
-  if [[ $# -eq 2 ]]; then
-    SWITCH_TS="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
-    shift
-  else
-    SWITCH_TS="$($date '+%Y-%m-%d %H:%M:%S')"
-  fi
-  echo o "${SWITCH_TS}" >> "$timelog"
-  echo i "${SWITCH_TS}" $* >> "$timelog"
+	if [[ $# -eq 2 ]]; then
+		SWITCH_TS="$(${date} --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+		shift
+	else
+		SWITCH_TS="$(${date} '+%Y-%m-%d %H:%M:%S')"
+	fi
+	echo o "${SWITCH_TS}" >>"${timelog}"
+	echo i "${SWITCH_TS}" "$*" >>"${timelog}"
 }
 
 # Show the currently clocked-in project
 _t_cur() {
-  sed -e '/^i/!d;$!d' "${timelog}" | __t_extract_project
+	sed -e '/^i/!d;$!d' "${timelog}" | __t_extract_project
 }
 
 # Show the last checked out project
 _t_last() {
-  sed -ne '/^o/{g;p;};h;' "${timelog}" | tail -n 1 | __t_extract_project
+	sed -ne '/^o/{g;p;};h;' "${timelog}" | tail -n 1 | __t_extract_project
 }
 
 _t_start() {
-  if [[ ! -z "$(_t_cur)" ]]; then
-    echo "Cannot add an entry when one is checked out. Run '$(basename $0) out' to check out first."
-    exit 1
-  fi
-  local start_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
-  if [[ -z "${start_date}" ]]; then
-    exit 1 #rely on date to have shown the error
-  fi
-  echo i "${start_date}" "${2}" >> "${timelog}"
+	if [[ -n "$(_t_cur)" ]]; then
+		echo "Cannot add an entry when one is checked out. Run '$(basename "$0") out' to check out first."
+		exit 1
+	fi
+	local start_date
+	start_date="$(${date} --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+	if [[ -z "${start_date}" ]]; then
+		exit 1 #rely on date to have shown the error
+	fi
+	echo i "${start_date}" "${2}" >>"${timelog}"
 }
 
 _t_end() {
-  local end_date
-  if [[ -z "${1}" ]]; then
-    _t_out "${@}"
-    return 0
-  fi
-  end_date="$($date --date "${1}" '+%Y-%m-%d %H:%M:%S')"
-  if [[ -z "${end_date}" ]]; then
-    exit 1 #rely on date to have shown the error
-  fi
-  echo o "${end_date}" >> "${timelog}"
+	local end_date
+	if [[ -z "${1}" ]]; then
+		_t_out "${@}"
+		return 0
+	fi
+	end_date="$(${date} --date "${1}" '+%Y-%m-%d %H:%M:%S')"
+	if [[ -z "${end_date}" ]]; then
+		exit 1 #rely on date to have shown the error
+	fi
+	echo o "${end_date}" >>"${timelog}"
 }
 
 _t_vacation() {
-  local account="${3:-A:Vacation}"
-  local start_date;
-  start_date="$($date --date "${1}" '+%Y-%m-%d')"
-  local end_date;
-  end_date="$($date --date "${2:-$1}" '+%Y-%m-%d')"
-  local loop_end_date;
-  loop_end_date="$($date --date "${end_date} + 1 day" '+%Y-%m-%d')"
+	local account="${3:-A:Vacation}"
+	local start_date
+	start_date="$(${date} --date "${1}" '+%Y-%m-%d')"
+	local end_date
+	end_date="$(${date} --date "${2:-$1}" '+%Y-%m-%d')"
+	local loop_end_date
+	loop_end_date="$(${date} --date "${end_date} + 1 day" '+%Y-%m-%d')"
 
-  if [[ -z "$start_date" ]] || [[ -z "$end_date" ]]; then
-    echo "A required date was malformed. Check output for hints."
-    exit 1
-  fi
+	if [[ -z "${start_date}" ]] || [[ -z "${end_date}" ]]; then
+		echo "A required date was malformed. Check output for hints."
+		exit 1
+	fi
 
-  echo "Logging ${account} from ${start_date} to ${end_date}"
-  local d="${start_date}"
-  while [ "${d}" != "${loop_end_date}" ]; do
-    echo "Logging for ${d}…"
-    _t_log "${d} 09:30" "${d} 17:30" "${account}"
-    d="$($date --date "${d} + 1 day" '+%Y-%m-%d')"
-  done
-  _t_ledger register --begin "${start_date}" --end "${d}"
+	echo "Logging ${account} from ${start_date} to ${end_date}"
+	local d="${start_date}"
+	while [[ "${d}" != "${loop_end_date}" ]]; do
+		echo "Logging for ${d}…"
+		_t_log "${d} 09:30" "${d} 17:30" "${account}"
+		d="$(${date} --date "${d} + 1 day" '+%Y-%m-%d')"
+	done
+	_t_ledger register --begin "${start_date}" --end "${d}"
 }
 
 # Explicitly log a start and end
 _t_log() {
-  _t_start "${1}" "${3}"
-  _t_end "${2}"
+	_t_start "${1}" "${3}"
+	_t_end "${2}"
 }
 
 _t_sheet() {
-  default_start="last Monday"
-  start_when="${1:-$default_start}"
-  for i in `seq 0 6`; do
-    PERIOD="$($date -d "${start_when} + ${i} days" +%Y-%m-%d )";
-    _t_ledger -p "${PERIOD}" reg --days-of-week --start-of-week Monday;
-    echo '';
-  done
+	default_start="last Monday"
+	start_when="${1:-${default_start}}"
+	for i in $(seq 0 6); do
+		PERIOD="$(${date} -d "${start_when} + ${i} days" +%Y-%m-%d)"
+		_t_ledger -p "${PERIOD}" reg --days-of-week --start-of-week Monday
+		echo ''
+	done
 }
 
 _t_edit() {
-  if [[ "${EDITOR}" =~ "vi" ]]; then
-    # go to the bottom of the file by default for vi/m
-    EDITOR_OPTIONS=("+ normal GA")
-  fi
-  _t_do "${EDITOR}" "${EDITOR_OPTIONS[@]}" "$@"
+	if [[ "${EDITOR:-}" =~ "vi" ]]; then
+		# go to the bottom of the file by default for vi/m
+		EDITOR_OPTIONS=("+ normal GA")
+	fi
+	_t_do "${EDITOR}" "${EDITOR_OPTIONS[@]}" "$@"
 }
 
 # Show usage
 _t_usage() {
-  # TODO
-  cat << EOF | column -t -s '-'
+	# TODO
+	cat <<EOF | column -t -s '-'
 Usage: t action
 actions:
      in - clock into project or last project
@@ -173,7 +176,7 @@ EOF
 #
 
 __t_extract_project() {
-  awk '$1 != "o" {
+	awk '$1 != "o" {
           line = $4
           for (i=5; i<=NF; i++)
             line = line " " $i;
@@ -181,11 +184,12 @@ __t_extract_project() {
       }'
 }
 
-action=$1; shift
-[ "$TIMELOG" ] && timelog="$TIMELOG" || timelog="${HOME}/.timelog.ldg"
+action=$1
+shift
+[[ -n "${TIMELOG}" ]] && timelog="${TIMELOG}" || timelog="${HOME}/.timelog.ldg"
 
 _t_echo_actions() {
-  echo 'in
+	echo 'in
 out
 sw
 bal
@@ -212,33 +216,33 @@ vacation'
 }
 
 case "${action}" in
-  in)   _t_in "$@";;
-  out)  _t_out "$@";;
-  sw)   _t_sw "$@";;
-  bal) _t_ledger bal "$@";;
-  hours) _t_ledger bal -p "since today" --end "tomorrow" "$@";;
-  week) _t_ledger bal -p "this week" "$@";;
-  lastweek) _t_ledger bal -p "last week" "$@";;
-  switch)   _t_sw "$@";;
-  edit) _t_edit "$@";;
-  cur)  _t_cur "$@";;
-  last) _t_last "$@";;
-  grep) _t_do grep "$@";;
-  cat)  _t_do cat "$@";;
-  today) _t_do grep "$($date "+%Y-%m-%d")";;
-  less)  _t_do less;;
-  timelog) _t_timelog "$@";;
-  log) _t_log "$@";;
-  start) _t_start "$@";;
-  end) _t_end "$@";;
-  p) _t_ledger accounts "$@";;
-  projects) _t_ledger accounts "$@";;
-  sheet) _t_sheet "$@";;
-  actions) _t_echo_actions;;
-  vacation) _t_vacation "$@";;
+in) _t_in "$@" ;;
+out) _t_out "$@" ;;
+sw) _t_sw "$@" ;;
+bal) _t_ledger bal "$@" ;;
+hours) _t_ledger bal -p "since today" --end "tomorrow" "$@" ;;
+week) _t_ledger bal -p "this week" "$@" ;;
+lastweek) _t_ledger bal -p "last week" "$@" ;;
+switch) _t_sw "$@" ;;
+edit) _t_edit "$@" ;;
+cur) _t_cur "$@" ;;
+last) _t_last "$@" ;;
+grep) _t_do grep "$@" ;;
+cat) _t_do cat "$@" ;;
+today) _t_do grep "$(${date} "+%Y-%m-%d")" ;;
+less) _t_do less ;;
+timelog) _t_timelog "$@" ;;
+log) _t_log "$@" ;;
+start) _t_start "$@" ;;
+end) _t_end "$@" ;;
+p) _t_ledger accounts "$@" ;;
+projects) _t_ledger accounts "$@" ;;
+sheet) _t_sheet "$@" ;;
+actions) _t_echo_actions ;;
+vacation) _t_vacation "$@" ;;
 
-  h)    _t_usage;;
-  *)    _t_usage;;
+h) _t_usage ;;
+*) _t_usage ;;
 esac
 
 exit 0

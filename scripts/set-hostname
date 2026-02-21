@@ -2,15 +2,16 @@
 NEW="${1}"
 
 if [[ -z "${NEW}" ]]; then
-  >&2 echo "Usage: $0 new-hostname"
-  exit 1
+	>&2 echo "Usage: $0 new-hostname"
+	exit 1
 fi
 
-if [[ "Darwin" == "$(uname -s)" ]]; then
-  sudo scutil --set ComputerName "${NEW}"
-  sudo scutil --set HostName "${NEW}"
-  sudo scutil --set LocalHostName "${NEW}"
+OS_TYPE="$(uname -s)"
+if [[ "Darwin" == "${OS_TYPE}" ]]; then
+	sudo scutil --set ComputerName "${NEW}"
+	sudo scutil --set HostName "${NEW}"
+	sudo scutil --set LocalHostName "${NEW}"
 else
-  sudo hostname "${NEW}"
+	sudo hostname "${NEW}"
 fi
-  hostname -f
+hostname -f
