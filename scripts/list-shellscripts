@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 SHEBANGS=(
-  '#!/usr/bin/env bash'
-  '#!/bin/bash'
-  '#!/bin/sh'
-  '#!bash'
+	'#!/usr/bin/env bash'
+	'#!/bin/bash'
+	'#!/bin/sh'
+	'#!bash'
 )
 LIST=""
 for shebang in "${SHEBANGS[@]}"; do
-  LIST+=$(grep -lr --exclude-dir "\\.git" "${shebang}" .)
-  LIST+="\n"
+	LIST+=$(grep -lr --exclude-dir "\\.git" "${shebang}" .)
+	LIST+="\n"
 done
 
 echo -e "${LIST}" | sort -u

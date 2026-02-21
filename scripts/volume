@@ -2,14 +2,14 @@
 value="${1}"
 
 if [[ -z "${value}" ]]; then
-  echo "Usage: value mute|mid|max|<int, 0-10>"
+	echo "Usage: value mute|mid|max|<int, 0-10>"
 fi
 
 case "${value}" in
-  mute) value=0 ;;
-  max) value=10 ;;
-  mid) value=5 ;;
-  *) ;;
+mute) value=0 ;;
+max) value=10 ;;
+mid) value=5 ;;
+*) ;;
 esac
 
 sudo osascript -e "set Volume ${value}"

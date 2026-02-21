@@ -5,16 +5,16 @@ TOTAL_COMMITTERS="$(git log --format="%aE" | tr "[:upper:]" "[:lower:]" | sort |
 
 for file in $(git ls-files); do
 
-  # shellcheck disable=SC2312
-  FILE_COMMITTERS=$(git log --format="%aE" "${file}" | tr "[:upper:]" "[:lower:]" | sort | uniq | wc -l | tr -d ' ')
+	# shellcheck disable=SC2312
+	FILE_COMMITTERS=$(git log --format="%aE" "${file}" | tr "[:upper:]" "[:lower:]" | sort | uniq | wc -l | tr -d ' ')
 
-if [[ "$1" == "json" ]]; then
-  jq --null-input --compact-output \
-    --arg file "${file}" \
-    --argjson fc "${FILE_COMMITTERS}" \
-    --argjson tc "${TOTAL_COMMITTERS}" \
-    '{file: $file, file_committers: $fc, total_committers: $tc}'
-else
-  echo -e "${FILE_COMMITTERS}\t${TOTAL_COMMITTERS}\t${file}"
-fi
+	if [[ "$1" == "json" ]]; then
+		jq --null-input --compact-output \
+			--arg file "${file}" \
+			--argjson fc "${FILE_COMMITTERS}" \
+			--argjson tc "${TOTAL_COMMITTERS}" \
+			'{file: $file, file_committers: $fc, total_committers: $tc}'
+	else
+		echo -e "${FILE_COMMITTERS}\t${TOTAL_COMMITTERS}\t${file}"
+	fi
 done

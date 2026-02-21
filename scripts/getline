@@ -4,12 +4,12 @@ LINENUM=$1
 INFILE=$2
 
 usage() {
-  >&2 echo -e "Usage:\t${PROGNAME} line-number input-file"
+	>&2 echo -e "Usage:\t${PROGNAME} line-number input-file"
 }
 
 if [[ -z ${LINENUM} || -z "${INFILE}" ]]; then
-  usage
-  exit 1
+	usage
+	exit 1
 fi
 
 sed "${LINENUM}!d;q" "${INFILE}"

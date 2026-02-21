@@ -31,4 +31,3 @@ repos:
 ci:
   skip:
     - ripsecrets-system
-    - shfmt

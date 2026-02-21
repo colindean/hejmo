@@ -6,46 +6,46 @@ BUILD_PLUGINS_SBT="project/plugins.sbt"
 META_BUILD_PLUGINS_SBT="project/project/plugins.sbt"
 
 if [[ -z "${SBT_VERSION}" ]]; then
-  if ! command -v coursier > /dev/null; then
-    SBT_VERSION=${SBT_VERSION_FALLBACK}
-  else
-    # shellcheck disable=SC2312
-    SBT_VERSION="$(coursier --help | head -n 1 | cut -d ' ' -f 2)"
-  fi
+	if ! command -v coursier >/dev/null; then
+		SBT_VERSION=${SBT_VERSION_FALLBACK}
+	else
+		# shellcheck disable=SC2312
+		SBT_VERSION="$(coursier --help | head -n 1 | cut -d ' ' -f 2)"
+	fi
 fi
 
 if grep -iq coursier "${BUILD_PLUGINS_SBT}"; then
-  echo "Coursier is appears in ${BUILD_PLUGINS_SBT}, so it's probably already installed."
-  echo "Check that file and ${META_BUILD_PLUGINS_SBT}!"
-  echo "${BUILD_PLUGINS_SBT} should have:"
-  echo
-  printf "\t"
-  echo 'addSbtPlugin("io.get-coursier" % "sbt-coursier" % "'"${SBT_VERSION}"'")'
-  echo
-  echo "unless there are other plugins listed there, in which case the above should be in"
-  echo "${META_BUILD_PLUGINS_SBT} and this should be in ${BUILD_PLUGINS_SBT}:"
-  echo
-  printf "\t"
-  echo "addSbtCoursier"
-  exit 1
+	echo "Coursier is appears in ${BUILD_PLUGINS_SBT}, so it's probably already installed."
+	echo "Check that file and ${META_BUILD_PLUGINS_SBT}!"
+	echo "${BUILD_PLUGINS_SBT} should have:"
+	echo
+	printf "\t"
+	echo 'addSbtPlugin("io.get-coursier" % "sbt-coursier" % "'"${SBT_VERSION}"'")'
+	echo
+	echo "unless there are other plugins listed there, in which case the above should be in"
+	echo "${META_BUILD_PLUGINS_SBT} and this should be in ${BUILD_PLUGINS_SBT}:"
+	echo
+	printf "\t"
+	echo "addSbtCoursier"
+	exit 1
 fi
 
 addCoursierTo() {
-  target="${1}"
-  mkdir -p "$(dirname "${target}")"
-  touch "${target}"
-  echo -e '\naddSbtPlugin("io.get-coursier" % "sbt-coursier" % "'"${SBT_VERSION}"'")' >> "${target}"
+	target="${1}"
+	mkdir -p "$(dirname "${target}")"
+	touch "${target}"
+	echo -e '\naddSbtPlugin("io.get-coursier" % "sbt-coursier" % "'"${SBT_VERSION}"'")' >>"${target}"
 }
 addReferenceTo() {
-  target="${1}"
-  touch "${target}"
-  mkdir -p "$(dirname "${target}")"
-  echo -e '\naddSbtCoursier' >> "${target}"
+	target="${1}"
+	touch "${target}"
+	mkdir -p "$(dirname "${target}")"
+	echo -e '\naddSbtCoursier' >>"${target}"
 }
 
 if [[ -f "${BUILD_PLUGINS_SBT}" ]]; then
-  addCoursierTo "${META_BUILD_PLUGINS_SBT}"
-  addReferenceTo "${BUILD_PLUGINS_SBT}"
+	addCoursierTo "${META_BUILD_PLUGINS_SBT}"
+	addReferenceTo "${BUILD_PLUGINS_SBT}"
 else
-  addCoursierTo "${BUILD_PLUGINS_SBT}"
+	addCoursierTo "${BUILD_PLUGINS_SBT}"
 fi

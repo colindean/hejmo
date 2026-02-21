@@ -2,7 +2,6 @@
 # travis helpers
 
 if [[ -f "${HOME}/.travis/travis.sh" ]]; then
-  # shellcheck source=/dev/null
-  . "${HOME}/.travis/travis.sh"
+	# shellcheck source=/dev/null
+	. "${HOME}/.travis/travis.sh"
 fi
-

@@ -18,5 +18,5 @@ hejmo() {
 		return 1
 	fi
 	cd "${HEJMO}" || exit
-	command -v tabname > /dev/null && tabname
+	command -v tabname >/dev/null && tabname
 }

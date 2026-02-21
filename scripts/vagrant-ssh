@@ -1,7 +1,7 @@
 #!/bin/bash
 PORT=2222
 if [[ -n "${VAGPORT}" ]]; then
-  PORT=${VAGPORT}
+	PORT=${VAGPORT}
 fi
 # shellcheck disable=SC2312
 VAGRANT_GEM="$(dirname "$(gem which vagrant)")/.."

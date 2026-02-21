@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if command -v kubectl > /dev/null; then
+if command -v kubectl >/dev/null; then
 	# Cache for 1 day (86400 seconds) since kubectl completion rarely changes
 	# shellcheck source=/dev/null
 	# shellcheck disable=SC2312

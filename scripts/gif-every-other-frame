@@ -15,15 +15,13 @@ cp "$1" "$2"
 numframes="$(gifsicle "$1" -I | perl -nle'print $& while m{\d+ images}g' | perl -nle'print $& while m{\d+}g')"
 
 # Deletion
-(( i=0 ))
-while [[ ${i} -lt ${numframes}  ]]; do
-    rem=$(( i % 2 ))
+((i = 0))
+while [[ ${i} -lt ${numframes} ]]; do
+	rem=$((i % 2))
 
-    if [[ "${rem}" -eq 0 ]]
-    then
-        gifsicle "$2" --delete "#"$((i/2)) -o "$2"
-    fi
+	if [[ "${rem}" -eq 0 ]]; then
+		gifsicle "$2" --delete "#"$((i / 2)) -o "$2"
+	fi
 
-    (( i=i+1 ))
+	((i = i + 1))
 done
-
