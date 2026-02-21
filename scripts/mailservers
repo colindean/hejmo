@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2312
 
 # dig +short _submission._tcp.cad.cx srv
 # 0 1 587 smtp.fastmail.com.

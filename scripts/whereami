@@ -3,7 +3,7 @@
 ssid_cmd="ssid"
 ssid_cmd="$(command -v ssid)"
 if [[ -z "${ssid_cmd}" ]]; then
-  >2& echo "ssid retrieval command not found. Without an SSID, I cannot tell where I am."
+  >&2 echo "ssid retrieval command not found. Without an SSID, I cannot tell where I am."
   exit 1
 fi
 

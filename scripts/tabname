@@ -1,7 +1,8 @@
 #!/bin/bash
 if [[ -z "$*" ]]; then
+  # shellcheck disable=SC2312
   CONTENT=$(basename "$(pwd)")
 else
-  CONTENT=("$@")
+  CONTENT="$*"
 fi
 echo -ne "\033]0;${CONTENT}\007"

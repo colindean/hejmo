@@ -1,6 +1,7 @@
 #!/bin/sh
 
-case "$(uname -s)" in
+OS_TYPE="$(uname -s)"
+case "${OS_TYPE}" in
   Linux)
     ip route
     ;;
@@ -8,7 +9,7 @@ case "$(uname -s)" in
     netstat -rn
     ;;
   *)
-    echo "$0 doesn't know how to look up routes on $(uname -s)…" >&2
+    echo "$0 doesn't know how to look up routes on ${OS_TYPE}…" >&2
     ;;
 esac
 

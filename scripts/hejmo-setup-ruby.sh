@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2312
 # this will install or update RVM using
 # literally the steps from rvm.io
 ensure_brew() {

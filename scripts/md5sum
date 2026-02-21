@@ -1,6 +1,6 @@
 #!/bin/bash
 if [[ -f "/usr/bin/md5sum" ]]; then
   /usr/bin/md5sum "$@"
-elif [[ -n "$(command -v md5)" ]]; then
+elif command -v md5 > /dev/null; then
   md5 -q "$@"
 fi

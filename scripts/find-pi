@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # the MAC prefixes Raspberry Pi Foundation uses
+# shellcheck disable=SC2312
 arp -na | \
   grep \
     -e "b8:27:eb" \

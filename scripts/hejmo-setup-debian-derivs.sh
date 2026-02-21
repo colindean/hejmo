@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck source=scripts/_hejmo_stdlib_helpers.sh
 . "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 banner_text "Starting Debian deriv setup"
@@ -19,6 +20,7 @@ sudo apt-get update
 sudo apt-get -qy install software-properties-common
 
 # setup heroku
+# shellcheck disable=SC2312
 curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 # other essentials
@@ -45,14 +47,17 @@ fi
   
 
 # elementaryOS-specific stuff
-if [[ "$(lsb_release --id --short)" == "elementary" ]]; then
+DISTRO_ID="$(lsb_release --id --short)"
+DISTRO_CODENAME="$(lsb_release --codename --short)"
+
+if [[ "${DISTRO_ID}" == "elementary" ]]; then
 
   sudo apt-get -qy install \
       fonts-raleway-elementary
 
   gsettings set io.elementary.terminal.settings font 'FiraCode 12'
 
-  if [[ "$(lsb_release --codename --short)" == "hera" ]]; then
+  if [[ "${DISTRO_CODENAME}" == "hera" ]]; then
     sudo add-apt-repository ppa:philip.scott/elementary-tweaks
     sudo apt install elementary-tweaks
   else
@@ -64,16 +69,17 @@ if [[ "$(lsb_release --id --short)" == "elementary" ]]; then
 fi
 
 # ChromeOS terminal essentials
+# shellcheck disable=SC2312
 if [[ "$(hostname)" == "penguin" ]]; then
-    if [[ "$(lsb_release --id --short)" == "Debian" ]]; then
+    if [[ "${DISTRO_ID}" == "Debian" ]]; then
         # setup Debian backports
         sudo tee /etc/apt/sources.list.d/debian-backports.list <<- DEBCONF
-        deb http://deb.debian.org/debian $(lsb_release --codename --short)-backports main
+        deb http://deb.debian.org/debian ${DISTRO_CODENAME}-backports main
 DEBCONF
         sudo apt-get update
 
         # install flatpak
-        sudo apt install "flatpak/$(lsb_release --codename --short)-backports"
+        sudo apt install "flatpak/${DISTRO_CODENAME}-backports"
         flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
         # install some flatpak packages

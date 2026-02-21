@@ -5,4 +5,5 @@
 stdout="${STDOUT:-stdout.log}"
 stderr="${STDERR:-stderr.log}"
 
+# shellcheck disable=SC2312
 "${@}" >(tee -a "${stdout}") 2> >(tee -a "${stderr}" >&2)

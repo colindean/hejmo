@@ -15,6 +15,7 @@ http://benalman.com/about/license/
 HELP
 exit; fi
 
+# shellcheck disable=SC2312
 ssid=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I | sed -En 's/^ +SSID: +//p')
 
 if [[ -n "$1" ]]; then

@@ -20,6 +20,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 OS_TYPE="$(uname -s)"
 
 # Source helper functions
+# shellcheck source=scripts/_hejmo_stdlib_helpers.sh
 source "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 # Check if chezmoi is installed
@@ -33,6 +34,7 @@ if ! command -v chezmoi &> /dev/null; then
         brew install chezmoi
       else
         # Fallback to shell script installer
+        # shellcheck disable=SC2312
         sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "${HOME}/.local/bin"
       fi
       ;;
@@ -41,11 +43,13 @@ if ! command -v chezmoi &> /dev/null; then
       if command -v apt-get &> /dev/null; then
         # Note: chezmoi may not be in standard repos
         # Fallback to shell script installer
+        # shellcheck disable=SC2312
         sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "${HOME}/.local/bin"
       elif command -v snap &> /dev/null; then
         sudo snap install chezmoi --classic
       else
         # Fallback to shell script installer
+        # shellcheck disable=SC2312
         sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "${HOME}/.local/bin"
       fi
       ;;
@@ -72,6 +76,7 @@ if ! command -v chezmoi &> /dev/null; then
   exit 1
 fi
 
+# shellcheck disable=SC2312
 log_info "chezmoi version: $(chezmoi --version)"
 
 # Initialize chezmoi with the hejmo repository

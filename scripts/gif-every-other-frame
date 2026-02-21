@@ -11,6 +11,7 @@ cp "$1" "$2"
 
 # Get the number of frames
 # this had used `grep -o -P` but -P doesn't exist on BSD grep so it wouldn't work on macOS OOTB
+# shellcheck disable=SC2312
 numframes="$(gifsicle "$1" -I | perl -nle'print $& while m{\d+ images}g' | perl -nle'print $& while m{\d+}g')"
 
 # Deletion

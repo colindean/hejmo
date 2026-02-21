@@ -1,5 +1,3 @@
-
-
 ## Best practices for resolving Shellcheck info-level errors
 
 Use the shellcheck_shellcheck tool available to you via MCP, if available.

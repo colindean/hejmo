@@ -42,6 +42,7 @@ function genderLookup() {
   echo "${GENDERMAP[$1]}"
 }
 
+# shellcheck disable=SC2312
 COUNT_TO_AUTHOR=$(git log --format='%aN' | sort | uniq -c)
 TOTAL_COMMITS=$(git rev-list HEAD --count)
 

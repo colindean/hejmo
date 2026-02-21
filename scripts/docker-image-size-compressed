@@ -4,4 +4,5 @@ if [[ "${1}" == "-x" ]]; then
 	set -x
 fi
 
+# shellcheck disable=SC2312
 docker manifest inspect "${@}" | jq '[.layers[].size] | add' | numfmt --to=iec-i

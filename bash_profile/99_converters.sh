@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-if [ -n "$(command -v rsvg-convert)" ]; then
+if command -v rsvg-convert > /dev/null; then
   alias svg2png="rsvg-convert"
 fi

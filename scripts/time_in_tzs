@@ -7,6 +7,7 @@ tz_map["C"]="America/Chicago"
 tz_map["E"]="America/New_York"
 tz_map["I"]="Asia/Kolkata"
 
+# shellcheck disable=SC2312
 for key in "${!tz_map[@]}"; do
 	printf "%s@%s\n" "$(TZ=":${tz_map[${key}]}" date "+%H:%M")" "${key}"
 done | sort | tr '\n' ' '

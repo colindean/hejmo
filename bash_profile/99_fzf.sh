@@ -53,6 +53,7 @@ alias fzfp="fzf ${FZF_CTRL_T_OPTS}"
 # open a file somewhere under the current directory, press "?" for preview window
 # shellcheck disable=SC2016
 open_fzf() {
+  # shellcheck disable=SC2312
   fd -t f -L -H -E ".git" |\
     fzf -m --min-height=20 \
       --preview-window=:hidden \
@@ -64,6 +65,7 @@ open_fzf() {
 cd_fzf() {
   local basedir=${1:-.} # default to starting from current directory (.) but allow override
   local directory
+  # shellcheck disable=SC2312
   if directory=$(fd -t d -L -H -I -E ".git" . "${basedir}" | fzf --preview="tree -L 1 {}" ); then
     cd "${directory}" && fzf-redraw-prompt
   fi

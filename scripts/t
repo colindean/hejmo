@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2312
 
 # figure out which version of date to use
 # GNU date responds to --version and BSD date does not.
@@ -6,9 +7,10 @@
 date="date"
 if ! ${date} --version >/dev/null 2>&1; then
   date="gdate";
-  if [[ -z "$(command -v "${date}")" ]]; then
+  if ! command -v "${date}" > /dev/null; then
     >&2 echo "No date command with --date support found."
-    if [[ "$(uname -s)" == "Darwin" ]]; then
+    OS_TYPE="$(uname -s)"
+    if [[ "${OS_TYPE}" == "Darwin" ]]; then
       >&2 echo "Try installing GNU Coreutils with 'brew install coreutils' to get GNU date, which supports relative dates."
     fi
     exit 1
@@ -34,7 +36,7 @@ _t_do() {
 # Clock in to the given project
 # Clock in to the last project if no project is given
 _t_in() {
-  [[ ! -n "$1" ]] && set -- "$@" "$(_t_last)"
+  [[ -z "$1" ]] && set -- "$@" "$(_t_last)"
   echo i "$(${date} '+%Y-%m-%d %H:%M:%S')" "$*" >> "${timelog}"
 }
 
@@ -132,7 +134,7 @@ _t_sheet() {
 }
 
 _t_edit() {
-  if [[ "${EDITOR}" =~ "vi" ]]; then
+  if [[ "${EDITOR:-}" =~ "vi" ]]; then
     # go to the bottom of the file by default for vi/m
     EDITOR_OPTIONS=("+ normal GA")
   fi

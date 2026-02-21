@@ -10,6 +10,7 @@ if [[ -z ${DISABLE_HOSTNAME_CHANGE+x} ]]; then
   sudo scutil --set LocalHostName "${NEW_HOSTNAME}"
   sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${NEW_HOSTNAME}"
 else
+  # shellcheck disable=SC2312
   >&2 echo "Not changing hostname from $(hostname) because DISABLE_HOSTNAME_CHANGE is set."
 fi
 
