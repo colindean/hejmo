@@ -164,7 +164,7 @@ for arg in "${@}"; do #parse options
         -a|--append) append="1"; shift ;;
         -i|--ignore-interrupts) ignore_interrupts="1"; shift ;;
         -*) _die "${PROGNAME}: unrecognized option '${arg}'" ;;
-        *) ;;
+        *) shift ;;
     esac
 done
 

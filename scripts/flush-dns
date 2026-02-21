@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO: add Linux support (e.g. `sudo systemd-resolve --flush-caches` or `sudo resolvectl flush-caches`)
+
 OS_TYPE="$(uname -s)"
 case "${OS_TYPE}" in
   "Darwin")

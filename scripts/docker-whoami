@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2312
 # Shows what user is used for docker login
 # currently only for macOS
-# shellcheck disable=SC2312
 jq -r \
 	'if (.credsStore == "osxkeychain") then (.auths | keys) else [] end | .[]' \
 	"${HOME}/.docker/config.json" |
