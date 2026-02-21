@@ -10,6 +10,7 @@ alias icat="kitten icat"
 alias imgcat="kitten icat"
 
 iplot() {
+	# shellcheck disable=SC2312
 	cat <<EOF | gnuplot
     set terminal pngcairo enhanced font 'Fira Sans,10'
     set autoscale

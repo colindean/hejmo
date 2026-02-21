@@ -23,23 +23,28 @@ if ! command -v gpg > /dev/null; then
 fi
 
 if ! gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB; then
+	# shellcheck disable=SC2312
 	curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+	# shellcheck disable=SC2312
 	curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
 fi
 
 gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+# shellcheck disable=SC2312
 curl -sSL https://get.rvm.io | bash -s stable
 # shellcheck source=/dev/null
 . ~/.bash_profile
 
 install_rvm_with_curlbash() {
   gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  # shellcheck disable=SC2312
   curl -sSL https://get.rvm.io | bash -s stable
 }
 
 install_rvm_for_debian() {
   sudo apt-get install --yes software-properties-common
   if ! sudo apt-add-repository -y ppa:rael-gc/rvm; then
+    # shellcheck disable=SC2312
     curl "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x7be3e5681146fd4f1a40eda28094bb14f4e3fbbe" | sudo tee /etc/apt/trusted.gpg.d/rael-gc_ubuntu_rvm.asc
   fi
   sudo apt-get update --yes
@@ -74,8 +79,11 @@ fi
 ##
 # if we're not already using an rvm ruby, install the same version as what the
 # system is using and use it. This makes this script a little future-proof.
+# shellcheck disable=SC2312
 if ! grep -E -q -o 'rvm' <(command -v ruby); then
+	# shellcheck disable=SC2312
 	system_version=$(/usr/bin/ruby --version | grep -E -o '[[:digit:]]\.[[:digit:]]\.[[:digit:]]')
+	# shellcheck disable=SC2312
 	rvm install "${system_version}" "--with-openssl-dir=$(brew --prefix openssl)"
 fi
 

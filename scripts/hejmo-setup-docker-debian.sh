@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck source=/dev/null
 . "${SCRIPT_DIR}/_hejmo_stdlib_helpers.sh"
 
 banner_text "Starting Docker for Linux setup"
@@ -15,6 +16,7 @@ sudo apt-get -yq install \
     software-properties-common
 
 banner_text "Installing Docker upstream GPG key"
+# shellcheck disable=SC2312
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 # I'm more likely to be running an Ubuntu derivative
@@ -44,6 +46,7 @@ sudo docker run hello-world
 banner_text "Enabling Docker startup in systemd"
 sudo systemctl enable docker
 banner_text "Checking docker group sanity"
+# shellcheck disable=SC2312
 if ! groups "${USER}" | grep -q docker; then
   echo "Adding Docker user group with ${USER} in it"  
   sudo usermod -aG docker "${USER}"
@@ -68,7 +71,7 @@ fi
 # if we have homebrew, install docker-compose through that
 # because it's guaranteed to be out of date in the OS repo
 # and it's not in Docker's repo added above.
-if [[ -n $(command -v brew) ]]; then 
+if command -v brew > /dev/null; then 
   brew install docker-compose
 fi
 

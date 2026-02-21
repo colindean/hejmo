@@ -49,9 +49,9 @@ fi
 #fi
 
 #autocomplete for t
-# shellcheck source=../scripts/_t_completion
 if command -v t > /dev/null; then
 	if command -v _t_completion > /dev/null; then
+		# shellcheck source=/dev/null disable=SC2312
 		source "$(command -v _t_completion)"
 	fi
 fi
