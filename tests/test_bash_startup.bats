@@ -19,11 +19,12 @@ setup() {
 
 @test "bash_profile loads without errors" {
   # Start bash and check that HEJMO is set up correctly
+  # shellcheck disable=SC2016
   run --separate-stderr bash -l -c 'echo "${HEJMO}"'
   [[ "${status}" -eq 0 ]]
   # HEJMO should be set to a non-empty path
   [[ -n "${output}" ]]
-  [[ "${output}" =~ ".local/share/chezmoi" ]]
+  [[ "${output}" =~ .local/share/chezmoi ]]
 }
 
 @test "bkt helper functions are available after bash startup" {
