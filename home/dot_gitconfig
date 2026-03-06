@@ -149,8 +149,8 @@
 	ff = only
 [init]
 	defaultBranch = main
-[url "git@github.com:colindean"]
- 	insteadof = https://github.com/colindean
+#[url "git@github.com:colindean"]
+# 	insteadof = https://github.com/colindean
 [url "git@gitlab.com:colindean"]
 	insteadof = https://gitlab.com/colindean
 [github]
@@ -161,12 +161,10 @@
 [blame]
 	markIgnoredLines = true
 	markUnblamableLines = true
-[safe]
-	directory = /vela/mosaic-ml-models-extended-service-plan
 [branch]
 	sort = -committerdate
-#[credential "https://github.com"]
-#	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
-#[credential "https://gist.github.com"]
-#	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+[credential "https://github.com"]
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = !gh auth git-credential
 
