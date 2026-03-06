@@ -14,7 +14,7 @@ cask 'gimp'
 cask 'hammerspoon'
 
 # pane management
-cask 'hyperswitch'
+# cask 'hyperswitch'
 
 # better screencast recording, also, streaming
 cask 'obs'
@@ -28,3 +28,11 @@ cask "qlstephen"
 # set default email app
 cask 'swiftdefaultappsprefpane'
 
+# great terminal
+cask "ghostty"
+
+# extendable menubar
+cask 'xbar'
+
+# menu bar manager
+cask 'bartender'

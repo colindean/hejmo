@@ -11,7 +11,7 @@ cask 'font-fira-code'
 cask 'font-fira-code-nerd-font'
 
 # good general font with every character in Unicode
-cask 'font-noto-mono'
+#cask 'font-noto-mono'
 cask 'font-noto-mono-for-powerline'
 cask 'font-noto-sans'
 cask 'font-noto-serif'

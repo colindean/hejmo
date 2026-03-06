@@ -11,8 +11,6 @@ tap "nrlquaker/createzap"
 tap "quarylabs/quary"
 tap "sdkman/tap"
 
-# needed for basically everything, might as well install it
-cask 'adoptopenjdk'
 # quick screen recording
 cask 'licecap'
 # IDE for Scala and Java development
@@ -246,14 +244,12 @@ cask "dbeaver-community"
 cask "devtoys"
 
 cask "fx-cast-bridge"
-cask "fx_cast_bridge"
 cask "gcloud-cli"
 cask "ghostty"
 cask "gimp"
 cask "godot"
 cask "hammerspoon"
 cask "handbrake-app"
-cask "hyperswitch"
 cask "inkscape"
 cask "intellij-idea"
 cask "joplin"
@@ -268,7 +264,6 @@ cask "macvim-app"
 
 cask "notunes"
 cask "obs"
-cask "obsbot-center"
 cask "oversight"
 cask "proxy-audio-device"
 cask "qlcolorcode"
