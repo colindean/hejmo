@@ -16,7 +16,22 @@ current_time() {
   # gdate isn't on the path yet when we need this but *almost*
   # assuredly perl is and it loads faster than anything else
   # https://superuser.com/a/713000
-  perl -MTime::HiRes -e 'printf("%.0f\n",Time::HiRes::time()*1000)'
+  local ms
+  ms=$(perl -MTime::HiRes -e 'printf("%.0f\n",Time::HiRes::time()*1000)' 2>/dev/null)
+  if [[ -n "${ms}" ]]; then
+    echo "${ms}"
+  else
+    # Fallback for systems without perl Time::HiRes (e.g., Bluefin Linux)
+    # date +%s%3N works on Linux with GNU coreutils but not macOS built-in date
+    ms=$(date +%s%3N 2>/dev/null)
+    if [[ "${ms}" =~ ^[0-9]{13}$ ]]; then
+      echo "${ms}"
+    else
+      local epoch
+      epoch=$(date +%s)
+      echo "$((epoch * 1000))"
+    fi
+  fi
 }
 ## trap failures during startup more, uh, grandiloquently
 failure() {
