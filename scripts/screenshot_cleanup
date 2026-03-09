@@ -6,6 +6,54 @@ set -euo pipefail
 DRY_RUN=${DRY_RUN:-false}
 SCREENSHOT_PREFIX="Screenshot"
 
+# Logging functions copied from _hejmo_stdlib_helpers.sh
+CHECKMARK="\u2713"
+CROSSMARK="\u2717"
+EXCLAMATION="\u26A0"
+INFOMARK="\u2139"
+INTERROBANG="\u203D"
+
+BLUE_COLOR="\033[0;34m"
+RED_COLOR="\033[0;31m"
+YELLOW_COLOR="\033[0;33m"
+GRAY_COLOR="\033[0;37m"
+RESET_COLOR="\033[0m"
+BOLD_COLOR="\033[1m"
+
+SUCCESS_COLOR="${BLUE_COLOR}"
+FAILURE_COLOR="${RED_COLOR}"
+INFO_COLOR="${BLUE_COLOR}"
+WARNING_COLOR="${YELLOW_COLOR}"
+DEBUG_COLOR="${GRAY_COLOR}"
+
+SUCCESS_TEXT="${SUCCESS_COLOR}${BOLD_COLOR}[${CHECKMARK} SUCC]${RESET_COLOR}"
+FAILURE_TEXT="${FAILURE_COLOR}[${CROSSMARK} FAIL]${RESET_COLOR}"
+INFO_TEXT="${INFO_COLOR}[${INFOMARK} INFO]${RESET_COLOR}"
+WARNING_TEXT="${WARNING_COLOR}[${EXCLAMATION} WARN]${RESET_COLOR}"
+DEBUG_TEXT="${DEBUG_COLOR}[${INTERROBANG} DBUG]${RESET_COLOR}"
+
+stderr_log() {
+	echo -e "${*}" >&2
+}
+
+log_success() {
+	stderr_log "${SUCCESS_TEXT} ${BOLD_COLOR}${*}${RESET_COLOR}"
+}
+log_failure() {
+	stderr_log "${FAILURE_TEXT} ${*}"
+}
+log_info() {
+	stderr_log "${INFO_TEXT} ${*}"
+}
+log_warning() {
+	stderr_log "${WARNING_TEXT} ${*}"
+}
+log_debug() {
+	if [[ -n "${DEBUG:-}" ]]; then
+		stderr_log "${DEBUG_TEXT} ${*}"
+	fi
+}
+
 # Get screenshot directory based on OS
 get_screenshot_dir() {
 	local os
@@ -54,7 +102,7 @@ extract_timestamp() {
 			local time="${BASH_REMATCH[2]//./:}"
 			echo "${date} ${time}"
 		else
-			echo "Error: Unable to extract timestamp from filename: ${basename_only}" >&2
+			log_failure "Unable to extract timestamp from filename: ${basename_only}"
 			return 1
 		fi
 		;;
@@ -65,12 +113,12 @@ extract_timestamp() {
 			local time="${BASH_REMATCH[3]//-/:}"
 			echo "${date} ${time}"
 		else
-			echo "Error: Unable to extract timestamp from filename: ${basename_only}" >&2
+			log_failure "Unable to extract timestamp from filename: ${basename_only}"
 			return 1
 		fi
 		;;
 	*)
-		echo "Error: Unsupported OS: ${os}" >&2
+		log_failure "Unsupported OS: ${os}"
 		return 1
 		;;
 	esac
@@ -96,13 +144,13 @@ age_in_days() {
 		file_time=$(date -d "${timestamp}" +%s 2>/dev/null)
 		;;
 	*)
-		echo "Error: Unsupported OS: ${os}" >&2
+		log_failure "Unsupported OS: ${os}"
 		return 1
 		;;
 	esac
 
 	if [[ -z "${file_time}" ]]; then
-		echo "Error: Unable to parse timestamp: ${timestamp}" >&2
+		log_failure "Unable to parse timestamp: ${timestamp}"
 		return 1
 	fi
 
@@ -112,12 +160,12 @@ age_in_days() {
 # Trash a file
 trash() {
 	local file="$1"
-	echo "🗑 ⬅ $(basename "${file}")"
+	log_info "🗑 ⬅ $(basename "${file}")"
 	if [[ "${DRY_RUN}" != "true" ]]; then
 		if command -v trash &>/dev/null; then
 			command trash "${file}"
 		else
-			echo "Warning: trash command not found, using rm instead" >&2
+			log_warning "trash command not found, using rm instead"
 			rm "${file}"
 		fi
 	fi
@@ -127,9 +175,9 @@ trash() {
 archive() {
 	local file="$1"
 	local archive_dir="$2"
-	echo "🗄 ⬅ $(basename "${file}")"
+	log_info "🗄 ⬅ $(basename "${file}")"
 	if [[ ! -d "${archive_dir}" ]]; then
-		echo "Creating ${archive_dir}"
+		log_info "Creating ${archive_dir}"
 		if [[ "${DRY_RUN}" != "true" ]]; then
 			mkdir -p "${archive_dir}"
 		fi
@@ -145,10 +193,10 @@ process_archive() {
 	local archive_dir="$1"
 	local max_age="${2:-15}"
 
-	echo "Looking in ${archive_dir} for deletion…"
+	log_info "Looking in ${archive_dir} for deletion…"
 
 	if [[ ! -d "${archive_dir}" ]]; then
-		echo "Archive directory does not exist: ${archive_dir}"
+		log_info "Archive directory does not exist: ${archive_dir}"
 		return 0
 	fi
 
@@ -161,13 +209,13 @@ process_archive() {
 				if ((age > max_age)); then
 					trash "${file}"
 				else
-					echo "🗄 ⬇ $(basename "${file}")"
+					log_debug "🗄 ⬇ $(basename "${file}")"
 				fi
 			else
-				echo "Warning: Could not calculate age for: $(basename "${file}")" >&2
+				log_warning "Could not calculate age for: $(basename "${file}")"
 			fi
 		else
-			echo "Warning: Could not extract timestamp from: $(basename "${file}")" >&2
+			log_warning "Could not extract timestamp from: $(basename "${file}")"
 		fi
 	done
 }
@@ -178,10 +226,10 @@ process_screenshots() {
 	local archive_dir="$2"
 	local max_age="${3:-7}"
 
-	echo "Looking in ${screenshot_dir} for archival…"
+	log_info "Looking in ${screenshot_dir} for archival…"
 
 	if [[ ! -d "${screenshot_dir}" ]]; then
-		echo "Screenshot directory does not exist: ${screenshot_dir}"
+		log_info "Screenshot directory does not exist: ${screenshot_dir}"
 		return 0
 	fi
 
@@ -194,13 +242,13 @@ process_screenshots() {
 				if ((age > max_age)); then
 					archive "${file}" "${archive_dir}"
 				else
-					echo "📂 ⬇ $(basename "${file}")"
+					log_debug "📂 ⬇ $(basename "${file}")"
 				fi
 			else
-				echo "Warning: Could not calculate age for: $(basename "${file}")" >&2
+				log_warning "Could not calculate age for: $(basename "${file}")"
 			fi
 		else
-			echo "Warning: Could not extract timestamp from: $(basename "${file}")" >&2
+			log_warning "Could not extract timestamp from: $(basename "${file}")"
 		fi
 	done
 }
@@ -220,9 +268,9 @@ main() {
 	archive_dir="${screenshot_dir}/Screenshot Archive"
 	archive_dir="${ARCHIVE_DIR:-${archive_dir}}"
 
-	echo "Screenshot directory: ${screenshot_dir}"
-	echo "Archive directory: ${archive_dir}"
-	echo "Dry run: ${DRY_RUN}"
+	log_info "Screenshot directory: ${screenshot_dir}"
+	log_info "Archive directory: ${archive_dir}"
+	log_info "Dry run: ${DRY_RUN}"
 	echo ""
 
 	# Process archived screenshots (delete after 15 days)

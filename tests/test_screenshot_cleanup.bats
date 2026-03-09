@@ -89,7 +89,7 @@ teardown() {
 
 	run extract_timestamp "invalid_filename.png"
 	[[ "${status}" -eq 1 ]]
-	[[ "${output}" =~ "Error" ]]
+	[[ "${output}" =~ "FAIL" ]]
 }
 
 @test "age_in_days calculates age correctly on Linux" {
