@@ -3,3 +3,4 @@ dotfiles/vim/view
 .vagrant
 archive
 home/dot_ssh/config.d
+home/dot_ssh/controls
