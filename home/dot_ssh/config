@@ -1,0 +1,23 @@
+Include config.d/*
+
+Host *
+  Protocol 2
+  Compression yes
+  ControlMaster auto
+  ControlPath ~/.ssh/controls/sshcontrol-%r@%h:%p
+  ControlPersist 10m
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  AddKeysToAgent yes
+
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  AddKeysToAgent yes
+
+Host gitlab.com
+  HostName gitlab.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  AddKeysToAgent yes
