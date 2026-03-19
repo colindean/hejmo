@@ -98,20 +98,3 @@ cd ~/Source/Personal/hejmo && git pull
 ```
 
 The dotfiles are stored in the `home/` directory with chezmoi naming conventions (e.g., `dot_bashrc` → `~/.bashrc`). The repository includes a `.chezmoiroot` file at the root that tells chezmoi the source directory is `home/`. Scripts from the `scripts/` directory are available in your `$PATH` automatically once your bash profile is loaded (configured in the repository's `bash_profile/00_hejmo_scripts.sh`).
-
-## Things to copy
-
-These files diverge quickly, so I don't version them and instead copypaste them when necessary. Maybe others will find them to be a useful starting point!
-
-### `~/.ssh/config`
-
-Run `mkdir -p ~/.ssh/controls` first and then put this content into the above file:
-
-```
-Host *
-  UseRoaming no
-  Protocol 2
-  Compression yes
-  ControlMaster auto
-  ControlPath ~/.ssh/controls/sshcontrol-%r@%h:%p
-```
