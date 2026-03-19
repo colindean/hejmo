@@ -3,7 +3,6 @@ Include config.d/*
 Host *
   Compression yes
   ControlMaster auto
-  # Ensure ~/.ssh/controls directory exists: mkdir -p ~/.ssh/controls
   ControlPath ~/.ssh/controls/sshcontrol-%r@%h:%p
   ControlPersist 10m
   ServerAliveInterval 60
@@ -13,11 +12,9 @@ Host *
 Host github.com
   HostName github.com
   User git
-  IdentityFile ~/.ssh/id_ed25519
   AddKeysToAgent yes
 
 Host gitlab.com
   HostName gitlab.com
   User git
-  IdentityFile ~/.ssh/id_ed25519
   AddKeysToAgent yes
