@@ -1,9 +1,9 @@
 Include config.d/*
 
 Host *
-  Protocol 2
   Compression yes
   ControlMaster auto
+  # Ensure ~/.ssh/controls directory exists: mkdir -p ~/.ssh/controls
   ControlPath ~/.ssh/controls/sshcontrol-%r@%h:%p
   ControlPersist 10m
   ServerAliveInterval 60
