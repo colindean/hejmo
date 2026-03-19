@@ -2,3 +2,4 @@ dotfiles/gitconfig
 dotfiles/vim/view
 .vagrant
 archive
+home/dot_ssh/config.d
