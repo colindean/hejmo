@@ -182,7 +182,8 @@ archive() {
 			mkdir -p "${archive_dir}"
 		fi
 	fi
-	local new_name="${archive_dir}/$(basename "${file}")"
+	local new_name
+	new_name="${archive_dir}/$(basename "${file}")"
 	if [[ "${DRY_RUN}" != "true" ]]; then
 		mv "${file}" "${new_name}"
 	fi
@@ -204,7 +205,9 @@ process_archive() {
 		local timestamp
 		local age
 
+		# shellcheck disable=SC2310
 		if timestamp=$(extract_timestamp "${file}" 2>/dev/null); then
+			# shellcheck disable=SC2310
 			if age=$(age_in_days "${timestamp}" 2>/dev/null); then
 				if ((age > max_age)); then
 					trash "${file}"
@@ -237,7 +240,9 @@ process_screenshots() {
 		local timestamp
 		local age
 
+		# shellcheck disable=SC2310
 		if timestamp=$(extract_timestamp "${file}" 2>/dev/null); then
+			# shellcheck disable=SC2310
 			if age=$(age_in_days "${timestamp}" 2>/dev/null); then
 				if ((age > max_age)); then
 					archive "${file}" "${archive_dir}"

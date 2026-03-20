@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+# shellcheck disable=SC1091,SC2154,SC2030,SC2031,SC2329,SC2317
 bats_require_minimum_version 1.5.0
 
 # Test suite for screenshot_cleanup
@@ -95,6 +96,7 @@ teardown() {
 @test "age_in_days calculates age correctly on Linux" {
 	# Calculate a timestamp from 10 days ago (use OS-specific date command)
 	local ten_days_ago
+	# shellcheck disable=SC2312
 	if [[ "$(uname -s 2>/dev/null || echo Linux)" == "Darwin" ]]; then
 		# macOS: Use BSD date
 		ten_days_ago=$(command date -v-10d "+%Y-%m-%d %H:%M:%S")
@@ -124,7 +126,7 @@ teardown() {
 
 	run trash "${TEST_DIR}/test_file.png"
 	[[ "${status}" -eq 0 ]]
-	[[ "${output}" =~ "🗑 ⬅ test_file.png" ]]
+	[[ "${output}" =~ 🗑\ ⬅\ test_file.png ]]
 }
 
 @test "archive function creates directory and moves file in dry run" {
@@ -136,8 +138,8 @@ teardown() {
 
 	run archive "${TEST_DIR}/test_file.png" "${archive_dir}"
 	[[ "${status}" -eq 0 ]]
-	[[ "${output}" =~ "🗄 ⬅ test_file.png" ]]
-	[[ "${output}" =~ "Creating" ]]
+	[[ "${output}" =~ 🗄\ ⬅\ test_file.png ]]
+	[[ "${output}" =~ Creating ]]
 }
 
 @test "archive function works when directory exists" {
@@ -150,9 +152,9 @@ teardown() {
 
 	run archive "${TEST_DIR}/test_file.png" "${archive_dir}"
 	[[ "${status}" -eq 0 ]]
-	[[ "${output}" =~ "🗄 ⬅ test_file.png" ]]
+	[[ "${output}" =~ 🗄\ ⬅\ test_file.png ]]
 	# Should not output "Creating" since directory exists
-	[[ ! "${output}" =~ "Creating" ]]
+	[[ ! "${output}" =~ Creating ]]
 }
 
 @test "process_archive handles non-existent directory gracefully" {
@@ -173,6 +175,7 @@ teardown() {
 
 @test "process_screenshots finds and processes files on Linux" {
 	# Skip if not on Linux
+	# shellcheck disable=SC2312
 	if [[ "$(uname -s)" != "Linux" ]]; then
 		skip "This test only runs on Linux"
 	fi
@@ -193,11 +196,12 @@ teardown() {
 	run process_screenshots "${TEST_DIR}" "${TEST_DIR}/archive" 7
 	[[ "${status}" -eq 0 ]]
 	# Should show archival message for old file and keep message for recent file
-	[[ "${output}" =~ "🗄 ⬅" ]] || [[ "${output}" =~ "📂 ⬇" ]]
+	[[ "${output}" =~ 🗄\ ⬅ ]] || [[ "${output}" =~ 📂\ ⬇ ]]
 }
 
 @test "process_screenshots finds and processes files on macOS" {
 	# Skip if not on macOS
+	# shellcheck disable=SC2312
 	if [[ "$(uname -s)" != "Darwin" ]]; then
 		skip "This test only runs on macOS"
 	fi
