@@ -81,8 +81,6 @@ brew "grep"
 brew "icu4c"
 # Command-line client for the cloud PaaS
 brew "heroku"
-# Add GitHub support to git on the command-line
-brew "hub"
 # Configurable static site generator
 brew "hugo"
 # Tools and libraries to manipulate images in many formats

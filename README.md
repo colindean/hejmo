@@ -66,7 +66,6 @@ hejmo-setup-ruby.sh
 You will see errors about:
 
 - `__git_ps1` until both `git` and `bash-completion` are installed (from apt or Homebrew)
-- `hub` until hub is install from Homebrew
 
 ## About Chezmoi
 
