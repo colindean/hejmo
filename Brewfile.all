@@ -22,3 +22,6 @@ brew 'zoxide'
 
 # disk usage utility
 brew 'diskus'
+
+# git stats
+brew 'git-quick-stats'
