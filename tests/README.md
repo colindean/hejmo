@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
-Install bats and chezmoi probably using one of the Brewfiles in the root directory, or:
+Install bats and chezmoi probably using one of the Brewfiles in the `brewfiles/` directory, or:
 
 ```bash
 # On macOS and Linux
