@@ -20,7 +20,7 @@ jobs:
             '[
               "bats-core/bats-action",
               "zizmorcore/zizmor-action",
-              "actions/checkout",
+              "actions/checkout"
             ]'),
             steps.metadata.outputs.dependency-names
           )
