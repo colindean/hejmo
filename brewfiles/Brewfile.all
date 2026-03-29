@@ -25,3 +25,6 @@ brew 'diskus'
 
 # git stats
 brew 'git-quick-stats'
+
+# editorconfig CLI — used by editorconfig-changes script
+brew 'editorconfig'

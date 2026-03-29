@@ -1,0 +1,64 @@
+---
+name: Test editorconfig-changes Script
+
+'on':
+  push:
+    paths:
+      - 'scripts/editorconfig-changes'
+      - 'tests/test_editorconfig_changes.bats'
+      - '.github/workflows/test-editorconfig-changes.yml'
+  pull_request:
+    paths:
+      - 'scripts/editorconfig-changes'
+      - 'tests/test_editorconfig_changes.bats'
+      - '.github/workflows/test-editorconfig-changes.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test-macos:
+    name: Test on macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install dependencies
+        run: |
+          brew install bats-core editorconfig
+
+      - name: Run editorconfig-changes tests
+        env:
+          TERM: xterm
+        run: |
+          bats -p --print-output-on-failure tests/test_editorconfig_changes.bats
+
+  test-ubuntu:
+    name: Test on Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad507 # 3.0.1
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update --yes
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install --yes --no-install-recommends editorconfig
+
+      - name: Run editorconfig-changes tests
+        env:
+          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+          TERM: xterm
+        run: |
+          bats -p --print-output-on-failure tests/test_editorconfig_changes.bats
