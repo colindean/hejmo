@@ -3,7 +3,7 @@
 
 brew "shfmt"
 brew "shellcheck"
-brew "pre-commit"
+brew "prek"
 brew "make"
 brew "ripsecrets"
 
