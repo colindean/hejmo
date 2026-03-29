@@ -10,6 +10,7 @@
 * Prefer bash shell scripts for new software, but it's acceptable to write simple things in Python, Ruby, or Perl.
 * Prefer `jq` when manipulating JSON, except when searching it deeply for a value, then use `gron`.
 * Do not allow the chezmoi setup tests to fail, since that could break my workstations.
+* I use both macOS and Linux, so all scripts and tests should be compatible with both, unless the script is very obviously specific to one OS.
 
 ## Best practices for resolving Shellcheck info-level errors
 
