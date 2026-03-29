@@ -1,6 +1,6 @@
 .PHONY: deps
 deps: .pre-commit-config.yaml
-	brew bundle --file=Brewfile.hejmo --no-lock
+	brew bundle --no-lock --file=Brewfile
 	pre-commit install
 	pre-commit install-hooks
 
