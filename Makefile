@@ -1,6 +1,6 @@
 .PHONY: deps
-deps: .pre-commit-config.yaml
+deps: .prek-config.yaml
 	brew bundle --no-lock --file=Brewfile
-	pre-commit install
-	pre-commit install-hooks
+	prek install
+	prek install-hooks
 
