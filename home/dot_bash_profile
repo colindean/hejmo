@@ -108,7 +108,7 @@ export BREW_PREFIX=cached_brew_prefix
 
 ## Setup bkt for caching expensive commands
 ## This reduces shell startup time by caching command outputs
-if command -v bkt &>/dev/null; then
+if command -v bkt > /dev/null; then
   bkt() { command bkt "$@"; }
 else
   # If bkt isn't installed skip its arguments and just execute directly.
