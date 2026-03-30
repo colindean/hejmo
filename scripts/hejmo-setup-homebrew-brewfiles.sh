@@ -21,7 +21,7 @@ if [[ -z "${HEJMO}" ]]; then
 	echo >&2 "ERROR: HEJMO is not set"
 	exit 1
 fi
-bb_install "${HEJMO}/Brewfile.all"
+bb_install "${HEJMO}/brewfiles/Brewfile.all"
 
 # Map uname output to Brewfile naming convention
 declare -A OS_MAP=([Darwin]=macos [Linux]=linux)
@@ -38,7 +38,7 @@ if [[ -z "${OS_NAME}" ]]; then
 	OS_NAME="${OS}"
 fi
 
-OS_BREWFILE="${HEJMO}/Brewfile.${OS_NAME}"
+OS_BREWFILE="${HEJMO}/brewfiles/Brewfile.${OS_NAME}"
 
 if [[ -f "${OS_BREWFILE}" ]]; then
 	bb_install "${OS_BREWFILE}"
@@ -47,7 +47,7 @@ else
 fi
 
 HOST="${INTENDED_HOSTNAME:-$(hostname)}"
-HOST_BREWFILE="${HEJMO}/Brewfile.${HOST}"
+HOST_BREWFILE="${HEJMO}/brewfiles/Brewfile.${HOST}"
 
 if [[ -f "${HOST_BREWFILE}" ]]; then
 	bb_install "${HOST_BREWFILE}"
