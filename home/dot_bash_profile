@@ -120,11 +120,11 @@ fi
 
 ## Convenience functions for common bkt cache durations
 bkt_cache_hourly() {
-  bkt --ttl=3600 -- "$@"
+  bkt --ttl=3600sec -- "$@"
 }
 
 bkt_cache_daily() {
-  bkt --ttl=86400 -- "$@"
+  bkt --ttl=86400sec -- "$@"
 }
 
 ### BENCHMARKING:
