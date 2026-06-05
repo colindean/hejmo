@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPOS_FILE="${1:-SCRIPT_DIR/repos.txt}"
+WORK_DIR="$(mktemp -d)"
+
+cleanup() {
+  echo "Cleaning up temp dir $WORK_DIR..."
+  rm -rf "$WORK_DIR"
+}
+trap cleanup EXIT
+
+cd "$SCRIPT_DIR"
+
+while IFS= read -r url || [[ -n "$url" ]]; do
+  [[ -z "$url" ]] && continue
+
+  # Extract host, org/repo from HTTPS URL and build SSH URL
+  # e.g. https://stagegit.target.com/dandelion/ads-shared
+  #   -> git@stagegit.target.com:dandelion/ads-shared.git
+  host="$(echo "$url" | awk -F'/' '{print $3}')"
+  org="$(echo "$url" | awk -F'/' '{print $4}')"
+  repo_name="$(basename "$url")"
+  ssh_url="git@${host}:${org}/${repo_name}.git"
+
+  echo ""
+  echo "=== $repo_name ==="
+
+  clone_dir="$WORK_DIR/$repo_name"
+
+  # Clone only the default branch
+  echo "Cloning $ssh_url..."
+  git clone --single-branch "$ssh_url" "$clone_dir"
+
+  # Rewrite history so all files live under repo_name/
+  echo "Rewriting history into subdirectory $repo_name/..."
+  git -C "$clone_dir" filter-repo --to-subdirectory-filter "$repo_name" --force
+
+  # Merge into this repo
+  remote="import-$repo_name"
+  git remote add "$remote" "$clone_dir"
+  git fetch "$remote"
+
+  default_branch="$(git -C "$clone_dir" rev-parse --abbrev-ref HEAD)"
+  git merge --allow-unrelated-histories --no-edit -m "chore: import $repo_name history
+
+Merged from $ssh_url (branch: $default_branch)" "$remote/$default_branch"
+
+  git remote remove "$remote"
+
+  echo "Done: $repo_name"
+done < "$REPOS_FILE"
+
+echo ""
+echo "All repos merged successfully."
