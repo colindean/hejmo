@@ -21,7 +21,7 @@
 	renames = copies
 	colorMoved = default
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 [delta]
 	navigate = true
 	features = zenburn
