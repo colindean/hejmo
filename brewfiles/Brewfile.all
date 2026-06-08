@@ -1,5 +1,5 @@
 # vim: ft=ruby
-tap 'colindean/personal'
+tap 'colindean/personal', trusted: true
 
 # gotta use bash
 brew 'bash'
