@@ -1,15 +1,15 @@
 # vim: ft=ruby
 
-tap "ankitpokhrel/jira-cli"
-tap "colindean/fonts-nonfree"
-tap "colindean/personal"
-tap "coursier/formulas"
-tap "derailed/k9s"
-tap "go-vela/vela"
-tap "int128/kubelogin"
-tap "nrlquaker/createzap"
-tap "quarylabs/quary"
-tap "sdkman/tap"
+tap "ankitpokhrel/jira-cli", trusted: true
+tap "colindean/fonts-nonfree", trusted: true
+tap "colindean/personal", trusted: true
+tap "coursier/formulas", trusted: true
+tap "derailed/k9s", trusted: true
+tap "go-vela/vela", trusted: true
+tap "int128/kubelogin", trusted: true
+tap "nrlquaker/createzap", trusted: true
+tap "quarylabs/quary", trusted: true
+tap "sdkman/tap", trusted: true
 
 # quick screen recording
 cask 'licecap'
