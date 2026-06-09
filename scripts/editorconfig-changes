@@ -1,0 +1,299 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Logging functions copied from _hejmo_stdlib_helpers.sh for standalone use
+CHECKMARK="\u2713"
+CROSSMARK="\u2717"
+EXCLAMATION="\u26A0"
+INFOMARK="\u2139"
+INTERROBANG="\u203D"
+
+BLUE_COLOR="\033[0;34m"
+RED_COLOR="\033[0;31m"
+YELLOW_COLOR="\033[0;33m"
+GRAY_COLOR="\033[0;37m"
+RESET_COLOR="\033[0m"
+BOLD_COLOR="\033[1m"
+
+SUCCESS_COLOR="${BLUE_COLOR}"
+FAILURE_COLOR="${RED_COLOR}"
+INFO_COLOR="${BLUE_COLOR}"
+WARNING_COLOR="${YELLOW_COLOR}"
+DEBUG_COLOR="${GRAY_COLOR}"
+
+SUCCESS_TEXT="${SUCCESS_COLOR}${BOLD_COLOR}[${CHECKMARK} SUCC]${RESET_COLOR}"
+FAILURE_TEXT="${FAILURE_COLOR}[${CROSSMARK} FAIL]${RESET_COLOR}"
+INFO_TEXT="${INFO_COLOR}[${INFOMARK} INFO]${RESET_COLOR}"
+WARNING_TEXT="${WARNING_COLOR}[${EXCLAMATION} WARN]${RESET_COLOR}"
+DEBUG_TEXT="${DEBUG_COLOR}[${INTERROBANG} DBUG]${RESET_COLOR}"
+
+stderr_log() {
+	echo -e "${*}" >&2
+}
+
+log_success() {
+	stderr_log "${SUCCESS_TEXT} ${BOLD_COLOR}${*}${RESET_COLOR}"
+}
+log_failure() {
+	stderr_log "${FAILURE_TEXT} ${*}"
+}
+log_info() {
+	stderr_log "${INFO_TEXT} ${*}"
+}
+log_warning() {
+	stderr_log "${WARNING_TEXT} ${*}"
+}
+log_debug() {
+	if [[ -n "${DEBUG:-}" ]]; then
+		stderr_log "${DEBUG_TEXT} ${*}"
+	fi
+}
+
+# Return 0 (true) if the file appears to be binary content
+is_binary_file() {
+	local file="$1"
+	if command -v file > /dev/null; then
+		[[ "$(file -b --mime-encoding "${file}" 2>/dev/null)" == "binary" ]]
+	else
+		# file command not available; assume text
+		return 1
+	fi
+}
+
+# Remove surrounding single or double quotes from a value
+strip_quotes() {
+	local value="$1"
+	value="${value#\"}"
+	value="${value%\"}"
+	value="${value#\'}"
+	value="${value%\'}"
+	printf '%s' "${value}"
+}
+
+# Remove trailing whitespace from every line in a file (in-place via temp file)
+apply_trim_trailing_whitespace() {
+	local file="$1"
+	sed 's/[[:space:]]*$//' "${file}" > "${file}.new"
+	mv "${file}.new" "${file}"
+}
+
+# Normalise line endings in a file to lf, crlf, or cr
+apply_end_of_line() {
+	local file="$1"
+	local eol="$2"
+	case "${eol}" in
+	lf)
+		# Strip CR before LF (CRLF → LF)
+		sed 's/\r$//' "${file}" > "${file}.new"
+		mv "${file}.new" "${file}"
+		;;
+	crlf)
+		# Normalise to LF first, then add CR before each LF (LF → CRLF)
+		sed 's/\r$//' "${file}" | sed 's/$/\r/' > "${file}.new"
+		mv "${file}.new" "${file}"
+		;;
+	cr)
+		# Convert LF to CR (old-Mac style).
+		# Note: insert_final_newline checks for 0x0a as the final byte, so
+		# combining cr line endings with insert_final_newline=true will append
+		# an LF after the final CR.  True CR-only files are exceedingly rare
+		# in practice and this edge case is therefore left as a known caveat.
+		tr '\n' '\r' < "${file}" > "${file}.new"
+		mv "${file}.new" "${file}"
+		;;
+	*)
+		log_debug "Unknown end_of_line value: ${eol}, skipping"
+		;;
+	esac
+}
+
+# Ensure (or remove) a trailing newline at the end of the file
+apply_insert_final_newline() {
+	local file="$1"
+	local value="$2"
+	local last_byte
+	case "${value}" in
+	true)
+		# Add a newline if the file is non-empty and doesn't already end with one
+		if [[ -s "${file}" ]]; then
+			last_byte=$(tail -c 1 "${file}" | od -An -tx1 | tr -d ' \n')
+			if [[ "${last_byte}" != "0a" ]]; then
+				printf '\n' >> "${file}"
+			fi
+		fi
+		;;
+	false)
+		# Remove trailing newline(s) if present
+		if [[ -s "${file}" ]]; then
+			last_byte=$(tail -c 1 "${file}" | od -An -tx1 | tr -d ' \n')
+			if [[ "${last_byte}" == "0a" ]]; then
+				perl -0777 -pi -e 's/\n+$//' "${file}"
+			fi
+		fi
+		;;
+	esac
+}
+
+# Convert a file to the charset specified by editorconfig using iconv.
+# The current file encoding is detected with `file`; if unavailable a
+# round-trip through the target charset is used to validate/normalise.
+apply_charset() {
+	local file="$1"
+	local charset="$2"
+
+	if ! command -v iconv > /dev/null; then
+		log_debug "iconv not available, skipping charset conversion for ${file}"
+		return 0
+	fi
+
+	local iconv_charset
+	case "${charset}" in
+	utf-8 | utf8 | utf-8-bom) iconv_charset="UTF-8" ;;
+	utf-16be) iconv_charset="UTF-16BE" ;;
+	utf-16le) iconv_charset="UTF-16LE" ;;
+	latin1 | iso-8859-1) iconv_charset="ISO-8859-1" ;;
+	*)
+		log_debug "Unknown charset: ${charset}, skipping"
+		return 0
+		;;
+	esac
+
+	# Detect current encoding so iconv can use the correct source.
+	# Fall back to the target charset for a round-trip validation when
+	# detection is unavailable or unclear (e.g. pure ASCII).
+	local source_encoding="${iconv_charset}"
+	if command -v file > /dev/null; then
+		local detected
+		detected=$(file -b --mime-encoding "${file}" 2>/dev/null)
+		if [[ -n "${detected}" ]] && [[ "${detected}" != "binary" ]]; then
+			source_encoding="${detected}"
+		fi
+	fi
+
+	if iconv -f "${source_encoding}" -t "${iconv_charset}" "${file}" > "${file}.new" 2>/dev/null; then
+		mv "${file}.new" "${file}"
+	else
+		rm -f "${file}.new"
+		log_debug "charset conversion from ${source_encoding} to ${charset} failed for ${file}"
+	fi
+}
+
+# Apply all applicable editorconfig rules to a copy of the file and emit a
+# unified diff.  Returns 0 when the file already conforms, 1 when it does not.
+process_file() {
+	local file="$1"
+
+	if [[ ! -f "${file}" ]]; then
+		log_warning "Not a regular file or does not exist: ${file}"
+		return 0
+	fi
+
+	# shellcheck disable=SC2310
+	if is_binary_file "${file}"; then
+		log_debug "Skipping binary file: ${file}"
+		return 0
+	fi
+
+	# Obtain editorconfig settings for this specific file (key=value output)
+	local config
+	if ! config=$(editorconfig "${file}" 2>/dev/null); then
+		log_warning "Failed to get editorconfig settings for: ${file}"
+		return 0
+	fi
+
+	if [[ -z "${config}" ]]; then
+		log_debug "No editorconfig settings for: ${file}"
+		return 0
+	fi
+
+	# Parse key=value pairs; use %%=* / #*= so values containing '=' are safe
+	local end_of_line=""
+	local insert_final_newline=""
+	local charset=""
+	local trim_trailing_whitespace=""
+
+	while IFS= read -r line; do
+		[[ -z "${line}" ]] && continue
+		local key="${line%%=*}"
+		local value="${line#*=}"
+		# Trim leading/trailing whitespace from the key
+		key="${key#"${key%%[![:space:]]*}"}"
+		key="${key%"${key##*[![:space:]]}"}"
+		value=$(strip_quotes "${value}")
+		case "${key}" in
+		end_of_line) end_of_line="${value}" ;;
+		insert_final_newline) insert_final_newline="${value}" ;;
+		charset) charset="${value}" ;;
+		trim_trailing_whitespace) trim_trailing_whitespace="${value}" ;;
+		esac
+	done <<< "${config}"
+
+	# Work on a temporary copy so the original file is never modified
+	local tmpfile
+	tmpfile=$(mktemp)
+	cp "${file}" "${tmpfile}"
+
+	# Apply transformations in a deliberate order:
+	# 1. charset  — byte-level, must come first
+	[[ -n "${charset}" ]] && apply_charset "${tmpfile}" "${charset}"
+	# 2. end_of_line — normalise terminators before inspecting line content
+	[[ -n "${end_of_line}" ]] && apply_end_of_line "${tmpfile}" "${end_of_line}"
+	# 3. trim_trailing_whitespace — after line endings are uniform
+	[[ "${trim_trailing_whitespace}" == "true" ]] && apply_trim_trailing_whitespace "${tmpfile}"
+	# 4. insert_final_newline — operates on the final byte of the file
+	[[ -n "${insert_final_newline}" ]] && apply_insert_final_newline "${tmpfile}" "${insert_final_newline}"
+
+	# Generate a unified diff; replace the temp-file path with the real path so
+	# the output is a valid, applicable patch.
+	local diff_output
+	diff_output=$(diff -u "${file}" "${tmpfile}" | sed "s|${tmpfile}|${file}|g") || true
+
+	rm -f "${tmpfile}" "${tmpfile}.new"
+
+	if [[ -n "${diff_output}" ]]; then
+		printf '%s\n' "${diff_output}"
+		return 1
+	fi
+
+	return 0
+}
+
+main() {
+	# Require the editorconfig CLI to be available
+	if ! command -v editorconfig > /dev/null; then
+		log_failure "editorconfig command not found. Install it with: brew install editorconfig"
+		exit 2
+	fi
+
+	if [[ $# -eq 0 ]]; then
+		log_failure "No files specified."
+		log_info "Usage: editorconfig-changes <file>... | editorconfig-changes -"
+		exit 1
+	fi
+
+	local files=()
+	if [[ "$1" == "-" ]]; then
+		# Read file paths one-per-line from stdin
+		while IFS= read -r file; do
+			[[ -z "${file}" ]] && continue
+			files+=("${file}")
+		done
+	else
+		files=("$@")
+	fi
+
+	local has_changes=0
+	for file in "${files[@]}"; do
+		# shellcheck disable=SC2310
+		if ! process_file "${file}"; then
+			has_changes=1
+		fi
+	done
+
+	return "${has_changes}"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	main "$@"
+fi
