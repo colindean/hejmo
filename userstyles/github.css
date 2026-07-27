@@ -1,4 +1,7 @@
 @-moz-document domain("git.target.com"), domain("github.com") {
+/*
+ * Use fonts consistently instead of OS-dependent, system fonts
+ */ 
 .text-mono,
 .blob-code-inner,
 .input-monospace,
@@ -14,4 +17,20 @@ body,
 {
     font-family: "Source Sans 3", "Source Sans", "Input Sans", "Open Sans", "Noto Sans";
 }
+}
+
+/*
+ * Highlight each item in file tree with a shaded background
+ * Background gets progressively lighter each level of the tree
+ */
+/* Folders */
+[aria-label="File Tree"] > li[role="treeitem"][aria-expanded],
+[aria-label="File Tree"] li[role="treeitem"][aria-expanded] {
+    font-weight: 500;
+    background: color-mix(in srgb, currentColor 7%, transparent);
+}
+
+/* Files */
+[aria-label="File Tree"] li[role="treeitem"]:not([aria-expanded]) {
+    font-weight: 300;
 }
