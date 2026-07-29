@@ -1,15 +1,15 @@
 # vim: setf ruby
 
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-drivers"
-tap "homebrew/cask-fonts"
-tap "homebrew/core"
-tap "homebrew/services"
-tap "paulp/extras"
+tap "homebrew/bundle", trusted: true
+tap "homebrew/cask", trusted: true
+tap "homebrew/cask-drivers", trusted: true
+tap "homebrew/cask-fonts", trusted: true
+tap "homebrew/core", trusted: true
+tap "homebrew/services", trusted: true
+tap "paulp/extras", trusted: true
 
 # for Java 8
-tap "homebrew/cask-versions"
+tap "homebrew/cask-versions", trusted: true
 cask "java8"
 
 # JVM, latest version

@@ -1,5 +1,5 @@
 # vim: ft=ruby
-tap 'colindean/personal'
+tap 'colindean/personal', trusted: true
 
 # gotta use bash
 brew 'bash'
@@ -25,3 +25,6 @@ brew 'diskus'
 
 # git stats
 brew 'git-quick-stats'
+
+# cache subprocess output
+brew 'bkt'
