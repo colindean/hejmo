@@ -19,6 +19,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 " git integration everywhere
 Plug 'tpope/vim-fugitive'
+" git merge conflict resolution
+Plug 'christoomey/vim-conflicted'
 
 " file navigation
 Plug 'scrooloose/nerdtree'

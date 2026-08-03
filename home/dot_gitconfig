@@ -59,6 +59,9 @@
 	unstash = stash pop
 	untrack = rm -r --cached
 
+  # vim-conflicted for merge conflict resolution
+	conflicted = !vim +Conflicted
+
 	# Searching
 	grep = grep --line-number --color
 
