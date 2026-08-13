@@ -1,4 +1,4 @@
-@-moz-document domain("git.target.com"), domain("github.com") {
+@-moz-document domain("github.com") {
 /*
  * Use fonts consistently instead of OS-dependent, system fonts
  */ 
@@ -17,7 +17,6 @@ body,
 {
     font-family: "Source Sans 3", "Source Sans", "Input Sans", "Open Sans", "Noto Sans";
 }
-}
 
 /*
  * Highlight each item in file tree with a shaded background
@@ -33,4 +32,10 @@ body,
 /* Files */
 [aria-label="File Tree"] li[role="treeitem"]:not([aria-expanded]) {
     font-weight: 300;
+}
+
+
+
+
+/* end */
 }
