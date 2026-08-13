@@ -69,3 +69,7 @@ if command -v ngrok >/dev/null; then
 	# shellcheck disable=SC2312
 	eval "$(bkt_cache_daily ngrok completion)"
 fi
+
+function _get_comp_words_by_ref() {
+	_comp_get_words $@
+}

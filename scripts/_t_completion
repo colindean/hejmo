@@ -30,7 +30,7 @@ _main() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local nocolon
 
-    _get_comp_words_by_ref -n : -c nocolon
+    _comp_get_words -n : -c nocolon
 
     _e "cur = ${cur}"
     _e "nocolon = ${nocolon}"
