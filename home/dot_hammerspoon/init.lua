@@ -13,7 +13,7 @@ local alerterr, alert = pcall(function() return require "hs.alert" end)
 mash = {"cmd", "alt", "ctrl"}
 
 function toggle_zoom_mute()
-  local zoom = hs.application.find("zoom.us")
+  local zoom = hs.application.find("Zoom")
   if not(zoom:findMenuItem("Unmute audio")) then
     zoom:selectMenuItem("Mute audio")
     alert.show("Zoom 🔇")
