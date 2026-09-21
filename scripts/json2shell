@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# cleans gron output for _easier_ -- but not foolproof -- use as shell
+# variables without having to worry about syntax.
+#
+# Invoke with json2shell $filename "export " to prefix with export statements
+
+set -eu -o pipefail
+
+gron --json "${1}" | jq --raw-output --arg prefix "${2:-}" '
+  (.[0] | join(".")) as $key
+  | select($key != "")
+  | "\($prefix)\($key)=\(.[1] | @json)"
+'
