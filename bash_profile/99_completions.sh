@@ -71,5 +71,5 @@ if command -v ngrok >/dev/null; then
 fi
 
 function _get_comp_words_by_ref() {
-	_comp_get_words $@
+	_comp_get_words "${@}"
 }
