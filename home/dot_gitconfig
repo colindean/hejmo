@@ -94,6 +94,7 @@
 	## Create default .git-blame-ignore-revs file from revs that contain "Reformat"
 	#write-reformats-to-blame-ignore = !git log --grep Reformat --format="%H%n\0x23 %s" >> .git-blame-ignore-revs
 	set-blame-ignore-revs = config set blame.ignoreRevsFile .git-blame-ignore-revs
+	subdirs-stash-switch-pull-main = "!for d in $(ls); do if [[ -d $d/.git ]]; then git -C $d stash; git -C $d switch main; git -C $d pull; fi; done"
 
   	# Misspellings, Plurals, etc.
 	ad = add
